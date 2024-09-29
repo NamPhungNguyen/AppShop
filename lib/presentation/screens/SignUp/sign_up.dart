@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import '../../widgets/Button/button_primary.dart';
 import '../../widgets/Input/input_field_primary.dart';
-import '../MainView/main_view.dart';
 
 class SignUpView extends StatelessWidget {
+  static const String sign_up_view = '/sign_up_view';
+
   const SignUpView({super.key});
 
   @override
@@ -13,7 +14,8 @@ class SignUpView extends StatelessWidget {
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
-    final TextEditingController repeatPasswordController = TextEditingController();
+    final TextEditingController repeatPasswordController =
+        TextEditingController();
 
     return Scaffold(
       body: Container(
@@ -28,44 +30,41 @@ class SignUpView extends StatelessWidget {
                 ),
               ),
             ),
-            InputFieldPrimary(
-              labelText: 'Username',
-              controller: usernameController,
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            InputFieldPrimary(
-              labelText: 'Email',
-              isPassword: false,
-              controller: emailController,
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            InputFieldPrimary(
-              labelText: 'Password',
-              isPassword: true,
-              controller: passwordController,
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            InputFieldPrimary(
-              labelText: 'Repeat Password',
-              isPassword: true,
-              controller: repeatPasswordController,
-            ),
+            // InputFieldPrimary(
+            //   labelText: 'Username',
+            //   controller: usernameController,
+            // ),
+            // const SizedBox(
+            //   height: 16.0,
+            // ),
+            // InputFieldPrimary(
+            //   labelText: 'Email',
+            //   isPassword: false,
+            //   controller: emailController,
+            // ),
+            // const SizedBox(
+            //   height: 16.0,
+            // ),
+            // InputFieldPrimary(
+            //   labelText: 'Password',
+            //   isPassword: true,
+            //   controller: passwordController,
+            // ),
+            // const SizedBox(
+            //   height: 16.0,
+            // ),
+            // InputFieldPrimary(
+            //   labelText: 'Repeat Password',
+            //   isPassword: true,
+            //   controller: repeatPasswordController,
+            // ),
             const SizedBox(
               height: 16.0,
             ),
             ButtonPrimary(
               text: "Sign Up",
-              onPressed: () {
-
-              },
+              onPressed: () {},
             ),
-
             Align(
               child: Text.rich(
                 TextSpan(
@@ -77,7 +76,7 @@ class SignUpView extends StatelessWidget {
                       style: const TextStyle(color: Colors.blue),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushNamed(context, MainView.sign_in_view);
+                          Navigator.pushNamed(context, LoginView.log_in_view);
                         },
                     ),
                   ],
@@ -86,9 +85,7 @@ class SignUpView extends StatelessWidget {
             ),
           ],
         ),
-
       ),
     );
   }
 }
-

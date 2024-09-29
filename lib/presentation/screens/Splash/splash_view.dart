@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-
-import '../MainView/main_view.dart';
+import 'package:front_shop/presentation/screens/Login/log_in.dart';
+import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 
 class SplashView extends StatelessWidget {
+  static const String splash = '/';
+
   const SplashView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, MainView.bottom_bar);
+      Navigator.pushNamed(context, LoginView.log_in_view);
     });
 
     return const Scaffold(

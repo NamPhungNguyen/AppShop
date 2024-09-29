@@ -4,6 +4,8 @@ import 'package:front_shop/presentation/screens/Home/home_view.dart';
 import 'package:front_shop/presentation/screens/Profile/profile_view.dart';
 
 class BottomBar extends StatefulWidget {
+  static const String bottom_bar = '/bottom_bar';
+
   const BottomBar({super.key});
 
   @override
