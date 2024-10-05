@@ -5,6 +5,7 @@ class InputFieldPrimary extends StatefulWidget {
   final bool isPassword;
   final TextEditingController controller;
   final Icon icon;
+  final TextInputAction textInputAction;
 
   const InputFieldPrimary({
     super.key,
@@ -12,6 +13,7 @@ class InputFieldPrimary extends StatefulWidget {
     this.isPassword = false,
     required this.controller,
     required this.icon,
+    this.textInputAction = TextInputAction.next
   });
 
   @override
@@ -26,6 +28,7 @@ class _InputFieldPrimaryState extends State<InputFieldPrimary> {
     return TextField(
       controller: widget.controller,
       obscureText: widget.isPassword ? _obscureText : false,
+      textInputAction: widget.textInputAction,
       decoration: InputDecoration(
         prefixIcon: widget.icon,
         hintText: widget.labelText,

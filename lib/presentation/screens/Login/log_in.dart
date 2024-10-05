@@ -1,12 +1,9 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
-import 'package:front_shop/presentation/screens/Home/home_view.dart';
+import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
+import 'package:front_shop/presentation/widgets/FormLoginWith/form_login_with.dart';
 import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
-import 'package:front_shop/utils/assets_path_util.dart';
-
-import '../../../utils/app_colors.dart';
 
 class LoginView extends StatelessWidget {
   static const String log_in_view = '/log_in_view';
@@ -18,6 +15,7 @@ class LoginView extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 34),
         child: ListView(
@@ -45,15 +43,21 @@ class LoginView extends StatelessWidget {
               isPassword: true,
               controller: passwordController,
               icon: const Icon(Icons.lock),
+              textInputAction: TextInputAction.done,
             ),
             const SizedBox(
               height: 14,
             ),
-            const Align(
+            Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                "Forgot password ?",
-                style: TextStyle(color: Colors.red),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, ForgotPasswordView.forgot_password);
+                },
+                child: const Text(
+                  "Forgot password ?",
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
             const SizedBox(
@@ -62,55 +66,14 @@ class LoginView extends StatelessWidget {
             ButtonPrimary(
               text: "Login",
               onPressed: () {
-                Navigator.pushNamed(context, HomeView.home_view);
+                Navigator.pushNamed(context, BottomBar.bottom_bar);
               },
             ),
-            const SizedBox(
-              height: 75,
-            ),
-            Column(
-              children: [
-                Text(
-                  "- OR Continue with -",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF575757),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(AssetsPathUtil.login("google.png")),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Image.asset(AssetsPathUtil.login("apple.png")),
-                      ),
-                      Image.asset(AssetsPathUtil.login("facebook.png")),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Align(
-              child: Text.rich(
-                TextSpan(
-                  text: "You don't have an account? ",
-                  style: const TextStyle(color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: "Sign up now",
-                      style: const TextStyle(color: AppColors.primaryTextAndButton, fontSize: 16),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, '/SignUp');
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            FormLoginWith(
+              titleSuggest: "You don't have an account? ",
+              titleNext: "Sign up",
+              checkTitleNext: true,
+            )
           ],
         ),
       ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Categories/categories_view.dart';
 import 'package:front_shop/presentation/screens/Home/home_view.dart';
 import 'package:front_shop/presentation/screens/Profile/profile_view.dart';
+import 'package:front_shop/presentation/screens/Saved/saved_view.dart';
+import 'package:front_shop/utils/app_colors.dart';
+
+import '../Cart/cart_view.dart';
 
 class BottomBar extends StatefulWidget {
   static const String bottom_bar = '/bottom_bar';
@@ -17,8 +20,9 @@ class _BottomBarState extends State<BottomBar> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeView(),
+    SavedView(),
+    CartView(),
     ProfileView(),
-    CategoriesView(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,21 +38,40 @@ class _BottomBarState extends State<BottomBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home_outlined,
+              size: 28,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: 'Category',
+            icon: Icon(
+              Icons.favorite_outline,
+              size: 28,
+            ),
+            label: "Saved",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+              size: 28,
+            ),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+              size: 28,
+            ),
+            label: 'Account',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: AppColors.primaryTextAndButton,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: AppColors.white,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType.shifting,
       ),
     );
   }

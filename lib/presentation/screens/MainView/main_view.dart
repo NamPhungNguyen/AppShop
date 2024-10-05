@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
+import 'package:front_shop/presentation/screens/ForgotPassword/forgot_create_new_password_view.dart';
+import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_code_view.dart';
+import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
+import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
+import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
 import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import '../Home/home_view.dart';
@@ -21,6 +26,16 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const BottomBar());
       case OnBoardingView.onboarding:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
+      case ForgotPasswordView.forgot_password:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
+      case ForgotPasswordCodeView.forgot_password_code:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordCodeView());
+      case ForgotCreateNewPasswordView.forgot_create_new_pass:
+        return MaterialPageRoute(builder: (_) => const ForgotCreateNewPasswordView());
+      case AllowLocationView.allow_location:
+        return MaterialPageRoute(builder: (_) => const AllowLocationView());
+      case EnterYourLocationView.enter_your_location:
+        return MaterialPageRoute(builder: (_) => const EnterYourLocationView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

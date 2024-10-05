@@ -1,87 +1,118 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
+import 'package:front_shop/presentation/widgets/Dialog/base_dialog_view.dart';
+import 'package:front_shop/presentation/widgets/FormLoginWith/form_login_with.dart';
+import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/assets_path_util.dart';
 import '../../widgets/Button/button_primary.dart';
 import '../../widgets/Input/input_field_primary.dart';
 
-class SignUpView extends StatelessWidget {
+class SignUpView extends StatefulWidget {
   static const String sign_up_view = '/sign_up_view';
 
   const SignUpView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController usernameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController repeatPasswordController =
-        TextEditingController();
+  _SignUpViewState createState() => _SignUpViewState();
+}
 
+class _SignUpViewState extends State<SignUpView> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController repeatPasswordController =
+      TextEditingController();
+
+  bool isPrivacyChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 34),
         child: ListView(
           children: [
-            const SizedBox(
-              height: 500,
-              child: Expanded(
-                child: Image(
-                  image: AssetImage('assets/images/login_image.png'),
-                ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 33),
+              child: Text(
+                "Create an\naccount",
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
               ),
             ),
-            // InputFieldPrimary(
-            //   labelText: 'Username',
-            //   controller: usernameController,
-            // ),
-            // const SizedBox(
-            //   height: 16.0,
-            // ),
-            // InputFieldPrimary(
-            //   labelText: 'Email',
-            //   isPassword: false,
-            //   controller: emailController,
-            // ),
-            // const SizedBox(
-            //   height: 16.0,
-            // ),
-            // InputFieldPrimary(
-            //   labelText: 'Password',
-            //   isPassword: true,
-            //   controller: passwordController,
-            // ),
-            // const SizedBox(
-            //   height: 16.0,
-            // ),
-            // InputFieldPrimary(
-            //   labelText: 'Repeat Password',
-            //   isPassword: true,
-            //   controller: repeatPasswordController,
-            // ),
-            const SizedBox(
-              height: 16.0,
+            InputFieldPrimary(
+              labelText: 'Username',
+              controller: usernameController,
+              icon: const Icon(Icons.person_rounded),
             ),
-            ButtonPrimary(
-              text: "Sign Up",
-              onPressed: () {},
+            const SizedBox(height: 16),
+            InputFieldPrimary(
+              labelText: 'Password',
+              isPassword: true,
+              controller: passwordController,
+              icon: const Icon(Icons.lock),
             ),
-            Align(
-              child: Text.rich(
-                TextSpan(
-                  text: "Already have an account? ",
-                  style: const TextStyle(color: Colors.black),
-                  children: [
+            const SizedBox(height: 16),
+            InputFieldPrimary(
+              labelText: 'Confirm Password',
+              isPassword: true,
+              controller: repeatPasswordController,
+              icon: const Icon(Icons.lock),
+              textInputAction: TextInputAction.done,
+            ),
+
+            // Checkbox for Privacy Agreement
+            Row(
+              children: [
+                Checkbox(
+                  value: isPrivacyChecked,
+                  onChanged: (bool? newValue) {
+                    setState(() {
+                      isPrivacyChecked = newValue ?? false;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Text.rich(
                     TextSpan(
-                      text: "Login",
-                      style: const TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, LoginView.log_in_view);
-                        },
+                      text: "I agree to the ",
+                      style: const TextStyle(color: Color(0xFF676767)),
+                      children: [
+                        TextSpan(
+                          text: "Privacy Policy",
+                          style: const TextStyle(
+                              color: AppColors.primaryTextAndButton),
+                          recognizer: TapGestureRecognizer()..onTap = () {},
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+
+            // Create Account Button
+            Padding(
+              padding: const EdgeInsets.only(top: 22),
+              child: ButtonPrimary(
+                text: "Create Account",
+                onPressed: isPrivacyChecked
+                    ? () {
+                        BaseDialogView(
+                          titleDialog: "Signup Successful!",
+                          imageDialog: AssetsPathUtil.dialog("checkmark.png"),
+                          onPressed: () {
+                            Navigator.pushNamed(context, LoginView.log_in_view);
+                          },
+                        ).showBaseDialog(context);
+                      }
+                    : () {}, // Provide a no-op callback when disabled
               ),
+            ),
+
+            FormLoginWith(
+              titleSuggest: "I Already Have an Account ",
+              titleNext: "Login",
             ),
           ],
         ),

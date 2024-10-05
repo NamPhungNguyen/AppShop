@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/presentation/screens/MainView/main_view.dart';
-import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 
 void main() {
