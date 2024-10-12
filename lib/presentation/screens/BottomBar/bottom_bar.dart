@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Home/home_view.dart';
-import 'package:front_shop/presentation/screens/Profile/profile_view.dart';
-import 'package:front_shop/presentation/screens/Saved/saved_view.dart';
 import 'package:front_shop/utils/app_colors.dart';
-
-import '../Cart/cart_view.dart';
+import '../Menu/Account/account_view.dart';
+import '../Menu/Cart/cart_view.dart';
+import '../Menu/Home/home_view.dart';
+import '../Menu/Saved/saved_view.dart';
 
 class BottomBar extends StatefulWidget {
   static const String bottom_bar = '/bottom_bar';
@@ -22,7 +21,7 @@ class _BottomBarState extends State<BottomBar> {
     HomeView(),
     SavedView(),
     CartView(),
-    ProfileView(),
+    AccountView(),
   ];
 
   void _onItemTapped(int index) {

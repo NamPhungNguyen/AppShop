@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
-import 'package:front_shop/presentation/screens/Home/home_view.dart';
-import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
-import 'package:front_shop/presentation/screens/Login/log_in.dart';
+import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/utils/app_colors.dart';
 
 class SplashView extends StatelessWidget {
@@ -13,9 +10,9 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamed(context, HomeView.home_view);
+      Navigator.pushNamed(context, OnBoardingView.onboarding);
     });
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: AppColors.primaryTextAndButton,
       body: Center(
         child: Column(

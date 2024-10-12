@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
 import 'package:front_shop/presentation/widgets/Search/input_search_primary.dart';
+import 'package:front_shop/presentation/widgets/common/banner.dart';
+import 'package:front_shop/presentation/widgets/common/hot_deals.dart';
+import 'package:front_shop/presentation/widgets/common/popular_product.dart';
 import 'package:front_shop/utils/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
+import '../../../widgets/common/categories_item.dart';
 
 class HomeView extends StatelessWidget {
   static const String home_view = '/home_view';
@@ -44,7 +49,9 @@ class HomeView extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, NotificationView.notification);
+              },
               icon: Icon(
                 Icons.notifications_outlined,
                 size: 34,
@@ -76,11 +83,21 @@ class HomeView extends StatelessWidget {
                       "VIEW ALL",
                       style: TypographyClass.Regular.copyWith(
                           color: AppColors.tertiaryText,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           fontSize: 18),
                     ),
                   ],
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: CategoriesItemList(),
+                ),
+                BannerItem(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: HotDeals(),
+                ),
+                PopularProductItem(),
               ],
             ),
           ),
