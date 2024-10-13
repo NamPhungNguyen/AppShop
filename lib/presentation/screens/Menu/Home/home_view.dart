@@ -3,10 +3,10 @@ import 'package:front_shop/presentation/screens/Notification/notification_view.d
 import 'package:front_shop/presentation/widgets/Search/input_search_primary.dart';
 import 'package:front_shop/presentation/widgets/common/banner.dart';
 import 'package:front_shop/presentation/widgets/common/hot_deals.dart';
-import 'package:front_shop/presentation/widgets/common/popular_product.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
 import '../../../widgets/common/categories_item.dart';
+import '../../../widgets/common/popular_product.dart';
 
 class HomeView extends StatelessWidget {
   static const String home_view = '/home_view';
@@ -21,9 +21,9 @@ class HomeView extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.textWhite,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
+          backgroundColor: AppColors.textWhite,
           automaticallyImplyLeading: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,20 +31,17 @@ class HomeView extends StatelessWidget {
               Text(
                 "LOCATION",
                 style: TypographyClass.Regular.copyWith(
-                  fontSize: 18,
-                  color: AppColors.tertiaryText,
-                ),
+                    fontSize: 18, color: AppColors.tertiaryText),
               ),
-              SizedBox(
-                height: 6,
-              ),
-              Text(
+              const SizedBox(height: 6),
+              const Text(
                 "Dhaka,Bangladesh",
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              )
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ],
           ),
           actions: [
@@ -52,16 +49,13 @@ class HomeView extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, NotificationView.notification);
               },
-              icon: Icon(
-                Icons.notifications_outlined,
-                size: 34,
-              ),
-            )
+              icon: const Icon(Icons.notifications_outlined, size: 28),
+            ),
           ],
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 SearchInputPrimary(
@@ -89,15 +83,15 @@ class HomeView extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: CategoriesItemList(),
                 ),
-                BannerItem(),
-                Padding(
+                const BannerItem(),
+                const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: HotDeals(),
                 ),
-                PopularProductItem(),
+                const PopularProductItem()
               ],
             ),
           ),

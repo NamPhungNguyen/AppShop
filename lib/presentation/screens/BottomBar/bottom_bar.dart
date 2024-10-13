@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:iconsax/iconsax.dart';
 import '../Menu/Account/account_view.dart';
 import '../Menu/Cart/cart_view.dart';
 import '../Menu/Home/home_view.dart';
@@ -17,11 +18,11 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeView(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeView(),
     SavedView(),
-    CartView(),
-    AccountView(),
+    const CartView(),
+    const AccountView(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,43 +35,47 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 28,
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          //add a thicker border at the top of bottombar
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey.shade300,
+                  width: 2.0, // customize the thickness
+                ),
+              ),
             ),
-            label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite_outline,
-              size: 28,
-            ),
-            label: "Saved",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shopping_cart_outlined,
-              size: 28,
-            ),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-              size: 28,
-            ),
-            label: 'Account',
+          BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Iconsax.home, size: 28),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Iconsax.heart, size: 28),
+                label: "Saved",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Iconsax.shopping_cart, size: 28),
+                label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Iconsax.user, size: 28),
+                label: 'Account',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: AppColors.primaryColor,
+            unselectedItemColor: Colors.grey,
+            backgroundColor: AppColors.textWhite,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppColors.primaryTextAndButton,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: AppColors.white,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.shifting,
       ),
     );
   }

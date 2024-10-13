@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/widgets/Search/input_search_primary.dart';
-import 'package:front_shop/utils/app_colors.dart';
-import 'package:front_shop/utils/typography.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 class EnterYourLocationView extends StatefulWidget {
   static const String enter_your_location = "/enter_your_location";
@@ -54,7 +53,7 @@ class _EnterYourLocationViewState extends State<EnterYourLocationView> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text(
+          title: const Text(
             "Enter Your Location",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
@@ -62,18 +61,18 @@ class _EnterYourLocationViewState extends State<EnterYourLocationView> {
           elevation: 0,
         ),
         body: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SearchInputPrimary(controller: locationController),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Row(
                   children: [
                     Icon(
                       Icons.near_me,
-                      color: AppColors.primaryTextAndButton,
+                      color: AppColors.primaryColor,
                       size: 38,
                     ),
                     SizedBox(
@@ -89,10 +88,10 @@ class _EnterYourLocationViewState extends State<EnterYourLocationView> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
-              SizedBox(height: 20),
+              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               if (filteredLocations.isNotEmpty) ...[
-                Divider(),
+                const Divider(),
                 Text(
                   "Search Result",
                   style: TextStyle(
@@ -100,7 +99,7 @@ class _EnterYourLocationViewState extends State<EnterYourLocationView> {
                       fontWeight: FontWeight.bold,
                       color: Colors.black.withOpacity(0.6)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Expanded(
@@ -108,12 +107,12 @@ class _EnterYourLocationViewState extends State<EnterYourLocationView> {
                     itemCount: filteredLocations.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.near_me,
-                          color: AppColors.primaryTextAndButton,
+                          color: AppColors.primaryColor,
                         ),
                         title: Text(filteredLocations[index]),
-                        subtitle: Text("34/5 Golden House"),
+                        subtitle: const Text("34/5 Golden House"),
                         onTap: () {},
                       );
                     },

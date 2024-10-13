@@ -9,7 +9,7 @@ class NotificationView extends StatelessWidget {
 
   String formatDate(DateTime date) {
     final today = DateTime.now();
-    final yesterday = today.subtract(Duration(days: 1));
+    final yesterday = today.subtract(const Duration(days: 1));
 
     if (date.year == today.year &&
         date.month == today.month &&
@@ -37,13 +37,13 @@ class NotificationView extends StatelessWidget {
         'icon': Icons.account_balance_wallet_outlined,
         'title': 'Top Up E-wallet Successfully!',
         'message': 'You have top up your e-wallet.',
-        'date': DateTime.now().subtract(Duration(days: 1)), // Yesterday
+        'date': DateTime.now().subtract(const Duration(days: 1)), // Yesterday
       },
       {
         'icon': Icons.location_on_outlined,
         'title': 'New Service Available!',
         'message': 'Now you can track order in real-time.',
-        'date': DateTime.now().subtract(Duration(days: 1)), // Yesterday
+        'date': DateTime.now().subtract(const Duration(days: 1)), // Yesterday
       },
       {
         'icon': Icons.credit_card_outlined,
@@ -99,13 +99,13 @@ class NotificationView extends StatelessWidget {
               children: [
                 Text(
                   dateKey,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 // List of notifications for that date

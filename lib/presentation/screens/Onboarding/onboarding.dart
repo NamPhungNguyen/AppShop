@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/presentation/screens/Onboarding/Onboarding_item.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -82,7 +82,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ),
               child: const Text(
                 "Prev",
-                style: TextStyle(color: AppColors.secondaryText, fontSize: 18),
+                style: TextStyle(color: AppColors.textSecondary, fontSize: 18),
               ),
             ),
             SmoothPageIndicator(
@@ -112,7 +112,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: Text(
                 lastPage ? "Get started" : "Next",
                 style: const TextStyle(
-                    color: AppColors.primaryTextAndButton, fontSize: 18),
+                    color: AppColors.primaryColor, fontSize: 18),
               ),
             ),
           ],
@@ -143,7 +143,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   controller.items[index].description,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: AppColors.secondaryText,
+                    color: AppColors.textSecondary,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),

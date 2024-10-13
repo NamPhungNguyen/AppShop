@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_code_view.dart';
 import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import '../../widgets/Button/button_primary.dart';
 
 class ForgotPasswordView extends StatelessWidget {
@@ -43,7 +43,7 @@ class ForgotPasswordView extends StatelessWidget {
                   TextSpan(
                     text: " We will send you a message to set or reset\nyour new password",
                     style: TextStyle(
-                      color: AppColors.secondaryText
+                      color: AppColors.textSecondary
                     )
                   )
                 ]

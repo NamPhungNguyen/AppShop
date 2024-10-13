@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
-import '../../../utils/app_colors.dart';
+import '../../../utils/constants/app_colors.dart';
 import '../../../utils/assets_path_util.dart';
 import '../../screens/SignUp/sign_up.dart';
 
@@ -10,7 +10,7 @@ class FormLoginWith extends StatelessWidget {
   final String titleNext;
   final bool checkTitleNext;  // if true navigator -> Sign Up, false navigator -> Login
 
-  FormLoginWith({
+  const FormLoginWith({
     super.key,
     required this.titleSuggest,
     required this.titleNext,
@@ -58,10 +58,10 @@ class FormLoginWith extends StatelessWidget {
                 TextSpan(
                   text: titleNext,
                   style: const TextStyle(
-                    color: AppColors.primaryTextAndButton,
+                    color: AppColors.primaryColor,
                     fontSize: 16,
                     decoration: TextDecoration.underline,
-                    decorationColor: AppColors.primaryTextAndButton,
+                    decorationColor: AppColors.primaryColor,
                     decorationThickness: 2,
                     decorationStyle: TextDecorationStyle.solid,
                   ),

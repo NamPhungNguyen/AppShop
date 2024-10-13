@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
+import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:front_shop/presentation/widgets/Dialog/base_dialog_view.dart';
 import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 
 class ForgotCreateNewPasswordView extends StatelessWidget {
@@ -16,7 +16,7 @@ class ForgotCreateNewPasswordView extends StatelessWidget {
     final newPassword = TextEditingController();
     final confirmPassword = TextEditingController();
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.textWhite,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 34),
         child: ListView(
@@ -55,7 +55,7 @@ class ForgotCreateNewPasswordView extends StatelessWidget {
                   titleDialog: 'Password updated successfully!',
                   imageDialog: AssetsPathUtil.dialog("checkmark.png"),
                   onPressed: () {
-                    Navigator.pushNamed(context, AllowLocationView.allow_location);
+                    Navigator.pushNamed(context, LoginView.log_in_view);
                   },
                 ).showBaseDialog(context);
               },

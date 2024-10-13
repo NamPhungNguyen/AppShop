@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 class CartItem extends StatelessWidget {
   final String imageUrl;
@@ -12,7 +12,7 @@ class CartItem extends StatelessWidget {
   final VoidCallback onDecrease;
 
   const CartItem({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.productName,
     required this.size,
@@ -21,7 +21,7 @@ class CartItem extends StatelessWidget {
     required this.onRemove,
     required this.onIncrease,
     required this.onDecrease,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,20 +86,20 @@ class CartItem extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('$quantity', style: TextStyle(
+                    child: Text('$quantity', style: const TextStyle(
                       fontSize: 16
                     ),),
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.primaryTextAndButton,
+                      color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: IconButton(
                       onPressed: onIncrease,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add,
-                        color: AppColors.white,
+                        color: AppColors.textWhite,
                       ),
                     ),
                   ),

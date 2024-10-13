@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:front_shop/presentation/widgets/common/item_cart_view.dart';
-import 'package:front_shop/utils/app_colors.dart';
 
 class CartView extends StatefulWidget {
   static const String cart = "/cart";
@@ -137,7 +136,7 @@ class _CartViewState extends State<CartView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "My Cart",
           style: TextStyle(
             fontSize: 24,
@@ -150,7 +149,7 @@ class _CartViewState extends State<CartView> {
             onPressed: () {
               Navigator.pushNamed(context, NotificationView.notification);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_outlined,
               size: 28,
               color: Colors.black,
@@ -174,9 +173,9 @@ class _CartViewState extends State<CartView> {
                     direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       color: Colors.redAccent,
-                      child: Icon(
+                      child: const Icon(
                         Icons.delete,
                         color: Colors.white,
                         size: 30,
@@ -222,9 +221,9 @@ class _CartViewState extends State<CartView> {
                 _buildSummaryRow("Sub-total", "\$$subtotal"),
                 _buildSummaryRow("Delivery Fee", "\$$deliveryFee"),
                 _buildSummaryRow("Discount", "-\$$discount"),
-                Divider(),
+                const Divider(),
                 _buildSummaryRow("Total", "\$$total", isBold: true),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   child: ButtonPrimary(text: "Go To Checkout", onPressed: (){}),
@@ -239,7 +238,7 @@ class _CartViewState extends State<CartView> {
 
   Widget _buildSummaryRow(String label, String value, {bool isBold = false}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -265,12 +264,12 @@ class _CartViewState extends State<CartView> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove from Cart"),
+          title: const Text("Remove from Cart"),
           content: Text("Are you sure you want to remove $productName from the cart?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
@@ -279,7 +278,7 @@ class _CartViewState extends State<CartView> {
                 });
                 Navigator.pop(context, true);
               },
-              child: Text(
+              child: const Text(
                 "Yes, Remove",
                 style: TextStyle(color: Colors.red),
               ),

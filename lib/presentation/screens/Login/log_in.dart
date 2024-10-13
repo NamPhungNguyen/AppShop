@@ -69,7 +69,7 @@ class LoginView extends StatelessWidget {
                 Navigator.pushNamed(context, BottomBar.bottom_bar);
               },
             ),
-            FormLoginWith(
+            const FormLoginWith(
               titleSuggest: "You don't have an account? ",
               titleNext: "Sign up",
               checkTitleNext: true,

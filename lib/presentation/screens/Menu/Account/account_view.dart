@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../Notification/notification_view.dart';
+import 'package:front_shop/presentation/widgets/Appbar/appbar.dart';
+import 'package:front_shop/presentation/widgets/list_tiles/settings_menu_tile.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:front_shop/utils/constants/sizes.dart';
+import 'package:iconsax/iconsax.dart';
+import '../../../widgets/custom_shapes/containers/primary_header_container.dart';
+import '../../../widgets/custom_shapes/containers/section_heading.dart';
+import '../../../widgets/list_tiles/user_profile_tile.dart';
 
 class AccountView extends StatelessWidget {
   static const String account = "/account";
@@ -9,119 +16,55 @@ class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: Text(
-          "Account",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, NotificationView.notification);
-            },
-            icon: Icon(
-              Icons.notifications_outlined,
-              size: 28,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          _buildMenuItem(context,
-              icon: Icons.person_outline, text: "Your Profile", onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          _buildMenuItem(context,
-              icon: Icons.shopping_bag_outlined,
-              text: "My Order",
-              onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          _buildMenuItem(context,
-              icon: Icons.credit_card_outlined,
-              text: "Payment Methods",
-              onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          _buildMenuItem(context,
-              icon: Icons.notifications_outlined,
-              text: "Notifications",
-              onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          _buildMenuItem(context,
-              icon: Icons.privacy_tip_outlined,
-              text: "Privacy Policy",
-              onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          _buildMenuItem(context,
-              icon: Icons.help_outline, text: "Help Center", onTap: () {}),
-          Divider(
-            color: Colors.grey[200],
-            height: 1,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
-            child: ListTile(
-              leading: Icon(
-                Icons.power_settings_new,
-                color: Colors.red,
-              ),
-              title: Text(
-                "Log Out",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () {},
-            ),
-          )
-        ],
-      ),
-    );
-  }
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TPrimaryHeaderContainer(
+              child: Column(
+                children: [
+                  //app bar
+                  TAppbar(
+                    title: Text("Account",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .apply(color: AppColors.textWhite)),
+                  ),
 
-  Widget _buildMenuItem(BuildContext context,
-      {required IconData icon,
-      required String text,
-      required VoidCallback onTap}) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: Colors.black,
+                  // user profile card
+                  const UserProfileTile(),
+                  const SizedBox(height: AppSizes.spaceBtwSections)
+                ],
+              ),
+            ),
+
+            //body
+            Padding(
+              padding: const EdgeInsets.all(AppSizes.defaultSpace),
+              child: Column(
+                children: [
+                  const SectionHeading(title: 'Account Settings', showActionButton: false),
+                  const SizedBox(height: AppSizes.spaceBtwItems),
+
+                  SettingsMenuTile(icon: Iconsax.safe_home, title: "My address", subTitle: 'Set shopping delivery address', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.shopping_cart, title: "My cart", subTitle: 'Add, remove products and move to checkout', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.bag_tick, title: "My orders", subTitle: 'In process and Completed Orders', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.notification, title: "Notifications", subTitle: 'Set any kind of notification message', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.security_card, title: "Account Privacy", subTitle: 'Manage data usage and connected accounts', opTap: (){}),
+
+                  // app settings
+                  const SizedBox(height: AppSizes.spaceBtwSections),
+                  const SectionHeading(title: 'App Settings', showActionButton: false),
+                  const SizedBox(height: AppSizes.spaceBtwItems),
+                  SettingsMenuTile(icon: Iconsax.location, title: "Geolocation", subTitle: 'Set recommendation based on location', trailing: Switch(value: true, activeColor: AppColors.primaryColor, onChanged: (value){})),
+                  SettingsMenuTile(icon: Iconsax.security_user, title: "Safe Mode", subTitle: 'Search result is safe for all ages', trailing: Switch(value: false, activeColor: AppColors.primaryColor, onChanged: (value){})),
+
+                ],
+              ),
+            )
+          ],
+        ),
       ),
-      title: Text(
-        text,
-        style: TextStyle(
-            fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
-      ),
-      trailing: Icon(
-        Icons.chevron_right,
-        color: Colors.black,
-      ),
-      onTap: onTap,
     );
   }
 }

@@ -34,10 +34,11 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  iconsax: ^0.0.8 # Icons
   cupertino_icons: ^1.0.6
   dio: ^5.6.0
   retrofit: '>=4.0.0 <5.0.0'
-  logger: any  #for logging purpose
+  logger: ^2.4.0  #for logging purpose
   json_annotation: ^4.8.1
   flutter_riverpod: ^3.0.0-dev.3
   riverpod_annotation: ^3.0.0-dev.3
@@ -46,6 +47,9 @@ dependencies:
   pin_code_fields: ^8.0.1
   carousel_slider: ^5.0.0
   intl: ^0.19.0
+  # state management
+  get: ^4.6.6
+
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +84,7 @@ flutter:
      - assets/images/login/
      - assets/images/dialog/
      - assets/images/location/
+     - assets/images/user/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -98,11 +103,23 @@ flutter:
         - asset: assets/fonts/Aboreto-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 800
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

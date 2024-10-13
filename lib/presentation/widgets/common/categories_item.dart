@@ -10,9 +10,11 @@ class CategoriesItemList extends StatelessWidget {
     {"text": "STATIONARY", "icon": Icons.book},
   ];
 
+  CategoriesItemList({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 80,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -35,8 +37,7 @@ class CategoryIcon extends StatelessWidget {
   final String text;
   final IconData icon;
 
-  const CategoryIcon({
-    Key? key,
+  const CategoryIcon({super.key, 
     required this.text,
     required this.icon,
   });
@@ -44,13 +45,13 @@ class CategoryIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           Container(
             height: 48,
             width: 48,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFFEDEDFF),
               borderRadius: BorderRadius.all(Radius.circular(8))
             ),
@@ -59,7 +60,7 @@ class CategoryIcon extends StatelessWidget {
               color: Colors.grey[700],
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             text,
             style: TypographyClass.Regular.copyWith(

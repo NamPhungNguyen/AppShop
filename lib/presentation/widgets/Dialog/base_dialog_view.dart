@@ -23,7 +23,7 @@ class BaseDialogView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 64, bottom: 24),
+                padding: const EdgeInsets.only(top: 64, bottom: 24),
                 child: Image.asset(imageDialog),
               ),
               Center(

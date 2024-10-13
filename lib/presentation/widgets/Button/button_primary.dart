@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../utils/app_colors.dart';
+import '../../../utils/constants/app_colors.dart';
 
 class ButtonPrimary extends StatelessWidget {
   final String text;
@@ -12,7 +12,7 @@ class ButtonPrimary extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.color = AppColors.primaryTextAndButton, // mau mac dinh cua button
+    this.color = AppColors.primaryColor, // mau mac dinh cua button
     this.textColors = Colors.white,
     this.borderRadius = 8.0,
 });

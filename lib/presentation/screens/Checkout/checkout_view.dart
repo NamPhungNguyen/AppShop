@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
 
 import '../Notification/notification_view.dart';
@@ -15,7 +15,7 @@ class CheckoutView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Checkout",
           style: TextStyle(
             color: Colors.black,
@@ -32,7 +32,7 @@ class CheckoutView extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, NotificationView.notification);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_outlined,
               size: 28,
               color: Colors.black,
@@ -49,32 +49,32 @@ class CheckoutView extends StatelessWidget {
               height: 1,
               color: Colors.grey[200],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             _buildSectionTitle("Delivery Address", true),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             _buildDeliveryAddressSection(),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Divider(
               height: 1,
               color: Colors.grey[200],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             _buildSectionTitle("Payment Method", false),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             _buildPaymentMethodSection(),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildOrderSummarySection(),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildPromoCodeSection(),
-            Spacer(),
+            const Spacer(),
             ButtonPrimary(text: "Place Order", onPressed: (){}),
           ],
         ),
@@ -88,24 +88,24 @@ class CheckoutView extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         isCheck
             ? GestureDetector(
                 onTap: () {
                   // Change address action
                 },
-                child: Text(
+                child: const Text(
                   "Change",
                   style: TextStyle(
-                    color: AppColors.primaryTextAndButton,
+                    color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
-                    decorationColor: AppColors.primaryTextAndButton,
+                    decorationColor: AppColors.primaryColor,
                   ),
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
       ],
     );
   }
@@ -117,25 +117,25 @@ class CheckoutView extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
+            const Icon(
               Icons.location_on_outlined,
               color: Colors.grey,
               size: 28,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Home",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   "925 S Chugach St #Apt 10, Alaska 99645",
                   style: TypographyClass.Regular.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
@@ -161,7 +161,7 @@ class CheckoutView extends StatelessWidget {
             _buildPaymentMethodButton("Apple Pay", Icons.apple_outlined, false),
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12), // Rounded corners
@@ -171,9 +171,9 @@ class CheckoutView extends StatelessWidget {
             ),
           ),
           child: ListTile(
-            leading: Icon(Icons.credit_card, color: Colors.black),
-            title: Text("VISA **** **** **** 2512"),
-            trailing: Icon(Icons.edit, color: Colors.grey),
+            leading: const Icon(Icons.credit_card, color: Colors.black),
+            title: const Text("VISA **** **** **** 2512"),
+            trailing: const Icon(Icons.edit, color: Colors.grey),
             onTap: () {
               // Edit card action
             },
@@ -190,7 +190,7 @@ class CheckoutView extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor: isSelected ? Colors.white : Colors.black,
-            backgroundColor: isSelected ? AppColors.primaryTextAndButton : Colors.grey[200],
+            backgroundColor: isSelected ? AppColors.primaryColor : Colors.grey[200],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -201,7 +201,7 @@ class CheckoutView extends StatelessWidget {
           },
           child: Icon(icon),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(label),
       ],
     );
@@ -214,7 +214,7 @@ class CheckoutView extends StatelessWidget {
         _buildSummaryRow("Sub-total", "\$170.75"),
         _buildSummaryRow("Delivery Fee", "\$20.00"),
         _buildSummaryRow("Discount", "\$10"),
-        Divider(),
+        const Divider(),
         _buildSummaryRow("Total", "\$180.99", isBold: true),
       ],
     );
@@ -252,17 +252,17 @@ class CheckoutView extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
               hintText: "Enter promo code",
-              prefixIcon: Icon(Icons.local_offer_outlined),
+              prefixIcon: const Icon(Icons.local_offer_outlined),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
           ),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryTextAndButton,
+            backgroundColor: AppColors.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -270,7 +270,7 @@ class CheckoutView extends StatelessWidget {
           onPressed: () {
             // Apply promo code action
           },
-          child: Text("Add", style: TextStyle(color: Colors.white),),
+          child: const Text("Add", style: TextStyle(color: Colors.white),),
         ),
       ],
     );

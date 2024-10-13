@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 class NotificationItem extends StatelessWidget {
   final IconData icon;
@@ -8,7 +8,7 @@ class NotificationItem extends StatelessWidget {
   final String date;
 
   const NotificationItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.titleNotify,
     required this.subTitleNotify,
@@ -17,43 +17,41 @@ class NotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 28,
-                color: Colors.black,
-              ),
-              SizedBox(
-                width: 13,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    titleNotify,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    subTitleNotify,
-                    style: TextStyle(
-                      color: AppColors.tertiaryText,
-                      fontSize: 16,
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
+    return ListTile(
+      leading: Icon(
+        icon,
+        size: 28,
+        color: Colors.black,
+      ),
+      title: Text(
+        titleNotify,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
-      ],
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            subTitleNotify,
+            style: const TextStyle(
+              color: AppColors.tertiaryText,
+              fontSize: 16,
+            ),
+          ),
+          Text(
+            date,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+      onTap: () {
+        print('Notification tapped');
+      },
     );
   }
 }

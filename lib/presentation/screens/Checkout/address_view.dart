@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
 import '../Notification/notification_view.dart';
 
@@ -94,7 +94,7 @@ class _AddressViewState extends State<AddressView> {
                     borderRadius: BorderRadius.circular(8),
                     // Ensures ripple stays within rounded border
                     splashColor:
-                        AppColors.primaryTextAndButton.withOpacity(0.2),
+                        AppColors.primaryColor.withOpacity(0.2),
                     // Ripple color
                     highlightColor: Colors.grey[200],
                     // Color when pressed
@@ -148,7 +148,7 @@ class _AddressViewState extends State<AddressView> {
                           onChanged: (int? value) {
                             _onAddressSelected(value!);
                           },
-                          activeColor: AppColors.primaryTextAndButton,
+                          activeColor: AppColors.primaryColor,
                         ),
                       ),
                     ),

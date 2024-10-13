@@ -4,7 +4,7 @@ import 'package:front_shop/presentation/screens/ForgotPassword/forgot_create_new
 import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../utils/app_colors.dart';
+import '../../../utils/constants/app_colors.dart';
 
 class ForgotPasswordCodeView extends StatelessWidget {
   static const String forgot_password_code = "/forgot_password_code";
@@ -67,11 +67,11 @@ class ForgotPasswordCodeView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "Resend Code",
-                      style: TextStyle(
-                        color: AppColors.primaryTextAndButton,
+                      style: const TextStyle(
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
-                        decorationColor: AppColors.primaryTextAndButton
+                        decorationColor: AppColors.primaryColor
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {

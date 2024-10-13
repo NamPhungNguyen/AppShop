@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/presentation/widgets/Dialog/base_dialog_view.dart';
 import 'package:front_shop/presentation/widgets/FormLoginWith/form_login_with.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import '../../widgets/Button/button_primary.dart';
 import '../../widgets/Input/input_field_primary.dart';
@@ -81,7 +81,7 @@ class _SignUpViewState extends State<SignUpView> {
                         TextSpan(
                           text: "Privacy Policy",
                           style: const TextStyle(
-                              color: AppColors.primaryTextAndButton),
+                              color: AppColors.primaryColor),
                           recognizer: TapGestureRecognizer()..onTap = () {},
                         ),
                       ],
@@ -110,7 +110,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
             ),
 
-            FormLoginWith(
+            const FormLoginWith(
               titleSuggest: "I Already Have an Account ",
               titleNext: "Login",
             ),

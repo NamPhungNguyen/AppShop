@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../widgets/common/product_item.dart';
 import '../../Notification/notification_view.dart';
 
 class SavedView extends StatelessWidget {
@@ -22,6 +21,8 @@ class SavedView extends StatelessWidget {
       'isSaved': false, // This one is unsaved
     },
   ];
+
+  SavedView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class SavedView extends StatelessWidget {
               size: 100,
               color: Colors.grey[300],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'No Saved Items!',
               style: TextStyle(
@@ -74,7 +75,7 @@ class SavedView extends StatelessWidget {
                 color: Colors.grey[600],
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'You don\'t have any saved items.\nGo to home and add some.',
               textAlign: TextAlign.center,
@@ -98,20 +99,20 @@ class SavedView extends StatelessWidget {
           itemCount: filteredItems.length,
           itemBuilder: (context, index) {
             final item = filteredItems[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: ProductItem(
-                imageUrl: item['imageUrl'],
-                name: item['name'],
-                price: '\$${item['price']}', // Format price with $
-                discount: '\$${item['discount']}',
-                isSaved: item['isSaved'],
-                index: index,
-                onPress: () {
-                  // Handle unsave action here
-                  print('Unsave item: ${item['name']}');
-                },
-              ),
+            return const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              // child: ProductItem(
+              //   imageUrl: item['imageUrl'],
+              //   name: item['name'],
+              //   price: '\$${item['price']}', // Format price with $
+              //   discount: '\$${item['discount']}',
+              //   isSaved: item['isSaved'],
+              //   index: index,
+              //   onPress: () {
+              //     // Handle unsave action here
+              //     print('Unsave item: ${item['name']}');
+              //   },
+              // ),
             );
           },
         ),

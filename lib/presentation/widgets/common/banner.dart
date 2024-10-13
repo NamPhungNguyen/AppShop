@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 class BannerItem extends StatefulWidget {
+  const BannerItem({super.key});
+
   @override
   State<BannerItem> createState() => _BannerItemState();
 }
@@ -63,12 +65,12 @@ class _BannerItemState extends State<BannerItem> {
       children: [
         for (int i = 0; i < imgListBanner.length; i++)
           Container(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             height: i == _currentPage ? 8 : 6,
             width: i == _currentPage ? 8 : 6,
             decoration: BoxDecoration(
                 color: i == _currentPage
-                    ? AppColors.primaryTextAndButton
+                    ? AppColors.primaryColor
                     : AppColors.tertiaryText,
                 shape: BoxShape.circle),
           ),

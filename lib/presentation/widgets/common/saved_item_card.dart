@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/app_colors.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 class SavedItemCard extends StatelessWidget {
   final Map<String, dynamic> item;
 
-  const SavedItemCard({required this.item});
+  const SavedItemCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +23,16 @@ class SavedItemCard extends StatelessWidget {
               children: [
                 Text(
                   item['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   '\$${item['price']}', // Dollar sign is added here, not in the data
-                  style: TextStyle(
-                    color: AppColors.primaryTextAndButton,
+                  style: const TextStyle(
+                    color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
