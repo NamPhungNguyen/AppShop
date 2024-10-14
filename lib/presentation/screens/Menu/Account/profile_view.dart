@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/widgets/profile_menu.dart';
-import 'package:front_shop/presentation/widgets/Appbar/appbar.dart';
-import 'package:front_shop/presentation/widgets/custom_shapes/containers/section_heading.dart';
-import 'package:front_shop/presentation/widgets/custom_shapes/containers/t_circular_image.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../utils/assets_path_util.dart';
 import '../../../../utils/constants/sizes.dart';
+import '../../../commom/Appbar/appbar.dart';
+import '../../../commom/custom_shapes/containers/section_heading.dart';
+import '../../../commom/custom_shapes/containers/t_circular_image.dart';
 
 class ProfileView extends StatelessWidget {
   static const String profile_user = "/profile";

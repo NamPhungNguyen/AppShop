@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
+
+import '../../commom/Button/button_primary.dart';
 
 class AllowLocationView extends StatelessWidget {
   static const String allow_location = "/allow_location";

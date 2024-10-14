@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_code_view.dart';
-import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
-import '../../widgets/Button/button_primary.dart';
+import '../../commom/Button/button_primary.dart';
+import '../../commom/Input/input_field_primary.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   static const String forgot_password = "/forgot_password";

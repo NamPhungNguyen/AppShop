@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
-import 'package:front_shop/presentation/widgets/Dialog/base_dialog_view.dart';
-import 'package:front_shop/presentation/widgets/FormLoginWith/form_login_with.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
-import '../../widgets/Button/button_primary.dart';
-import '../../widgets/Input/input_field_primary.dart';
+import '../../commom/Button/button_primary.dart';
+import '../../commom/Dialog/base_dialog_view.dart';
+import '../../commom/FormLoginWith/form_login_with.dart';
+import '../../commom/Input/input_field_primary.dart';
 
 class SignUpView extends StatefulWidget {
   static const String sign_up_view = '/sign_up_view';

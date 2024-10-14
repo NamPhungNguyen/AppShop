@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/widgets/common/notification_item.dart';
 import 'package:intl/intl.dart';
+
+import '../../commom/widgets/notification_item.dart';
 
 class NotificationView extends StatelessWidget {
   static const String notification = "notification";

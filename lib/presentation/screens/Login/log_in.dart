@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
-import 'package:front_shop/presentation/widgets/FormLoginWith/form_login_with.dart';
-import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
+
+import '../../commom/Button/button_primary.dart';
+import '../../commom/FormLoginWith/form_login_with.dart';
+import '../../commom/Input/input_field_primary.dart';
 
 class LoginView extends StatelessWidget {
   static const String log_in_view = '/log_in_view';

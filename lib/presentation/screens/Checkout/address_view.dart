@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
+import '../../commom/Button/button_primary.dart';
 import '../Notification/notification_view.dart';
 
 class AddressView extends StatefulWidget {

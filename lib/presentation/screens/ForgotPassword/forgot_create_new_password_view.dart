@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
-import 'package:front_shop/presentation/widgets/Dialog/base_dialog_view.dart';
-import 'package:front_shop/presentation/widgets/Input/input_field_primary.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
+import '../../commom/Button/button_primary.dart';
+import '../../commom/Dialog/base_dialog_view.dart';
+import '../../commom/Input/input_field_primary.dart';
 
 class ForgotCreateNewPasswordView extends StatelessWidget {
   static const String forgot_create_new_pass = "/forgot_create_new_pass";

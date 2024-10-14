@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_create_new_password_view.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
 import '../../../utils/constants/app_colors.dart';
+import '../../commom/Button/button_primary.dart';
 
 class ForgotPasswordCodeView extends StatelessWidget {
   static const String forgot_password_code = "/forgot_password_code";

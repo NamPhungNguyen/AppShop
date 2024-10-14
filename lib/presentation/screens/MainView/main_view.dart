@@ -7,7 +7,7 @@ import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_c
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
 import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
-import 'package:front_shop/presentation/screens/Menu/Account/profile.dart';
+import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import '../Login/log_in.dart';

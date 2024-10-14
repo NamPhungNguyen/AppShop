@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/account_view.dart';
-import 'package:front_shop/presentation/screens/Menu/Account/profile.dart';
+import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 
 class SplashView extends StatelessWidget {

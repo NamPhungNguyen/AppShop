@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Menu/Account/profile.dart';
+import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../utils/assets_path_util.dart';
 

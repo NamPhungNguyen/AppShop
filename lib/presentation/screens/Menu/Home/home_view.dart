@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
-import 'package:front_shop/presentation/widgets/Search/input_search_primary.dart';
-import 'package:front_shop/presentation/widgets/common/banner.dart';
-import 'package:front_shop/presentation/widgets/common/hot_deals.dart';
+import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:front_shop/utils/typography.dart';
-import '../../../widgets/common/categories_item.dart';
-import '../../../widgets/common/popular_product.dart';
+import '../../../commom/custom_shapes/containers/search_container.dart';
+import '../../../commom/widgets/banner.dart';
+import '../../../commom/widgets/hot_deals.dart';
+import '../../../commom/widgets/image_text_widgets/vertical_image_text.dart';
+import '../../../commom/widgets/popular_product.dart';
+import '../../../commom/widgets/texts/section_heading.dart';
 
 class HomeView extends StatelessWidget {
   static const String home_view = '/home_view';
@@ -15,7 +18,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchController = TextEditingController();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -58,34 +60,31 @@ class HomeView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                SearchInputPrimary(
-                  controller: searchController,
-                  hintText: "FIND YOUR FAVORITE ITEMS",
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                /// search bar
+                SizedBox(height: AppSizes.spaceBtwSections),
+                TSearchContainer(text: 'Search your product'),
+                SizedBox(height: AppSizes.spaceBtwSections),
+
+                /// categories
+                Column(
                   children: [
-                    Text(
-                      "CATEGORIES",
-                      style: TypographyClass.Regular.copyWith(
-                        color: AppColors.tertiaryText,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                    TSectionHeading(
+                        title: "Popular Categories", showActionButton: false),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    SizedBox(
+                      height: 80,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 6,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (_, index) {
+                          return TVerticalImageText(image: AssetsPathUtil.user("profile.png"), title: "Shoes", onTap: (){});
+                        },
                       ),
-                    ),
-                    Text(
-                      "VIEW ALL",
-                      style: TypographyClass.Regular.copyWith(
-                          color: AppColors.tertiaryText,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: CategoriesItemList(),
-                ),
+                const SizedBox(height: AppSizes.spaceBtwItems),
                 const BannerItem(),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -100,3 +99,4 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+

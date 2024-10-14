@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
+
+import '../Button/button_primary.dart';
 
 class BaseDialogView extends StatelessWidget {
   final String titleDialog;

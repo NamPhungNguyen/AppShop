@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
-import 'package:front_shop/presentation/widgets/Button/button_primary.dart';
-import 'package:front_shop/presentation/widgets/common/item_cart_view.dart';
+
+import '../../../commom/Button/button_primary.dart';
+import '../../../commom/widgets/item_cart_view.dart';
 
 class CartView extends StatefulWidget {
   static const String cart = "/cart";

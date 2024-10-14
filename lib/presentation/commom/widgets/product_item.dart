@@ -49,7 +49,7 @@ class ProductItem extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                 child: Image.network(
                   product.imageUrl,
-                  height: 150,
+                  height: 100,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
