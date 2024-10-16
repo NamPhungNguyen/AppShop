@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
-
-import '../../commom/Button/button_primary.dart';
-import '../../commom/FormLoginWith/form_login_with.dart';
-import '../../commom/Input/input_field_primary.dart';
+import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
+import '../../commom/widgets/Button/button_primary.dart';
+import '../../commom/widgets/FormLoginWith/form_login_with.dart';
+import '../../commom/widgets/Input/input_field_primary.dart';
 
 class LoginView extends StatelessWidget {
-  static const String log_in_view = '/log_in_view';
+  static const String routeName = '/log_in_view';
 
   const LoginView({super.key});
 
@@ -53,7 +53,7 @@ class LoginView extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, ForgotPasswordView.forgot_password);
+                  Navigator.pushNamed(context, ForgotPasswordView.routeName);
                 },
                 child: const Text(
                   "Forgot password ?",
@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
             ButtonPrimary(
               text: "Login",
               onPressed: () {
-                Navigator.pushNamed(context, BottomBar.bottom_bar);
+                Navigator.pushNamed(context, AllowLocationView.routeName);
               },
             ),
             const FormLoginWith(

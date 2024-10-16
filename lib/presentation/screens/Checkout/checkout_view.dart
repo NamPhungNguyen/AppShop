@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
-
-import '../../commom/Button/button_primary.dart';
+import '../../commom/widgets/Button/button_primary.dart';
 import '../Notification/notification_view.dart';
 
 class CheckoutView extends StatelessWidget {
-  static const String check_out_view = "/check_out";
+  static const String routeName = "/check_out";
 
   const CheckoutView({super.key});
 
@@ -30,7 +29,7 @@ class CheckoutView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NotificationView.notification);
+              Navigator.pushNamed(context, NotificationView.routeName);
             },
             icon: const Icon(
               Icons.notifications_outlined,

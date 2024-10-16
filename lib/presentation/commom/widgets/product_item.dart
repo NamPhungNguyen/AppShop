@@ -7,8 +7,8 @@ class Product {
   final String price;
   final String discount;
   bool isSaved;
-  final int rating; // Rating out of 5
-  final int totalRatings; // Total number of ratings
+  final int rating;
+  final int totalRatings;
 
   Product({
     required this.imageUrl,

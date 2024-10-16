@@ -7,7 +7,7 @@ import '../Menu/Home/home_view.dart';
 import '../Menu/Saved/saved_view.dart';
 
 class BottomBar extends StatefulWidget {
-  static const String bottom_bar = '/bottom_bar';
+  static const String routeName = '/bottom_bar';
 
   const BottomBar({super.key});
 

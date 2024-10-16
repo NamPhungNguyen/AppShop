@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../utils/assets_path_util.dart';
+import '../../../../utils/assets_path_util.dart';
 
 class UserProfileTile extends StatelessWidget {
   const UserProfileTile({
@@ -20,7 +20,7 @@ class UserProfileTile extends StatelessWidget {
               .headlineSmall!
               .apply(color: Colors.white)),
       subtitle: Text("namhien12802003@gmail.com", style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white)),
-      trailing: IconButton(onPressed: (){Navigator.pushNamed(context, ProfileView.profile_user);}, icon: const Icon(Iconsax.edit, color: Colors.white,)),
+      trailing: IconButton(onPressed: (){Navigator.pushNamed(context, ProfileView.routeName);}, icon: const Icon(Iconsax.edit, color: Colors.white,)),
     );
   }
 }

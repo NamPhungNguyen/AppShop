@@ -6,7 +6,7 @@ class AppSizes {
   static const double lg = 24.0;
   static const double lx = 32.0;
 
-  // icon sizes
+  // icons sizes
   static const double iconXs = 12.0;
   static const double iconSm = 16.0;
   static const double iconMd = 24.0;

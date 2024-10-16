@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/typography.dart';
-import '../../commom/Button/button_primary.dart';
+import '../../commom/widgets/Button/button_primary.dart';
 import '../Notification/notification_view.dart';
 
 class AddressView extends StatefulWidget {
-  static const String address = "/address";
+  static const String routeName = "/address";
 
   const AddressView({super.key});
 
@@ -60,7 +60,7 @@ class _AddressViewState extends State<AddressView> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NotificationView.notification);
+              Navigator.pushNamed(context, NotificationView.routeName);
             },
             icon: const Icon(
               Icons.notifications_outlined,

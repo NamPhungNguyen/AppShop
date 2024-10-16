@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
-
-import '../../commom/Search/input_search_primary.dart';
+import '../../commom/widgets/Search/input_search_primary.dart';
 
 class EnterYourLocationView extends StatefulWidget {
-  static const String enter_your_location = "/enter_your_location";
+  static const String routeName = "/enter_your_location";
 
   const EnterYourLocationView({super.key});
 

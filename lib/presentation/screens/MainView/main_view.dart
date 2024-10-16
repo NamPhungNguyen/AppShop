@@ -9,6 +9,7 @@ import 'package:front_shop/presentation/screens/Location/allow_location_view.dar
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
+import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import '../Login/log_in.dart';
 import '../Menu/Account/account_view.dart';
@@ -21,42 +22,44 @@ import '../SignUp/sign_up.dart';
 class MainView {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case SplashView.splash:
+      case SplashView.routeName:
         return MaterialPageRoute(builder: (_) => const SplashView());
-      case LoginView.log_in_view:
+      case LoginView.routeName:
         return MaterialPageRoute(builder: (_) => const LoginView());
-      case SignUpView.sign_up_view:
+      case SignUpView.routeName:
         return MaterialPageRoute(builder: (_) => const SignUpView());
-      case HomeView.home_view:
+      case HomeView.routeName:
         return MaterialPageRoute(builder: (_) => const HomeView());
-      case BottomBar.bottom_bar:
+      case BottomBar.routeName:
         return MaterialPageRoute(builder: (_) => const BottomBar());
-      case OnBoardingView.onboarding:
+      case OnBoardingView.routeName:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
-      case ForgotPasswordView.forgot_password:
+      case ForgotPasswordView.routeName:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
-      case ForgotPasswordCodeView.forgot_password_code:
+      case ForgotPasswordCodeView.routeName:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordCodeView());
-      case ForgotCreateNewPasswordView.forgot_create_new_pass:
+      case ForgotCreateNewPasswordView.routeName:
         return MaterialPageRoute(builder: (_) => const ForgotCreateNewPasswordView());
-      case AllowLocationView.allow_location:
+      case AllowLocationView.routeName:
         return MaterialPageRoute(builder: (_) => const AllowLocationView());
-      case EnterYourLocationView.enter_your_location:
+      case EnterYourLocationView.routeName:
         return MaterialPageRoute(builder: (_) => const EnterYourLocationView());
-      case NotificationView.notification:
+      case NotificationView.routeName:
         return MaterialPageRoute(builder: (_) => const NotificationView());
-      case CartView.cart:
+      case CartView.routeName:
         return MaterialPageRoute(builder: (_) => const CartView());
-      case SavedView.saved_view:
+      case SavedView.routeName:
         return MaterialPageRoute(builder: (_) => SavedView());
-      case AccountView.account:
+      case AccountView.routeName:
         return MaterialPageRoute(builder: (_) => const AccountView());
-      case CheckoutView.check_out_view:
+      case CheckoutView.routeName:
         return MaterialPageRoute(builder: (_) => const CheckoutView());
-      case AddressView.address:
+      case AddressView.routeName:
         return MaterialPageRoute(builder: (_) => const AddressView());
-      case ProfileView.profile_user:
+      case ProfileView.routeName:
         return MaterialPageRoute(builder: (_) => const ProfileView());
+      case ProductDetailView.routeName:
+        return MaterialPageRoute(builder: (_) => const ProductDetailView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

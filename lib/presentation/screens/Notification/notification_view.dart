@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../commom/widgets/notification_item.dart';
 
 class NotificationView extends StatelessWidget {
-  static const String notification = "notification";
+  static const String routeName = "/notification";
 
   const NotificationView({super.key});
 
@@ -29,31 +29,31 @@ class NotificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> notifications = [
       {
-        'icon': Icons.local_offer_outlined,
+        'icons': Icons.local_offer_outlined,
         'title': '30% Special Discount!',
         'message': 'Special promotion only valid today.',
         'date': DateTime.now(), // Today
       },
       {
-        'icon': Icons.account_balance_wallet_outlined,
+        'icons': Icons.account_balance_wallet_outlined,
         'title': 'Top Up E-wallet Successfully!',
         'message': 'You have top up your e-wallet.',
         'date': DateTime.now().subtract(const Duration(days: 1)), // Yesterday
       },
       {
-        'icon': Icons.location_on_outlined,
+        'icons': Icons.location_on_outlined,
         'title': 'New Service Available!',
         'message': 'Now you can track order in real-time.',
         'date': DateTime.now().subtract(const Duration(days: 1)), // Yesterday
       },
       {
-        'icon': Icons.credit_card_outlined,
+        'icons': Icons.credit_card_outlined,
         'title': 'Credit Card Connected!',
         'message': 'Credit card has been linked.',
         'date': DateTime(2024, 6, 15), // Specific date
       },
       {
-        'icon': Icons.account_circle_outlined,
+        'icons': Icons.account_circle_outlined,
         'title': 'Account Setup Successfully!',
         'message': 'Your account has been created.',
         'date': DateTime(2024, 6, 15), // Specific date
@@ -117,7 +117,7 @@ class NotificationView extends StatelessWidget {
                   return Column(
                     children: [
                       NotificationItem(
-                        icon: notification['icon'],
+                        icon: notification['icons'],
                         titleNotify: notification['title'],
                         subTitleNotify: notification['message'],
                         date: '',

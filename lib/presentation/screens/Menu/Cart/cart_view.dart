@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
-
-import '../../../commom/Button/button_primary.dart';
+import '../../../commom/widgets/Button/button_primary.dart';
 import '../../../commom/widgets/item_cart_view.dart';
 
 class CartView extends StatefulWidget {
-  static const String cart = "/cart";
+  static const String routeName = "/cart";
 
   const CartView({super.key});
 
@@ -148,7 +147,7 @@ class _CartViewState extends State<CartView> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NotificationView.notification);
+              Navigator.pushNamed(context, NotificationView.routeName);
             },
             icon: const Icon(
               Icons.notifications_outlined,

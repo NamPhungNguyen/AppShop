@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../utils/constants/app_colors.dart';
-import '../../../utils/typography.dart';
+
+import '../../../../utils/constants/app_colors.dart';
+import '../../../../utils/typography.dart';
 
 class SearchInputPrimary extends StatelessWidget {
   final TextEditingController controller;

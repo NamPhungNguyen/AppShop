@@ -1,9 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
-import '../../../utils/constants/app_colors.dart';
-import '../../../utils/assets_path_util.dart';
-import '../../screens/SignUp/sign_up.dart';
+
+import '../../../../utils/assets_path_util.dart';
+import '../../../../utils/constants/app_colors.dart';
+import '../../../screens/SignUp/sign_up.dart';
 
 class FormLoginWith extends StatelessWidget {
   final String titleSuggest;
@@ -67,7 +68,7 @@ class FormLoginWith extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Navigator.pushNamed(context, checkTitleNext ? SignUpView.sign_up_view : LoginView.log_in_view);
+                      Navigator.pushNamed(context, checkTitleNext ? SignUpView.routeName : LoginView.routeName);
                     },
                 ),
               ],

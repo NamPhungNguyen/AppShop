@@ -4,15 +4,15 @@ import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:front_shop/utils/typography.dart';
-import '../../../commom/custom_shapes/containers/search_container.dart';
 import '../../../commom/widgets/banner.dart';
-import '../../../commom/widgets/hot_deals.dart';
+import '../../../commom/widgets/custom_shapes/containers/search_container.dart';
 import '../../../commom/widgets/image_text_widgets/vertical_image_text.dart';
-import '../../../commom/widgets/popular_product.dart';
+import '../../../commom/widgets/layouts/grid_layout.dart';
+import '../../../commom/widgets/products/product_card_vertical.dart';
 import '../../../commom/widgets/texts/section_heading.dart';
 
 class HomeView extends StatelessWidget {
-  static const String home_view = '/home_view';
+  static const String routeName = '/home_view';
 
   const HomeView({super.key});
 
@@ -49,7 +49,7 @@ class HomeView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, NotificationView.notification);
+                Navigator.pushNamed(context, NotificationView.routeName);
               },
               icon: const Icon(Icons.notifications_outlined, size: 28),
             ),
@@ -62,7 +62,10 @@ class HomeView extends StatelessWidget {
               children: [
                 /// search bar
                 SizedBox(height: AppSizes.spaceBtwSections),
-                TSearchContainer(text: 'Search your product'),
+                TSearchContainer(
+                  text: 'Search your product',
+                  onTap: () {},
+                ),
                 SizedBox(height: AppSizes.spaceBtwSections),
 
                 /// categories
@@ -78,19 +81,28 @@ class HomeView extends StatelessWidget {
                         itemCount: 6,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (_, index) {
-                          return TVerticalImageText(image: AssetsPathUtil.user("profile.png"), title: "Shoes", onTap: (){});
+                          return TVerticalImageText(
+                              image: AssetsPathUtil.categories("jacket.png"),
+                              title: "Jacket",
+                              onTap: () {});
                         },
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
+
+                /// banner
                 const BannerItem(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: HotDeals(),
-                ),
-                const PopularProductItem()
+
+                /// popular product
+                const SizedBox(height: AppSizes.spaceBtwSections),
+                TGridLayout(itemCount: 7, itemBuilder: (_, index) => const ProductCardVertical())
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 16),
+                //   child: HotDeals(),
+                // ),
+                // const PopularProductItem()
               ],
             ),
           ),
@@ -99,4 +111,3 @@ class HomeView extends StatelessWidget {
     );
   }
 }
-

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
-import '../../commom/Button/button_primary.dart';
-import '../../commom/Dialog/base_dialog_view.dart';
-import '../../commom/FormLoginWith/form_login_with.dart';
-import '../../commom/Input/input_field_primary.dart';
+
+import '../../commom/widgets/Button/button_primary.dart';
+import '../../commom/widgets/Dialog/base_dialog_view.dart';
+import '../../commom/widgets/FormLoginWith/form_login_with.dart';
+import '../../commom/widgets/Input/input_field_primary.dart';
 
 class SignUpView extends StatefulWidget {
-  static const String sign_up_view = '/sign_up_view';
+  static const String routeName = '/sign_up_view';
 
   const SignUpView({super.key});
 
@@ -102,7 +103,7 @@ class _SignUpViewState extends State<SignUpView> {
                           titleDialog: "Signup Successful!",
                           imageDialog: AssetsPathUtil.dialog("checkmark.png"),
                           onPressed: () {
-                            Navigator.pushNamed(context, LoginView.log_in_view);
+                            Navigator.pushNamed(context, LoginView.routeName);
                           },
                         ).showBaseDialog(context);
                       }

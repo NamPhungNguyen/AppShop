@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../commom/Appbar/appbar.dart';
-import '../../../commom/custom_shapes/containers/primary_header_container.dart';
-import '../../../commom/custom_shapes/containers/section_heading.dart';
-import '../../../commom/list_tiles/settings_menu_tile.dart';
-import '../../../commom/list_tiles/user_profile_tile.dart';
+
+import '../../../commom/widgets/Appbar/appbar.dart';
+import '../../../commom/widgets/custom_shapes/containers/primary_header_container.dart';
+import '../../../commom/widgets/custom_shapes/containers/section_heading.dart';
+import '../../../commom/widgets/list_tiles/settings_menu_tile.dart';
+import '../../../commom/widgets/list_tiles/user_profile_tile.dart';
 
 class AccountView extends StatelessWidget {
-  static const String account = "/account";
+  static const String routeName = "/account";
 
   const AccountView({super.key});
 

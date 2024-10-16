@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_code_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
-import '../../commom/Button/button_primary.dart';
-import '../../commom/Input/input_field_primary.dart';
+
+import '../../commom/widgets/Button/button_primary.dart';
+import '../../commom/widgets/Input/input_field_primary.dart';
 
 class ForgotPasswordView extends StatelessWidget {
-  static const String forgot_password = "/forgot_password";
+  static const String routeName = "/forgot_password";
 
   const ForgotPasswordView({super.key});
   @override
@@ -55,7 +56,7 @@ class ForgotPasswordView extends StatelessWidget {
             ButtonPrimary(
               text: "Submit",
               onPressed: (){
-                Navigator.pushNamed(context, ForgotPasswordCodeView.forgot_password_code);
+                Navigator.pushNamed(context, ForgotPasswordCodeView.routeName);
               },
             ),
           ],

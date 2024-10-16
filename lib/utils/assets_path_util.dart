@@ -20,4 +20,8 @@ class AssetsPathUtil {
   static String user(String name){
     return "$basePath/user/$name";
   }
+
+  static String categories(String name){
+    return "$basePath/categories/$name";
+  }
 }

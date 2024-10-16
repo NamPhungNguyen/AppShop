@@ -5,7 +5,7 @@ import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingView extends StatefulWidget {
-  static const onboarding = "/onboarding";
+  static const routeName = "/onboarding";
 
   const OnBoardingView({super.key});
 
@@ -104,7 +104,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             // Next button
             TextButton(
               onPressed: () => lastPage
-                  ? Navigator.pushNamed(context, LoginView.log_in_view)
+                  ? Navigator.pushNamed(context, LoginView.routeName)
                   : pageController.nextPage(
                       duration: const Duration(milliseconds: 400),
                       curve: Curves.easeIn,

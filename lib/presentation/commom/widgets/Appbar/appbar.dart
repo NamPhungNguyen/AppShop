@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/device/device_utility.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../utils/constants/sizes.dart';
+import '../../../../utils/constants/sizes.dart';
 
 class TAppbar extends StatelessWidget implements PreferredSizeWidget {
   const TAppbar({

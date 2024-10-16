@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_create_new_password_view.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../utils/constants/app_colors.dart';
-import '../../commom/Button/button_primary.dart';
+import '../../commom/widgets/Button/button_primary.dart';
 
 class ForgotPasswordCodeView extends StatelessWidget {
-  static const String forgot_password_code = "/forgot_password_code";
+  static const String routeName = "/forgot_password_code";
 
   const ForgotPasswordCodeView({super.key});
   @override
@@ -86,7 +86,7 @@ class ForgotPasswordCodeView extends StatelessWidget {
               child: ButtonPrimary(
                 text: "Continue",
                 onPressed: () {
-                  Navigator.pushNamed(context, ForgotCreateNewPasswordView.forgot_create_new_pass);
+                  Navigator.pushNamed(context, ForgotCreateNewPasswordView.routeName);
                 },
               ),
             ),

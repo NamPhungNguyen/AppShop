@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
+import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
-
-import '../../commom/Button/button_primary.dart';
+import '../../commom/widgets/Button/button_primary.dart';
 
 class AllowLocationView extends StatelessWidget {
-  static const String allow_location = "/allow_location";
+  static const String routeName = "/allow_location";
 
   const AllowLocationView({super.key});
 
@@ -49,14 +50,16 @@ class AllowLocationView extends StatelessWidget {
             ),
             ButtonPrimary(
               text: "Allow Location Access",
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, BottomBar.routeName);
+              },
             ),
             const SizedBox(
               height: 32,
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, EnterYourLocationView.enter_your_location);
+                Navigator.pushNamed(context, EnterYourLocationView.routeName);
               },
               child: const Text(
                 "Enter Location Manually",

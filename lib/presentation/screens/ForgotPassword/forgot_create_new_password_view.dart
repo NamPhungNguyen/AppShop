@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
-import '../../commom/Button/button_primary.dart';
-import '../../commom/Dialog/base_dialog_view.dart';
-import '../../commom/Input/input_field_primary.dart';
+
+import '../../commom/widgets/Button/button_primary.dart';
+import '../../commom/widgets/Dialog/base_dialog_view.dart';
+import '../../commom/widgets/Input/input_field_primary.dart';
 
 class ForgotCreateNewPasswordView extends StatelessWidget {
-  static const String forgot_create_new_pass = "/forgot_create_new_pass";
+  static const String routeName = "/forgot_create_new_pass";
 
   const ForgotCreateNewPasswordView({super.key});
 
@@ -55,7 +56,7 @@ class ForgotCreateNewPasswordView extends StatelessWidget {
                   titleDialog: 'Password updated successfully!',
                   imageDialog: AssetsPathUtil.dialog("checkmark.png"),
                   onPressed: () {
-                    Navigator.pushNamed(context, LoginView.log_in_view);
+                    Navigator.pushNamed(context, LoginView.routeName);
                   },
                 ).showBaseDialog(context);
               },
