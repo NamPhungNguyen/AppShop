@@ -1,9 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Login/log_in.dart';
-
 import '../../../../utils/assets_path_util.dart';
 import '../../../../utils/constants/app_colors.dart';
+import '../../../screens/Login/log_in_view.dart';
 import '../../../screens/SignUp/sign_up.dart';
 
 class FormLoginWith extends StatelessWidget {

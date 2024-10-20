@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Login/log_in.dart';
+import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:front_shop/presentation/screens/Onboarding/Onboarding_item.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

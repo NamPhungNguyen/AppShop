@@ -67,14 +67,18 @@ class TProductAttributes extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TSectionHeading(title: 'Colors', showActionButton: true),
+            TSectionHeading(
+                title: 'Colors', ),
             SizedBox(height: AppSizes.spaceBtwItems / 2),
             Wrap(
               spacing: 8,
               children: [
-                TChoiceChip(text: 'Green', selected: false, onSelected: (value){}),
-                TChoiceChip(text: 'Blue', selected: true, onSelected: (value){}),
-                TChoiceChip(text: 'Yellow', selected: false, onSelected: (value){}),
+                TChoiceChip(
+                    text: 'Green', selected: false, onSelected: (value) {}),
+                TChoiceChip(
+                    text: 'Blue', selected: true, onSelected: (value) {}),
+                TChoiceChip(
+                    text: 'Yellow', selected: false, onSelected: (value) {}),
               ],
             )
           ],
@@ -83,14 +87,18 @@ class TProductAttributes extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TSectionHeading(title: 'Size', showActionButton: true,),
+            TSectionHeading(
+              title: 'Size',
+
+            ),
             SizedBox(height: AppSizes.spaceBtwItems / 2),
             Wrap(
               spacing: 8,
               children: [
-                TChoiceChip(text: 'XL', selected: false, onSelected: (value){}),
-                TChoiceChip(text: 'L', selected: true, onSelected: (value){} ),
-                TChoiceChip(text: 'M', selected: false, onSelected: (value){}),
+                TChoiceChip(
+                    text: 'XL', selected: false, onSelected: (value) {}),
+                TChoiceChip(text: 'L', selected: true, onSelected: (value) {}),
+                TChoiceChip(text: 'M', selected: false, onSelected: (value) {}),
               ],
             )
           ],
@@ -99,4 +107,3 @@ class TProductAttributes extends StatelessWidget {
     );
   }
 }
-

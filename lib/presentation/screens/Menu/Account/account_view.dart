@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/presentation/screens/Address/address_view.dart';
+import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
@@ -47,9 +49,11 @@ class AccountView extends StatelessWidget {
                   const SectionHeading(title: 'Account Settings', showActionButton: false),
                   const SizedBox(height: AppSizes.spaceBtwItems),
 
-                  SettingsMenuTile(icon: Iconsax.safe_home, title: "My address", subTitle: 'Set shopping delivery address', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.safe_home, title: "My address", subTitle: 'Set shopping delivery address', opTap: (){
+                    Navigator.pushNamed(context, AddressView.routeName);
+                  }),
                   SettingsMenuTile(icon: Iconsax.shopping_cart, title: "My cart", subTitle: 'Add, remove products and move to checkout', opTap: (){}),
-                  SettingsMenuTile(icon: Iconsax.bag_tick, title: "My orders", subTitle: 'In process and Completed Orders', opTap: (){}),
+                  SettingsMenuTile(icon: Iconsax.bag_tick, title: "My orders", subTitle: 'In process and Completed Orders', opTap: (){Navigator.pushNamed(context, OrderView.routeName);}),
                   SettingsMenuTile(icon: Iconsax.notification, title: "Notifications", subTitle: 'Set any kind of notification message', opTap: (){}),
                   SettingsMenuTile(icon: Iconsax.security_card, title: "Account Privacy", subTitle: 'Manage data usage and connected accounts', opTap: (){}),
 

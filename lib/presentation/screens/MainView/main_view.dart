@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/presentation/screens/Address/add_new_address.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
-import 'package:front_shop/presentation/screens/Checkout/address_view.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_create_new_password_view.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_code_view.dart';
@@ -9,9 +9,12 @@ import 'package:front_shop/presentation/screens/Location/allow_location_view.dar
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
+import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
+import 'package:front_shop/presentation/screens/ProductReviews/product_reviews.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
-import '../Login/log_in.dart';
+import '../Address/address_view.dart';
+import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
 import '../Menu/Cart/cart_view.dart';
 import '../Menu/Home/home_view.dart';
@@ -54,12 +57,20 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const AccountView());
       case CheckoutView.routeName:
         return MaterialPageRoute(builder: (_) => const CheckoutView());
-      case AddressView.routeName:
-        return MaterialPageRoute(builder: (_) => const AddressView());
       case ProfileView.routeName:
         return MaterialPageRoute(builder: (_) => const ProfileView());
       case ProductDetailView.routeName:
         return MaterialPageRoute(builder: (_) => const ProductDetailView());
+      case ProductReviewsView.routeName:
+        return MaterialPageRoute(builder: (_) => const ProductReviewsView());
+      case AddressView.routeName:
+        return MaterialPageRoute(builder: (_) => const AddressView());
+      case AddNewAddress.routeName:
+        return MaterialPageRoute(builder: (_) => const AddNewAddress());
+      case CheckoutView.routeName:
+        return MaterialPageRoute(builder: (_) => const CheckoutView());
+      case OrderView.routeName:
+        return MaterialPageRoute(builder: (_) => const OrderView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

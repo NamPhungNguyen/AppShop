@@ -24,4 +24,8 @@ class AssetsPathUtil {
   static String categories(String name){
     return "$basePath/categories/$name";
   }
+
+  static String payments(String name){
+    return "$basePath/payments/$name";
+  }
 }

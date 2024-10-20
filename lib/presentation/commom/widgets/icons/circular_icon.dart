@@ -26,7 +26,7 @@ class TCircularIcon extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color: backgroundColor != null ? backgroundColor! :Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(100),
       ),
       child: IconButton(

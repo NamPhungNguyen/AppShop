@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
-import 'package:front_shop/presentation/screens/Login/log_in.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
