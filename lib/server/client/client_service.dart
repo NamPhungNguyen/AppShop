@@ -1,21 +1,36 @@
-import 'dart:io';
-
+import 'dart:developer' as developer;
+import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api.dart';
-import 'package:front_shop/server/data/models/login/request/login_request.dart';
-import 'package:front_shop/server/data/models/login/response/login_response.dart';
+import 'package:front_shop/server/data/entities/login_entity.dart';
 
 class ClientService {
-  final ClientApi clientApi;
+  factory ClientService() => _instance;
 
-  ClientService(this.clientApi);
+  ClientService._internal();
 
-  Future<LoginResponse?> login(LoginRequest loginRequest) async {
+  static final ClientService _instance = ClientService._internal();
+
+  _apiErrorHandlingIfNeeded(Response res) {
+    developer.log(
+      "API: (${res.statusCode}) [${res.requestOptions.method}] ${res.requestOptions.uri}",
+      name: 'APPLOG',
+    );
+    if (res.statusCode != 200) {
+      throw Exception('API error: ${res.data}');
+    }
+  }
+
+  Future<LoginEntity> login(String username, String password) async {
+    Map<String, dynamic> body = {
+      'username': username,
+      'password': password,
+    };
     try {
-      final response = await clientApi.login(loginRequest);
-      return response;
-    }catch(e) {
-      print('Error occurred: $e');
-      return null;
+      final res = await clientApi.login(body);
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      throw Exception('Login failed: ${e.response?.data ?? "Unknown error occurred"}');
     }
   }
 }

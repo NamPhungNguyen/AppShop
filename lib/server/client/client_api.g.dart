@@ -12,29 +12,30 @@ class _ClientApi implements ClientApi {
   _ClientApi(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'http://localhost:8080/shopping/';
-  }
+    this.errorLogger,
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
+  final ParseErrorLogger? errorLogger;
 
   @override
-  Future<LoginResponse> login(LoginRequest loginRequest) async {
+  Future<HttpResponse<LoginEntity>> login(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = loginRequest;
-    final _options = _setStreamType<LoginResponse>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<HttpResponse<LoginEntity>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'auth/login-in',
+          '/auth/log-in',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,13 +45,15 @@ class _ClientApi implements ClientApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late LoginResponse _value;
+    late LoginEntity _value;
     try {
-      _value = LoginResponse.fromJson(_result.data!);
-    } on Object catch (e) {
+      _value = LoginEntity.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/domain/models/login.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
+import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:front_shop/presentation/screens/Menu/Cart/cart_view.dart';
+import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 
@@ -12,7 +15,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamed(context, OrderView.routeName);
+      Navigator.pushNamed(context, OnBoardingView.routeName);
     });
     return const Scaffold(
       backgroundColor: AppColors.primaryColor,

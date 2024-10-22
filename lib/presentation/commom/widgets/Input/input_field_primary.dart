@@ -32,6 +32,7 @@ class _InputFieldPrimaryState extends State<InputFieldPrimary> {
       decoration: InputDecoration(
         prefixIcon: widget.icon,
         hintText: widget.labelText,
+        hintStyle: Theme.of(context).textTheme.titleSmall,
         border: const OutlineInputBorder(),
         fillColor: const Color(0xFFF3F3F3),
         filled: true,

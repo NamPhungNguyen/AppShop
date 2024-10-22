@@ -8,7 +8,8 @@ import '../../../screens/SignUp/sign_up.dart';
 class FormLoginWith extends StatelessWidget {
   final String titleSuggest;
   final String titleNext;
-  final bool checkTitleNext;  // if true navigator -> Sign Up, false navigator -> Login
+  final bool
+      checkTitleNext; // if true navigator -> Sign Up, false navigator -> Login
 
   const FormLoginWith({
     super.key,
@@ -25,12 +26,12 @@ class FormLoginWith extends StatelessWidget {
           padding: const EdgeInsets.only(top: 75),
           child: Column(
             children: [
-              const Text(
+              Text(
                 "- OR Continue with -",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF575757),
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(fontSize: 16, color: const Color(0xFF575757)),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -57,17 +58,21 @@ class FormLoginWith extends StatelessWidget {
               children: [
                 TextSpan(
                   text: titleNext,
-                  style: const TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 16,
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.primaryColor,
-                    decorationThickness: 2,
-                    decorationStyle: TextDecorationStyle.solid,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: AppColors.primaryColor,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.primaryColor,
+                        decorationThickness: 2,
+                        decorationStyle: TextDecorationStyle.solid,
+                      ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Navigator.pushNamed(context, checkTitleNext ? SignUpView.routeName : LoginView.routeName);
+                      Navigator.pushNamed(
+                          context,
+                          checkTitleNext
+                              ? SignUpView.routeName
+                              : LoginView.routeName);
                     },
                 ),
               ],
