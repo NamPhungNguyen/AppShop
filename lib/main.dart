@@ -1,10 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/models/signup.dart';
+import 'package:front_shop/domain/states/signup_state.dart';
+import 'package:front_shop/domain/states/token_state.dart';
 import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
 
+import 'domain/models/login.dart';
+import 'domain/states/login_state.dart';
+
+// TokenState provider
+final tokenStateProvider = StateNotifierProvider<TokenState, AsyncValue<String?>>(
+  (ref) => TokenState(),
+);
+
+final signUpStateProvider = StateNotifierProvider<SignUpState, AsyncValue<SignUp>>(
+  (ref) => SignUpState(ref),
+);
+
+final loginStateProvider = StateNotifierProvider<LoginState, AsyncValue<Login>>(
+      (ref) => LoginState(
+    AsyncValue.data(
+      Login(
+        code: 0,
+        message: '',
+        result: const LoginResult(token: '', authenticated: false),
+      ),
+    ),
+    ref,
+  ),
+);
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -22,6 +51,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-

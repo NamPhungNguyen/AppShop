@@ -13,7 +13,7 @@ class InputFieldPrimary extends StatefulWidget {
     this.isPassword = false,
     required this.controller,
     required this.icon,
-    this.textInputAction = TextInputAction.next
+    this.textInputAction = TextInputAction.next,
   });
 
   @override
@@ -37,31 +37,19 @@ class _InputFieldPrimaryState extends State<InputFieldPrimary> {
         fillColor: const Color(0xFFF3F3F3),
         filled: true,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-            width: 1.5
-          )
-        ),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Colors.grey, width: 1.5)),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-            width: 2
-          )
-        ),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Colors.grey, width: 2)),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Colors.red, width: 1.5)),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: Colors.red,
-            width: 1.5
-          )
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10), // Rounded corners
-          borderSide: const BorderSide(
-            color: Colors.red, // Set border color when focused and there is an error
-            width: 2, // Set border thickness
+            width: 2,
           ),
         ),
         suffixIcon: widget.isPassword

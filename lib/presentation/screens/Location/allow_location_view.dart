@@ -4,11 +4,39 @@ import 'package:front_shop/presentation/screens/Location/enter_your_location_vie
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AllowLocationView extends StatelessWidget {
   static const String routeName = "/allow_location";
 
   const AllowLocationView({super.key});
+
+  Future<void> _requestLocationPermission(BuildContext context) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Location permissions are denied forever.'),
+        ),
+      );
+    } else if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      // If granted, navigate to BottomBar
+      Navigator.pushNamed(context, BottomBar.routeName);
+    } else {
+      // If still not granted, show a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Location permissions are not granted.'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,43 +55,30 @@ class AllowLocationView extends StatelessWidget {
               width: 38,
               fit: BoxFit.contain,
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             const Text(
               "What is Your Location?",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             const Text(
               "We need to know your location in order to suggest nearby services.",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-              ),
+              style: TextStyle(fontSize: 16),
             ),
-            const SizedBox(
-              height: 48,
-            ),
+            const SizedBox(height: 48),
             ButtonPrimary(
               text: "Allow Location Access",
-              onPressed: () {
-                Navigator.pushNamed(context, BottomBar.routeName);
-              },
+              onPressed: () => _requestLocationPermission(context),
             ),
-            const SizedBox(
-              height: 32,
-            ),
+            const SizedBox(height: 32),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, EnterYourLocationView.routeName);
               },
               child: const Text(
                 "Enter Location Manually",
-                style: TextStyle(
-                    fontSize: 16, color: AppColors.primaryColor),
+                style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
               ),
             ),
           ],

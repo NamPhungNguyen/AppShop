@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
 import 'package:front_shop/domain/models/login.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../domain/states/login_state.dart';
+import '../../../main.dart';
 import '../../../utils/preference_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
 import '../../commom/widgets/FormLoginWith/form_login_with.dart';
 import '../../commom/widgets/Input/input_field_primary.dart';
-
-// LoginState provider
-final loginStateProvider = StateNotifierProvider<LoginState, AsyncValue<Login>>(
-  (ref) => LoginState(
-    AsyncValue.data(Login(
-        code: 0,
-        message: '',
-        result: const LoginResult(token: '', authenticated: false))),
-    ref,
-  ),
-);
 
 class LoginView extends ConsumerWidget {
   static const String routeName = '/log_in_view';
@@ -35,6 +25,41 @@ class LoginView extends ConsumerWidget {
 
     final loginState = ref.watch(loginStateProvider);
 
+
+    ref.listen<AsyncValue<Login>>(loginStateProvider, (previous, next) {
+      next.when(
+        data: (updatedLogin) {
+          if (updatedLogin.result.authenticated) {
+            PreferenceUtil.setAuthToken(updatedLogin.result.token);
+            Navigator.pushNamed(context, AllowLocationView.routeName);
+            Fluttertoast.showToast(
+              msg: 'Login successful!',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM
+            );
+          } else {
+            Fluttertoast.showToast(
+              msg: 'Invalid username or password.',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+            );
+          }
+        },
+        loading: () => const SizedBox.shrink(),
+        error: (error, st) {
+          Fluttertoast.showToast(
+            msg: 'Incorrect username or password. Please try again.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        },
+      );
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -43,10 +68,7 @@ class LoginView extends ConsumerWidget {
           children: [
             Text(
               "Welcome\nBack!",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 32),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32),
             ),
             const SizedBox(height: AppSizes.spaceBtwSections),
             InputFieldPrimary(
@@ -72,72 +94,46 @@ class LoginView extends ConsumerWidget {
                 child: Text(
                   "Forgot password?",
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 16,
-                        color: AppColors.primaryColor,
-                      ),
+                    fontSize: 16,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwSections),
-            loginState.when(
-              data: (login) {
-                return ButtonPrimary(
-                  text: "Login",
-                  onPressed: () async {
-                    if (login.result.authenticated) {
-                      Navigator.pushNamed(context, AllowLocationView.routeName);
-                      return;
-                    }
-
-                    await ref.read(loginStateProvider.notifier).login(
-                          emailController.text,
-                          passwordController.text,
+            Column(
+              children: [
+                if (loginState is AsyncLoading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ButtonPrimary(
+                    text: "Login",
+                    onPressed: () {
+                      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                          msg: 'Please enter your email and password.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
                         );
+                        return;
+                      }
+                      // Debugging login attempt
+                      ref.read(loginStateProvider.notifier).login(
+                        emailController.text,
+                        passwordController.text,
+                      ).then((_) {
+                        // Additional debug log
+                        print('Login attempt completed');
+                      }).catchError((error) {
+                        // Log any errors caught
+                        print('Login failed: $error');
+                      });
+                    },
 
-                    if (emailController.text.isEmpty ||
-                        passwordController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Please enter your email and password.')),
-                      );
-                      return;
-                    }
-
-                    ref.read(loginStateProvider.notifier).state = AsyncValue.loading();
-
-                    await ref.read(loginStateProvider.notifier).login(
-                          emailController.text,
-                          passwordController.text,
-                        );
-
-                    final updatedLoginState = ref.read(loginStateProvider);
-
-                    updatedLoginState.when(
-                      data: (updatedLogin) {
-                        if (updatedLogin.result.authenticated) {
-                          // save the token after successful login
-                          PreferenceUtil.setAuthToken(updatedLogin.result.token);
-                          Navigator.pushNamed(context, AllowLocationView.routeName);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login successful!')),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login failed. Please try again.')),
-                          );
-                        }
-                      },
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (e, st) => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: $e')),
-                      ),
-                    );
-                  },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, st) => Center(child: Text('Error: $e')),
+                  ),
+              ],
             ),
             const FormLoginWith(
               titleSuggest: "You don't have an account? ",

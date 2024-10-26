@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
-import 'package:front_shop/presentation/screens/Onboarding/Onboarding_item.dart';
+import 'package:front_shop/presentation/screens/Onboarding/onboarding_item.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:front_shop/utils/constants/sizes.dart';
+import 'package:front_shop/utils/preference_util.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -15,8 +17,7 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   final controller = OnboardingItems();
-  final pageController =
-      PageController(initialPage: 0); // Ensure initialPage is set
+  final pageController = PageController(initialPage: 0);
   int currentPage = 0;
   bool lastPage = false;
 
@@ -25,11 +26,15 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     super.initState();
     pageController.addListener(() {
       setState(() {
-        currentPage =
-            pageController.page!.round(); // Track the current page index
+        currentPage = pageController.page!.round();
         lastPage = currentPage == (controller.items.length - 1);
       });
     });
+  }
+
+  Future<void> completeOnboarding() async {
+    await PreferenceUtil.setIsFirstTime(false);
+    Navigator.pushNamed(context, LoginView.routeName);
   }
 
   @override
@@ -41,14 +46,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         automaticallyImplyLeading: false,
         leading: Container(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          child: Text(
-            "${currentPage + 1}/3",
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: Text("${currentPage + 1}/3",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall!
+                  .copyWith(fontSize: 18)),
         ),
         actions: [
           Padding(
@@ -80,9 +82,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.easeIn,
               ),
-              child: const Text(
+              child: Text(
                 "Prev",
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 18),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: 18,
+                      color: AppColors.textSecondary,
+                    ),
               ),
             ),
             SmoothPageIndicator(
@@ -104,15 +109,17 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             // Next button
             TextButton(
               onPressed: () => lastPage
-                  ? Navigator.pushNamed(context, LoginView.routeName)
+                  ? completeOnboarding()
                   : pageController.nextPage(
                       duration: const Duration(milliseconds: 400),
                       curve: Curves.easeIn,
                     ),
               child: Text(
                 lastPage ? "Get started" : "Next",
-                style: const TextStyle(
-                    color: AppColors.primaryColor, fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontSize: 18, color: AppColors.primaryColor),
               ),
             ),
           ],
@@ -130,23 +137,19 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 Image.asset(controller.items[index].image),
                 Text(
                   controller.items[index].title,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        fontSize: AppSizes.lg,
+                      ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: AppSizes.spaceBtwItems),
                 Text(
                   controller.items[index].description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.tertiaryText,
+                      ),
                 ),
               ],
             );

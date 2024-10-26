@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api_endpoint.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
+import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'client_api.g.dart';
@@ -11,6 +12,11 @@ abstract class ClientApi {
 
   @POST('/auth/log-in')
   Future<HttpResponse<LoginEntity>> login(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/auth/sign-up')
+  Future<HttpResponse<SignUpEntity>> signUp(
     @Body() Map<String, dynamic> body,
   );
 }

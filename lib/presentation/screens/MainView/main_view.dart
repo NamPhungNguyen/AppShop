@@ -20,7 +20,7 @@ import '../Menu/Cart/cart_view.dart';
 import '../Menu/Home/home_view.dart';
 import '../Menu/Saved/saved_view.dart';
 import '../Notification/notification_view.dart';
-import '../SignUp/sign_up.dart';
+import '../SignUp/sign_up_view.dart';
 
 class MainView {
   static Route<dynamic> generateRoute(RouteSettings settings) {
