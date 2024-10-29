@@ -1,9 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/usecases/location_usecase.dart';
+import 'package:front_shop/domain/usecases/location_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/login_usecase.dart';
 import 'package:front_shop/domain/usecases/login_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/signup_usecase.dart';
 import 'package:front_shop/domain/usecases/signup_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/user_usecase.dart';
+import 'package:front_shop/domain/usecases/user_usecase_impl.dart';
+import 'package:front_shop/server/data/providers/location_repository_provider.dart';
 import 'package:front_shop/server/data/providers/login_repository_provider.dart';
+import 'package:front_shop/server/data/providers/user_repository_provider.dart';
 
 import '../server/data/providers/signup_repository_provider.dart';
 
@@ -12,6 +18,13 @@ final loginUsecaseProvider = Provider<LoginUsecase>(
 );
 
 final signupUsecaseProvider = Provider<SignUpUsecase>(
-    (ref) => SignUpUsecaseImpl(ref.watch(signupRepositoryProvider))
+  (ref) => SignUpUsecaseImpl(ref.watch(signupRepositoryProvider)),
 );
 
+final locationUsecaseProvider = Provider<LocationUsecase>(
+  (ref) => LocationUsecaseImpl(ref.watch(locationRepositoryProvider)),
+);
+
+final userUsecaseProvider = Provider<UserUsecase>(
+  (ref) => UserUsecaseImpl(ref.watch(userRepositoryProvider)),
+);

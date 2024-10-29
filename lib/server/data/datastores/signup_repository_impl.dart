@@ -7,8 +7,11 @@ class SignUpRepositoryImpl implements SignUpRepository {
   final ClientService _clientService;
 
   const SignUpRepositoryImpl(this._clientService);
+
   @override
-  Future<SignUpEntity> signUp(String username, String password, String email, String firstName, String lastName, String phoneNumber) async {
-    return await _clientService.signUp(username, password, email, firstName, lastName, phoneNumber);
+  Future<SignUpEntity> signUp(String username, String password, String email,
+      String fullName, String phoneNumber) async {
+    return await _clientService.signUp(
+        username, password, email, fullName, phoneNumber);
   }
 }

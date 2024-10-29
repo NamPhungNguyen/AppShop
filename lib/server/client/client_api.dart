@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api_endpoint.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
+import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -17,6 +18,41 @@ abstract class ClientApi {
 
   @POST('/auth/sign-up')
   Future<HttpResponse<SignUpEntity>> signUp(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/users/location-preference')
+  Future<HttpResponse<void>> updateLocation(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/users/my-infor')
+  Future<HttpResponse<MyInfoEntity>> getMyInfo(
+    @Header("Authorization") authorization,
+  );
+
+  @PUT('/users/update-profile-name-user')
+  Future<HttpResponse<MyInfoEntity>> updateProfileName(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/users/update-profile-phone-user')
+  Future<HttpResponse<MyInfoEntity>> updateProfilePhone(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/users/update-profile-img-user')
+  Future<HttpResponse<MyInfoEntity>> updateProfileImg(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/users/update-profile-email-user')
+  Future<HttpResponse<MyInfoEntity>> updateProfileEmail(
+    @Header("Authorization") authorization,
     @Body() Map<String, dynamic> body,
   );
 }

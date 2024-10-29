@@ -1,8 +1,11 @@
 import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
+import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
+import 'package:front_shop/utils/header_token.dart';
 
 class ClientService {
   factory ClientService() => _instance;
@@ -37,13 +40,12 @@ class ClientService {
   }
 
   Future<SignUpEntity> signUp(String username, String password, String email,
-      String firstName, String lastName, String phoneNumber) async {
+      String fullName, String phoneNumber) async {
     Map<String, dynamic> body = {
       'username': username,
       'password': password,
       'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
+      'fullName': fullName,
       'phoneNumber': phoneNumber,
     };
     try {
@@ -53,11 +55,84 @@ class ClientService {
     } on DioError catch (e) {
       final errorResponse = e.response?.data;
       if (errorResponse != null && errorResponse is Map<String, dynamic>) {
-        final errorMessage = errorResponse["message"] ?? "Unknow error occurred";
+        final errorMessage =
+            errorResponse["message"] ?? "Unknow error occurred";
         throw Exception(errorMessage);
-      }else {
+      } else {
         throw Exception("An unexpected error occurred");
       }
     }
+  }
+
+  Future<void> updateLocation(bool isLocationEnable) async {
+    Map<String, dynamic> body = {'isLocationEnable': isLocationEnable};
+    try {
+      final res = await clientApi.updateLocation(
+          await Util.createAuthorization(), body);
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<MyInfoEntity> getMyInfo() async {
+    try {
+      final res = await clientApi.getMyInfo(await Util.createAuthorization());
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<MyInfoEntity> updateProfileName(String name) async {
+    Map<String, dynamic> body = {
+      'fullName': name,
+    };
+    final res = await clientApi.updateProfileName(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<MyInfoEntity> updateProfilePhone(String phoneNumber) async {
+    Map<String, dynamic> body = {
+      'phoneNumber': phoneNumber,
+    };
+    final res = await clientApi.updateProfilePhone(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<MyInfoEntity> updateProfileImg(String img) async {
+    Map<String, dynamic> body = {
+      'profileImg': img,
+    };
+    final res = await clientApi.updateProfileImg(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<MyInfoEntity> updateProfileEmail(String email) async {
+    Map<String, dynamic> body = {
+      'email': email,
+    };
+    final res = await clientApi.updateProfileEmail(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
   }
 }

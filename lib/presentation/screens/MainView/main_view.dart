@@ -8,6 +8,7 @@ import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_v
 import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
 import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
+import 'package:front_shop/presentation/screens/Menu/Account/update_profile.dart';
 import 'package:front_shop/presentation/screens/Onboarding/onboarding.dart';
 import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
@@ -16,6 +17,8 @@ import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import '../Address/address_view.dart';
 import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
+import '../Menu/Account/update_email.dart';
+import '../Menu/Account/update_phone_number.dart';
 import '../Menu/Cart/cart_view.dart';
 import '../Menu/Home/home_view.dart';
 import '../Menu/Saved/saved_view.dart';
@@ -71,6 +74,12 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const CheckoutView());
       case OrderView.routeName:
         return MaterialPageRoute(builder: (_) => const OrderView());
+      case UpdateProfileNameView.routeName:
+        return MaterialPageRoute(builder: (_) => const UpdateProfileNameView());
+      case UpdatePhoneNumberView.routeName:
+        return MaterialPageRoute(builder: (_) => const UpdatePhoneNumberView());
+      case UpdateProfileEmailView.routeName:
+        return MaterialPageRoute(builder: (_) => const UpdateProfileEmailView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,0 +1,40 @@
+import 'package:front_shop/domain/models/my_info.dart';
+import 'package:front_shop/domain/translator/user_translator.dart';
+import 'package:front_shop/domain/usecases/user_usecase.dart';
+import 'package:front_shop/server/data/repository/user_repository.dart';
+
+class UserUsecaseImpl implements UserUsecase {
+  final UserRepository _userRepository;
+
+  UserUsecaseImpl(this._userRepository);
+
+  @override
+  Future<MyInfo> myInfo() async {
+    final entity = await _userRepository.myInfo();
+    return UseTranslator.translate(entity);
+  }
+
+  @override
+  Future<MyInfo> updateProfileName(String name) async {
+    final entity = await _userRepository.updateProfileName(name);
+    return UseTranslator.translate(entity);
+  }
+
+  @override
+  Future<MyInfo> updateProfilePhone(String phoneNumber) async {
+    final entity = await _userRepository.updateProfilePhone(phoneNumber);
+    return UseTranslator.translate(entity);
+  }
+
+  @override
+  Future<MyInfo> updateProfileImg(String img) async {
+    final entity = await _userRepository.updateProfileImg(img);
+    return UseTranslator.translate(entity);
+  }
+
+  @override
+  Future<MyInfo> updateProfileEmail(String email) async {
+    final entity = await _userRepository.updateProfileEmail(email);
+    return UseTranslator.translate(entity);
+  }
+}

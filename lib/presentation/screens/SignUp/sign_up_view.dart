@@ -26,7 +26,7 @@ class SignUpView extends ConsumerStatefulWidget {
 class _SignUpViewState extends ConsumerState<SignUpView> {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
-  final firstNameController = TextEditingController();
+  final fullNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
@@ -47,13 +47,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
       return false;
     }
     // Validate first name
-    if (firstNameController.text.trim().isEmpty) {
-      _showError("First name is required");
-      return false;
-    }
-    // Validate last name
-    if (lastNameController.text.trim().isEmpty) {
-      _showError("Last name is required");
+    if (fullNameController.text.trim().isEmpty) {
+      _showError("Full name is required");
       return false;
     }
     // Validate phone number
@@ -173,14 +168,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
             const SizedBox(height: AppSizes.md),
             InputFieldPrimary(
               labelText: 'First Name',
-              controller: firstNameController,
+              controller: fullNameController,
               icon: const Icon(Iconsax.personalcard),
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'Last Name',
-              controller: lastNameController,
-              icon: const Icon(Icons.person_rounded),
             ),
             const SizedBox(height: AppSizes.md),
             InputFieldPrimary(
@@ -246,8 +235,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                       usernameController.text.trim(),
                       passwordController.text.trim(),
                       emailController.text.trim(),
-                      firstNameController.text.trim(),
-                      lastNameController.text.trim(),
+                      fullNameController.text.trim(),
                       phoneNumberController.text.trim(),
                     );
                   }

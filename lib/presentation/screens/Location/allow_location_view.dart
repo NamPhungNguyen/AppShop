@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
-import 'package:front_shop/presentation/screens/Location/enter_your_location_view.dart';
-import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
-import '../../commom/widgets/Button/button_primary.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:front_shop/utils/preference_util.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../commom/widgets/Button/button_primary.dart';
 
-class AllowLocationView extends StatelessWidget {
+class AllowLocationView extends ConsumerWidget {
   static const String routeName = "/allow_location";
 
   const AllowLocationView({super.key});
 
-  Future<void> _requestLocationPermission(BuildContext context) async {
+  Future<void> _requestLocationPermission(
+      BuildContext context, WidgetRef ref) async {
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
@@ -24,22 +27,52 @@ class AllowLocationView extends StatelessWidget {
           content: Text('Location permissions are denied forever.'),
         ),
       );
+      await ref.read(locationStateProvider.notifier).updateLocation(false);
     } else if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
-      // If granted, navigate to BottomBar
+      await PreferenceUtil.setIsFirstAllowLocation(false);
+      await ref.read(locationStateProvider.notifier).updateLocation(true);
       Navigator.pushNamed(context, BottomBar.routeName);
     } else {
-      // If still not granted, show a message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Location permissions are not granted.'),
         ),
       );
+      await ref.read(locationStateProvider.notifier).updateLocation(false);
+    }
+  }
+
+  Future<void> _checkFirstLaunch(BuildContext context, WidgetRef ref) async {
+    bool isFirstLaunch = await PreferenceUtil.getIsFirstAllowLocation();
+    print("isFirstLaunch Before, $isFirstLaunch");
+    if (isFirstLaunch) {
+      await PreferenceUtil.setIsFirstAllowLocation(false);
+      // Fetch the new value to confirm it’s updated
+      bool updatedIsFirstLaunch = await PreferenceUtil.getIsFirstAllowLocation();
+      print("isFirstLaunch After Update: $updatedIsFirstLaunch");
+      await _requestLocationPermission(context, ref);
+    } else {
+      Navigator.pushNamed(context, BottomBar.routeName);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue<void>>(locationStateProvider, (previous, next) {
+      // Check if there is an error in the location update process
+      next.when(
+        data: (_) {},
+        loading: () {},
+        error: (error, stack) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error updating location: $error')),
+          );
+          print(error);
+        },
+      );
+    });
+
     return Scaffold(
       backgroundColor: AppColors.textWhite,
       body: Padding(
@@ -69,17 +102,7 @@ class AllowLocationView extends StatelessWidget {
             const SizedBox(height: 48),
             ButtonPrimary(
               text: "Allow Location Access",
-              onPressed: () => _requestLocationPermission(context),
-            ),
-            const SizedBox(height: 32),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, EnterYourLocationView.routeName);
-              },
-              child: const Text(
-                "Enter Location Manually",
-                style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-              ),
+              onPressed: () => _checkFirstLaunch(context, ref),
             ),
           ],
         ),

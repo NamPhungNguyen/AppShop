@@ -11,9 +11,9 @@ class SignUpUsecaseImpl implements SignUpUsecase {
 
   @override
   Future<SignUp> signUp(String username, String password, String email,
-      String firstName, String lastName, String phoneNumber) async {
+      String fullName, String phoneNumber) async {
     final entity = await _repository.signUp(
-        username, password, email, firstName, lastName, phoneNumber);
+        username, password, email, fullName, phoneNumber);
     return SignUpTranslator.translate(entity);
   }
 }
