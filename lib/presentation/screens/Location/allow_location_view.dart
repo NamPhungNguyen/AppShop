@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/preference_util.dart';
 import 'package:geolocator/geolocator.dart';
+
 import '../../commom/widgets/Button/button_primary.dart';
 
 class AllowLocationView extends ConsumerWidget {
@@ -22,36 +24,33 @@ class AllowLocationView extends ConsumerWidget {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Location permissions are denied forever.'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Location permissions are denied forever.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
       await ref.read(locationStateProvider.notifier).updateLocation(false);
+      await PreferenceUtil.setIsFirstAllowLocation(false);
     } else if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
-      await PreferenceUtil.setIsFirstAllowLocation(false);
       await ref.read(locationStateProvider.notifier).updateLocation(true);
+      await PreferenceUtil.setIsFirstAllowLocation(false);
       Navigator.pushNamed(context, BottomBar.routeName);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Location permissions are not granted.'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Location permissions are not granted.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
       await ref.read(locationStateProvider.notifier).updateLocation(false);
     }
   }
 
   Future<void> _checkFirstLaunch(BuildContext context, WidgetRef ref) async {
-    bool isFirstLaunch = await PreferenceUtil.getIsFirstAllowLocation();
-    print("isFirstLaunch Before, $isFirstLaunch");
-    if (isFirstLaunch) {
-      await PreferenceUtil.setIsFirstAllowLocation(false);
-      // Fetch the new value to confirm it’s updated
-      bool updatedIsFirstLaunch = await PreferenceUtil.getIsFirstAllowLocation();
-      print("isFirstLaunch After Update: $updatedIsFirstLaunch");
+    bool isFirstLocation = await PreferenceUtil.getIsFirstAllowLocation();
+    if (isFirstLocation) {
       await _requestLocationPermission(context, ref);
+      await PreferenceUtil.setIsFirstAllowLocation(false);
     } else {
       Navigator.pushNamed(context, BottomBar.routeName);
     }
@@ -60,15 +59,17 @@ class AllowLocationView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue<void>>(locationStateProvider, (previous, next) {
-      // Check if there is an error in the location update process
       next.when(
         data: (_) {},
         loading: () {},
         error: (error, stack) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error updating location: $error')),
+          Fluttertoast.showToast(
+            msg: 'Error updating location: $error',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
           );
-          print(error);
         },
       );
     });

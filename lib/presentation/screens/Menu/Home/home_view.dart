@@ -4,6 +4,8 @@ import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:front_shop/utils/typography.dart';
 
+import '../../../../domain/models/category.dart';
+import '../../../../domain/models/product.dart';
 import '../../../../main.dart';
 import '../../../../utils/assets_path_util.dart';
 import '../../../commom/widgets/banner.dart';
@@ -19,10 +21,13 @@ class HomeView extends ConsumerWidget {
 
   const HomeView({super.key});
 
+  Future<void> _refreshData(WidgetRef ref) async {
+    await ref.read(homeStateProvider.notifier).loadData();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryState = ref.watch(categoryStateProvider);
-    final productState = ref.watch(productStateProvider);
+    final homeState = ref.watch(homeStateProvider);
 
     return GestureDetector(
       onTap: () {
@@ -61,77 +66,66 @@ class HomeView extends ConsumerWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
+        body: RefreshIndicator(
+          onRefresh: () => _refreshData(ref),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                const SizedBox(height: AppSizes.spaceBtwSections),
-                TSearchContainer(text: 'Search your product', onTap: () {}),
-                const SizedBox(height: AppSizes.spaceBtwSections),
-
-                /// Categories
-                Column(
-                  children: [
-                    const TSectionHeading(
-                        title: "Popular Categories", showActionButton: false),
-                    const SizedBox(height: AppSizes.spaceBtwItems),
-                    SizedBox(
-                      height: 100,
-                      child: categoryState.when(
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
-                        data: (categories) {
-                          return Row(
-                            mainAxisAlignment: categories.result.length > 1
-                                ? MainAxisAlignment.center
-                                : MainAxisAlignment.start,
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: categories.result.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (_, index) {
-                                  final category = categories.result[index];
-                                  return TVerticalImageText(
-                                    image:
-                                        AssetsPathUtil.categories("jacket.png"),
-                                    title: category.name,
-                                    onTap: () {},
-                                  );
-                                },
-                              ),
-                            ],
-                          );
+            child: homeState.when(
+              loading: () => Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(child: Text('Error: $error')),
+              data: (data) {
+                final categories = data['categories'] as Categories;
+                final products = data['products'] as Products;
+          
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: AppSizes.spaceBtwSections),
+                      TSearchContainer(text: 'Search your product', onTap: () {}),
+                      const SizedBox(height: AppSizes.spaceBtwSections),
+          
+                      // Categories
+                      Column(
+                        children: [
+                          const TSectionHeading(
+                              title: "Popular Categories",
+                              showActionButton: false),
+                          const SizedBox(height: AppSizes.spaceBtwItems),
+                          SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              itemCount: categories.result.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (_, index) {
+                                final category = categories.result[index];
+                                return TVerticalImageText(
+                                  image: AssetsPathUtil.categories("jacket.png"),
+                                  title: category.name,
+                                  onTap: () {},
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSizes.spaceBtwItems),
+          
+                      // Banner
+                      const BannerItem(),
+          
+                      // Popular products
+                      const SizedBox(height: AppSizes.spaceBtwSections),
+                      TGridLayout(
+                        itemCount: products.result.length,
+                        itemBuilder: (_, index) {
+                          final product = products.result[index];
+                          return ProductCardVertical(product: product);
                         },
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSizes.spaceBtwItems),
-
-                /// Banner
-                const BannerItem(),
-
-                /// Popular product
-                const SizedBox(height: AppSizes.spaceBtwSections),
-                productState.when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                  data: (products) {
-                    return TGridLayout(
-                      itemCount: products.result.length,
-                      itemBuilder: (_, index) {
-                        final product = products.result[index];
-                        return ProductCardVertical(product: product);
-                      },
-                    );
-                  },
-                ),
-              ],
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ),

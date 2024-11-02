@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/category.dart';
@@ -6,6 +5,7 @@ import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
+import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
@@ -59,6 +59,11 @@ final categoryStateProvider =
 final productStateProvider =
     StateNotifierProvider<ProductState, AsyncValue<Products>>(
   (ref) => ProductState(ref),
+);
+
+final homeStateProvider =
+    StateNotifierProvider<HomeState, AsyncValue<Map<String, dynamic>>>(
+  (ref) => HomeState(ref),
 );
 
 void main() async {

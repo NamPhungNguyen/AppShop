@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
-import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
 import 'package:front_shop/domain/models/login.dart';
+import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
+import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
+import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
+
 import '../../../main.dart';
 import '../../../utils/preference_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
@@ -25,17 +27,27 @@ class LoginView extends ConsumerWidget {
 
     final loginState = ref.watch(loginStateProvider);
 
-
     ref.listen<AsyncValue<Login>>(loginStateProvider, (previous, next) {
       next.when(
-        data: (updatedLogin) {
+        data: (updatedLogin) async {
           if (updatedLogin.result.authenticated) {
             PreferenceUtil.setAuthToken(updatedLogin.result.token);
-            Navigator.pushNamed(context, AllowLocationView.routeName);
+
+            // Check if this is the first login
+            bool isFirstLogin = await PreferenceUtil.getIsFirstAllowLocation();
+            if (isFirstLogin) {
+              // Navigate to Allow Location screen and set first login to false
+              await Navigator.pushNamed(context, AllowLocationView.routeName);
+              await PreferenceUtil.setIsFirstAllowLocation(false);
+            } else {
+              // Navigate directly to Home screen
+              Navigator.pushNamed(context, BottomBar.routeName);
+            }
+
             Fluttertoast.showToast(
               msg: 'Login successful!',
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM
+              gravity: ToastGravity.BOTTOM,
             );
           } else {
             Fluttertoast.showToast(
@@ -68,7 +80,10 @@ class LoginView extends ConsumerWidget {
           children: [
             Text(
               "Welcome\nBack!",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 32),
             ),
             const SizedBox(height: AppSizes.spaceBtwSections),
             InputFieldPrimary(
@@ -109,7 +124,8 @@ class LoginView extends ConsumerWidget {
                   ButtonPrimary(
                     text: "Login",
                     onPressed: () {
-                      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                      if (emailController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
                         Fluttertoast.showToast(
                           msg: 'Please enter your email and password.',
                           toastLength: Toast.LENGTH_SHORT,
@@ -119,19 +135,13 @@ class LoginView extends ConsumerWidget {
                         );
                         return;
                       }
-                      // Debugging login attempt
-                      ref.read(loginStateProvider.notifier).login(
+                      ref
+                          .read(loginStateProvider.notifier)
+                          .login(
                         emailController.text,
                         passwordController.text,
-                      ).then((_) {
-                        // Additional debug log
-                        print('Login attempt completed');
-                      }).catchError((error) {
-                        // Log any errors caught
-                        print('Login failed: $error');
-                      });
+                      );
                     },
-
                   ),
               ],
             ),

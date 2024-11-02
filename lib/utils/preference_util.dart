@@ -62,20 +62,13 @@ class PreferenceUtil {
     return pref.getBool(_isFirstTime) ?? true;
   }
 
-  static Future<bool> setIsFirstAllowLocation(bool isFirstAllowLocation) async {
-    final pref = await SharedPreferences.getInstance();
-    return pref.setBool(_isFirstAllowLocation, isFirstAllowLocation);
-  }
-
   static Future<bool> getIsFirstAllowLocation() async {
     final pref = await SharedPreferences.getInstance();
     return pref.getBool(_isFirstAllowLocation) ?? true;
   }
 
-  static Future<void> clearPreferences() async {
+  static Future<bool> setIsFirstAllowLocation(bool isFirstAllowLocation) async {
     final pref = await SharedPreferences.getInstance();
-    await pref.remove(_authToken);
-    await pref.remove(_tokenExpiry);
-    await pref.setBool(_isFirstAllowLocation, true);
+    return pref.setBool(_isFirstAllowLocation, isFirstAllowLocation);
   }
 }
