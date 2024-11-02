@@ -38,8 +38,10 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => FullImageView(
-                      imageUrls: widget.product.imgProduct, // Pass all image URLs
-                      initialIndex: _selectedImageIndex, // Pass the selected index
+                      imageUrls: widget.product.imgProduct,
+                      // Pass all image URLs
+                      initialIndex:
+                          _selectedImageIndex, // Pass the selected index
                     ),
                   ),
                 );
@@ -47,7 +49,8 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
               child: SizedBox(
                 height: 400,
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSizes.productImageRadius * 2),
+                  padding:
+                      const EdgeInsets.all(AppSizes.productImageRadius * 2),
                   child: Center(
                     child: Image.network(
                       widget.product.imgProduct.isNotEmpty
@@ -70,7 +73,7 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   separatorBuilder: (_, __) =>
-                  const SizedBox(width: AppSizes.spaceBtwItems),
+                      const SizedBox(width: AppSizes.spaceBtwItems),
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (_, index) => GestureDetector(
                     onTap: () {

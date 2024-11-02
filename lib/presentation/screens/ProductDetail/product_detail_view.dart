@@ -20,7 +20,6 @@ class ProductDetailView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Scaffold(
       bottomNavigationBar: TBottomAddToCart(),
       body: SingleChildScrollView(
