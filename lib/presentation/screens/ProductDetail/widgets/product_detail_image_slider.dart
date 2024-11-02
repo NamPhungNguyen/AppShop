@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/domain/models/product.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../../utils/assets_path_util.dart';
+
 import '../../../../utils/constants/app_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../commom/widgets/Appbar/appbar.dart';
 import '../../../commom/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
 import '../../../commom/widgets/icons/circular_icon.dart';
 import '../../../commom/widgets/images/round_image.dart';
+import 'full_image_view.dart'; // Import the new full image view
 
-class TProductImageSlider extends StatelessWidget {
+class TProductImageSlider extends StatefulWidget {
+  final Product product;
+
   const TProductImageSlider({
-    super.key,
-  });
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  @override
+  _TProductImageSliderState createState() => _TProductImageSliderState();
+}
+
+class _TProductImageSliderState extends State<TProductImageSlider> {
+  int _selectedImageIndex = 0; // Track the currently selected image index
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +32,28 @@ class TProductImageSlider extends StatelessWidget {
         color: AppColors.light,
         child: Stack(
           children: [
-            SizedBox(
-              height: 400,
-              child: Padding(
-                padding:
-                const EdgeInsets.all(AppSizes.productImageRadius * 2),
-                child: Center(
-                  child: Image(
-                    image: AssetImage(
-                      AssetsPathUtil.categories("shoes.png"),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => FullImageView(
+                      imageUrls: widget.product.imgProduct, // Pass all image URLs
+                      initialIndex: _selectedImageIndex, // Pass the selected index
+                    ),
+                  ),
+                );
+              },
+              child: SizedBox(
+                height: 400,
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSizes.productImageRadius * 2),
+                  child: Center(
+                    child: Image.network(
+                      widget.product.imgProduct.isNotEmpty
+                          ? widget.product.imgProduct[_selectedImageIndex]
+                          : 'placeholder_image_url',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -41,31 +66,40 @@ class TProductImageSlider extends StatelessWidget {
               child: SizedBox(
                 height: 80,
                 child: ListView.separated(
-                  itemCount: 6,
+                  itemCount: widget.product.imgProduct.length,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   separatorBuilder: (_, __) =>
                   const SizedBox(width: AppSizes.spaceBtwItems),
                   physics: const AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (_, index) => TRoundedImage(
-                    imageUrl: AssetsPathUtil.categories("tank_top.png"),
-                    width: 80,
-                    height: 80,
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.all(AppSizes.sm),
-                    border: Border.all(color: AppColors.primaryColor),
+                  itemBuilder: (_, index) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedImageIndex = index; // Update selected index
+                      });
+                    },
+                    child: TRoundedImage(
+                      imageUrl: widget.product.imgProduct[index],
+                      width: 80,
+                      height: 80,
+                      backgroundColor: Colors.white,
+                      padding: const EdgeInsets.all(AppSizes.sm),
+                      border: Border.all(
+                        color: _selectedImageIndex == index
+                            ? AppColors.primaryColor
+                            : Colors.grey, // Highlight selected image
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
 
             /// Appbar Icon
-            TAppbar(
+            const TAppbar(
               showBackArrow: true,
-              actions: [
-                TCircularIcon(icon: Iconsax.heart5, color: Colors.red)
-              ],
-            )
+              actions: [TCircularIcon(icon: Iconsax.heart5, color: Colors.red)],
+            ),
           ],
         ),
       ),

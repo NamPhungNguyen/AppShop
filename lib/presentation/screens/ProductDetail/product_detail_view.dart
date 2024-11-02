@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/presentation/commom/widgets/texts/section_heading.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/bottom_add_to_cart.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/product_attributes.dart';
@@ -9,24 +11,27 @@ import 'package:front_shop/presentation/screens/ProductReviews/product_reviews.d
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:readmore/readmore.dart';
 
-class ProductDetailView extends StatelessWidget {
+class ProductDetailView extends ConsumerWidget {
   static const String routeName = "/product_detail";
 
-  const ProductDetailView({super.key});
+  final Product product;
+
+  const ProductDetailView({Key? key, required this.product}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
       bottomNavigationBar: TBottomAddToCart(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ///1 product image slider
-            TProductImageSlider(),
+            TProductImageSlider(product: product),
 
             ///2 product detail
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 right: AppSizes.defaultSpace,
                 left: AppSizes.defaultSpace,
                 bottom: AppSizes.defaultSpace,
@@ -46,12 +51,14 @@ class ProductDetailView extends StatelessWidget {
                   /// checkout
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(onPressed: (){}, child: Text("Checkout")),
+                    child: ElevatedButton(
+                        onPressed: () {}, child: Text("Checkout")),
                   ),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
                   /// description
-                  const TSectionHeading(title: 'Description', showActionButton: false),
+                  const TSectionHeading(
+                      title: 'Description', showActionButton: false),
                   const SizedBox(height: AppSizes.spaceBtwItems),
                   const ReadMoreText(
                     'This is a Product description for Blue Nike Sleeve less vest. There are more things that can be added but i am just practicing and nothing else.',
@@ -59,18 +66,24 @@ class ProductDetailView extends StatelessWidget {
                     trimMode: TrimMode.Line,
                     trimCollapsedText: "Show more",
                     trimExpandedText: "Less",
-                    moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                    lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                    moreStyle:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                    lessStyle:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                   ),
 
                   /// reviews
                   const Divider(),
                   const SizedBox(height: AppSizes.spaceBtwItems),
-                  TSectionHeading(title: 'Reviews(199)' , onPressed: (){
-                    Navigator.pushNamed(context, ProductReviewsView.routeName);
-                  }, showActionButton: true,),
+                  TSectionHeading(
+                    title: 'Reviews(199)',
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ProductReviewsView.routeName);
+                    },
+                    showActionButton: true,
+                  ),
                   const SizedBox(height: AppSizes.spaceBtwSections),
-
                 ],
               ),
             ),

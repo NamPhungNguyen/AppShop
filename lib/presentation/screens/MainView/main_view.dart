@@ -14,6 +14,8 @@ import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:front_shop/presentation/screens/ProductReviews/product_reviews.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
+
+import '../../../domain/models/product.dart';
 import '../Address/address_view.dart';
 import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
@@ -63,15 +65,16 @@ class MainView {
       case ProfileView.routeName:
         return MaterialPageRoute(builder: (_) => const ProfileView());
       case ProductDetailView.routeName:
-        return MaterialPageRoute(builder: (_) => const ProductDetailView());
+        final product = settings.arguments as Product;
+        return MaterialPageRoute(
+          builder: (_) => ProductDetailView(product: product),
+        );
       case ProductReviewsView.routeName:
         return MaterialPageRoute(builder: (_) => const ProductReviewsView());
       case AddressView.routeName:
         return MaterialPageRoute(builder: (_) => const AddressView());
       case AddNewAddress.routeName:
         return MaterialPageRoute(builder: (_) => const AddNewAddress());
-      case CheckoutView.routeName:
-        return MaterialPageRoute(builder: (_) => const CheckoutView());
       case OrderView.routeName:
         return MaterialPageRoute(builder: (_) => const OrderView());
       case UpdateProfileNameView.routeName:

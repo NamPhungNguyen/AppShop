@@ -5,6 +5,7 @@ import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../utils/preference_util.dart';
 import '../Onboarding/onboarding.dart';
 
 class SplashView extends ConsumerWidget {
@@ -15,18 +16,26 @@ class SplashView extends ConsumerWidget {
   Future<void> _navigationBasedOnConditions(BuildContext context, WidgetRef ref) async {
     final pref = await SharedPreferences.getInstance();
     final isFirstLaunch = pref.getBool('isFirstLaunch') ?? true;
+
+    // Check token expiration
     final token = ref.watch(tokenStateProvider).maybeWhen(
       data: (token) => token,
       orElse: () => null,
     );
 
+    // Assuming you have a method to check if the token is expired
+    final isTokenExpired = await PreferenceUtil.isTokenExpired();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (token != null) {
+      if (token != null && !isTokenExpired) {
+        // Token is valid
         Navigator.pushReplacementNamed(context, BottomBar.routeName);
       } else if (isFirstLaunch) {
+        // First launch, show onboarding
         pref.setBool('isFirstLaunch', false);
         Navigator.pushReplacementNamed(context, OnBoardingView.routeName);
       } else {
+        // Token is invalid or expired, show login
         Navigator.pushReplacementNamed(context, LoginView.routeName);
       }
     });

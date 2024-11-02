@@ -31,7 +31,7 @@ class SavedView extends StatelessWidget {
           padding: EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
-              TGridLayout(itemCount: 14, itemBuilder: (_, index) => const ProductCardVertical())
+              // TGridLayout(itemCount: 14, itemBuilder: (_, index) => const ProductCardVertical())
             ],
           ),
         ),

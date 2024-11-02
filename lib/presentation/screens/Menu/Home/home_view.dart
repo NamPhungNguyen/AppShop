@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
-import 'package:front_shop/utils/assets_path_util.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:front_shop/utils/typography.dart';
+
+import '../../../../main.dart';
+import '../../../../utils/assets_path_util.dart';
 import '../../../commom/widgets/banner.dart';
 import '../../../commom/widgets/custom_shapes/containers/search_container.dart';
 import '../../../commom/widgets/image_text_widgets/vertical_image_text.dart';
 import '../../../commom/widgets/layouts/grid_layout.dart';
 import '../../../commom/widgets/products/product_card_vertical.dart';
 import '../../../commom/widgets/texts/section_heading.dart';
+import '../../Notification/notification_view.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   static const String routeName = '/home_view';
 
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoryState = ref.watch(categoryStateProvider);
+    final productState = ref.watch(productStateProvider);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -37,7 +43,7 @@ class HomeView extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               const Text(
-                "Dhaka,Bangladesh",
+                "Dhaka, Bangladesh",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -60,31 +66,45 @@ class HomeView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                /// search bar
-                SizedBox(height: AppSizes.spaceBtwSections),
-                TSearchContainer(
-                  text: 'Search your product',
-                  onTap: () {},
-                ),
-                SizedBox(height: AppSizes.spaceBtwSections),
+                const SizedBox(height: AppSizes.spaceBtwSections),
+                TSearchContainer(text: 'Search your product', onTap: () {}),
+                const SizedBox(height: AppSizes.spaceBtwSections),
 
-                /// categories
+                /// Categories
                 Column(
                   children: [
-                    TSectionHeading(
+                    const TSectionHeading(
                         title: "Popular Categories", showActionButton: false),
                     const SizedBox(height: AppSizes.spaceBtwItems),
                     SizedBox(
-                      height: 80,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 6,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (_, index) {
-                          return TVerticalImageText(
-                              image: AssetsPathUtil.categories("jacket.png"),
-                              title: "Jacket",
-                              onTap: () {});
+                      height: 100,
+                      child: categoryState.when(
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (error, stack) =>
+                            Center(child: Text('Error: $error')),
+                        data: (categories) {
+                          return Row(
+                            mainAxisAlignment: categories.result.length > 1
+                                ? MainAxisAlignment.center
+                                : MainAxisAlignment.start,
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: categories.result.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (_, index) {
+                                  final category = categories.result[index];
+                                  return TVerticalImageText(
+                                    image:
+                                        AssetsPathUtil.categories("jacket.png"),
+                                    title: category.name,
+                                    onTap: () {},
+                                  );
+                                },
+                              ),
+                            ],
+                          );
                         },
                       ),
                     ),
@@ -92,17 +112,25 @@ class HomeView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 
-                /// banner
+                /// Banner
                 const BannerItem(),
 
-                /// popular product
+                /// Popular product
                 const SizedBox(height: AppSizes.spaceBtwSections),
-                TGridLayout(itemCount: 7, itemBuilder: (_, index) => const ProductCardVertical())
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(vertical: 16),
-                //   child: HotDeals(),
-                // ),
-                // const PopularProductItem()
+                productState.when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  data: (products) {
+                    return TGridLayout(
+                      itemCount: products.result.length,
+                      itemBuilder: (_, index) {
+                        final product = products.result[index];
+                        return ProductCardVertical(product: product);
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           ),

@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api_endpoint.dart';
+import 'package:front_shop/server/data/entities/categories_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
+import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -54,6 +56,16 @@ abstract class ClientApi {
   Future<HttpResponse<MyInfoEntity>> updateProfileEmail(
     @Header("Authorization") authorization,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/categories/list-categories')
+  Future<HttpResponse<CategoriesResponse>> fetchAllCategories(
+    @Header("Authorization") authorization,
+  );
+
+  @GET('/product/list')
+  Future<HttpResponse<ProductsEntity>> fetchAllProduct(
+    @Header("Authorization") authorization,
   );
 }
 

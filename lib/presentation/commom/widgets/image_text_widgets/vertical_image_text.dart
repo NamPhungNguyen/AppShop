@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../utils/constants/app_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 
@@ -22,10 +23,12 @@ class TVerticalImageText extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(right: AppSizes.spaceBtwItems),
+        padding: const EdgeInsets.only(
+            right: AppSizes.spaceBtwSections, bottom: AppSizes.spaceBtwItems),
         child: Column(
+          mainAxisSize: MainAxisSize.min, // Keep the column size to minimum
           children: [
-            /// circular icon
+            /// Circular icon
             Container(
               width: 56,
               height: 56,
@@ -34,14 +37,16 @@ class TVerticalImageText extends StatelessWidget {
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Center(
+              child: ClipOval(
+                // Use ClipOval for circular image
                 child: Image(
-                    image: AssetImage(image),
-                    fit: BoxFit.cover),
+                  image: AssetImage(image),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 
-            ///text
+            /// Text
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
             SizedBox(
               width: 55,
@@ -53,8 +58,9 @@ class TVerticalImageText extends StatelessWidget {
                     .apply(color: textColor),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center, // Center align text
               ),
-            )
+            ),
           ],
         ),
       ),

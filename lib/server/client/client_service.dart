@@ -2,8 +2,10 @@ import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api.dart';
+import 'package:front_shop/server/data/entities/categories_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
+import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:front_shop/utils/header_token.dart';
 
@@ -132,6 +134,20 @@ class ClientService {
       await Util.createAuthorization(),
       body,
     );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<CategoriesResponse> fetchAllCategories() async {
+    final res =
+        await clientApi.fetchAllCategories(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<ProductsEntity> fetchAllProduct() async {
+    final res =
+        await clientApi.fetchAllProduct(await Util.createAuthorization());
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
