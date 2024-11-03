@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../../../../domain/models/product.dart';
 import '../../../../utils/constants/sizes.dart';
 
 class TRaitingAndShare extends StatelessWidget {
-  const TRaitingAndShare({
-    super.key,
-  });
+  final Product product;
+
+  const TRaitingAndShare({Key? key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +17,15 @@ class TRaitingAndShare extends StatelessWidget {
         // Rating
         Row(
           children: [
-            const Icon(Iconsax.star5,
-                color: Colors.amber, size: 24),
+            const Icon(Iconsax.star5, color: Colors.amber, size: 24),
             const SizedBox(width: AppSizes.spaceBtwItems / 2),
             Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
-                      text: '5.8',
-                      style:
-                      Theme.of(context).textTheme.bodyLarge),
-                  const TextSpan(text: ' (199)'),
+                    text: '${product.rating}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )
                 ],
               ),
             ),

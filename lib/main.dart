@@ -5,6 +5,7 @@ import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
+import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
@@ -64,6 +65,11 @@ final productStateProvider =
 final homeStateProvider =
     StateNotifierProvider<HomeState, AsyncValue<Map<String, dynamic>>>(
   (ref) => HomeState(ref),
+);
+
+final favoriteStateProvider =
+    StateNotifierProvider<FavoriteState, AsyncValue<List<Product>>>(
+  (ref) => FavoriteState(ref),
 );
 
 void main() async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
-import 'package:front_shop/utils/typography.dart';
 
 import '../../../../domain/models/category.dart';
 import '../../../../domain/models/product.dart';
@@ -38,25 +37,8 @@ class HomeView extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: AppColors.textWhite,
           automaticallyImplyLeading: false,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "LOCATION",
-                style: TypographyClass.Regular.copyWith(
-                    fontSize: 18, color: AppColors.tertiaryText),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                "Dhaka, Bangladesh",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
+          title: Text("Welcome Back!",
+              style: Theme.of(context).textTheme.headlineMedium),
           actions: [
             IconButton(
               onPressed: () {
@@ -69,21 +51,23 @@ class HomeView extends ConsumerWidget {
         body: RefreshIndicator(
           onRefresh: () => _refreshData(ref),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.spaceBtwItems / 2),
             child: homeState.when(
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Center(child: Text('Error: $error')),
               data: (data) {
                 final categories = data['categories'] as Categories;
                 final products = data['products'] as Products;
-          
+
                 return SingleChildScrollView(
                   child: Column(
                     children: [
                       const SizedBox(height: AppSizes.spaceBtwSections),
-                      TSearchContainer(text: 'Search your product', onTap: () {}),
+                      TSearchContainer(
+                          text: 'Search your product', onTap: () {}),
                       const SizedBox(height: AppSizes.spaceBtwSections),
-          
+
                       // Categories
                       Column(
                         children: [
@@ -99,7 +83,8 @@ class HomeView extends ConsumerWidget {
                               itemBuilder: (_, index) {
                                 final category = categories.result[index];
                                 return TVerticalImageText(
-                                  image: AssetsPathUtil.categories("jacket.png"),
+                                  image:
+                                      AssetsPathUtil.categories("jacket.png"),
                                   title: category.name,
                                   onTap: () {},
                                 );
@@ -109,10 +94,10 @@ class HomeView extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: AppSizes.spaceBtwItems),
-          
+
                       // Banner
                       const BannerItem(),
-          
+
                       // Popular products
                       const SizedBox(height: AppSizes.spaceBtwSections),
                       TGridLayout(

@@ -13,4 +13,20 @@ class ProductUsecaseImpl implements ProductUsecase {
     final entity = await _productRepository.fetchAllProduct();
     return ProductTranslator.translateAll(entity);
   }
+
+  @override
+  Future<void> addProductToFavorites(String productId) async {
+    return await _productRepository.addProductToFavorites(productId);
+  }
+
+  @override
+  Future<void> removeProductToFavorites(String productId) async {
+    return await _productRepository.removeProductToFavorites(productId);
+  }
+
+  @override
+  Future<List<Product>> fetchAllProductToFavorites() async {
+    final entity = await _productRepository.fetchAllProductToFavorites();
+    return ProductTranslator.translateListAll(entity);
+  }
 }

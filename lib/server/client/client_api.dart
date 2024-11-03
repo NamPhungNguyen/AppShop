@@ -67,6 +67,23 @@ abstract class ClientApi {
   Future<HttpResponse<ProductsEntity>> fetchAllProduct(
     @Header("Authorization") authorization,
   );
+
+  @POST('/favorites/add/{productId}')
+  Future<HttpResponse<void>> addProductToFavorites(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
+  );
+
+  @DELETE('/favorites/remove/{productId}')
+  Future<HttpResponse<void>> removeProductToFavorites(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
+  );
+
+  @GET('/favorites')
+  Future<HttpResponse<List<ProductEntity>>> fetchAllProductToFavorites(
+    @Header("Authorization") authorization,
+  );
 }
 
 final clientApi = ClientApi(

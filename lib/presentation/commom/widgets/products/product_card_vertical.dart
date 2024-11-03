@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
@@ -6,19 +7,29 @@ import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../../main.dart';
 import '../../styles/shadows.dart';
 import '../custom_shapes/containers/rounded_container.dart';
 import '../icons/circular_icon.dart';
 import '../images/round_image.dart';
 import '../texts/product_title_text.dart';
 
-class ProductCardVertical extends StatelessWidget {
+class ProductCardVertical extends ConsumerWidget {
   final Product product;
 
   const ProductCardVertical({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteProductsAsync = ref.watch(favoriteStateProvider);
+
+    final isFavorite = favoriteProductsAsync.when(
+      data: (favoriteProducts) =>
+          favoriteProducts.contains(product),
+      loading: () => false,
+      error: (error, stack) => false,
+    );
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -29,7 +40,6 @@ class ProductCardVertical extends StatelessWidget {
       },
       child: Container(
         width: 180,
-        padding: const EdgeInsets.all(1),
         decoration: BoxDecoration(
           boxShadow: [TShadowStyle.verticalProductShadow],
           borderRadius: BorderRadius.circular(AppSizes.productImageRadius),
@@ -53,34 +63,45 @@ class ProductCardVertical extends StatelessWidget {
                       applyImageRadius: true,
                     ),
                   ),
-                  // Add discount badge if applicable
-                  if (product.discount != null)
-                    Positioned(
-                      top: 8,
-                      left: 8,
-                      child: TRoundedContainer(
-                        radius: AppSizes.sm,
-                        backgroundColor:
-                            AppColors.textSecondary.withOpacity(0.8),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppSizes.sm, vertical: AppSizes.xs),
-                        child: Text(
-                          '${product.discount}%',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .apply(color: Colors.black),
-                        ),
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: TRoundedContainer(
+                      radius: AppSizes.sm,
+                      backgroundColor: AppColors.textSecondary.withOpacity(0.8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSizes.sm, vertical: AppSizes.xs),
+                      child: Text(
+                        '-${product.discount}%',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .apply(color: Colors.black),
                       ),
                     ),
+                  ),
 
-                  /// favorite icon button
-                  const Positioned(
+                  // Favorite icon button
+                  Positioned(
                     top: 0,
                     right: 0,
                     child: TCircularIcon(
-                      icon: Iconsax.heart5,
-                      color: Colors.red,
+                      icon: isFavorite
+                          ? Iconsax.heart5
+                          : Iconsax.heart, // Update based on favorite status
+                      color: isFavorite ? Colors.red : Colors.grey,
+                      onPressed: () {
+                        if (isFavorite) {
+                          ref
+                              .read(favoriteStateProvider.notifier)
+                              .removeProductFromFavorites(
+                              product.productId.toString());
+                        } else {
+                          ref
+                              .read(favoriteStateProvider.notifier)
+                              .addProductToFavorites(product);
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -88,7 +109,7 @@ class ProductCardVertical extends StatelessWidget {
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-            /// details
+            // Details
             Padding(
               padding: const EdgeInsets.only(left: AppSizes.sm),
               child: Column(
@@ -115,7 +136,7 @@ class ProductCardVertical extends StatelessWidget {
                     ],
                   ),
 
-                  /// Single star with rating number
+                  // Single star with rating number
                   Row(
                     children: [
                       const Icon(Icons.star,
@@ -133,28 +154,26 @@ class ProductCardVertical extends StatelessWidget {
 
                   Row(
                     children: [
-                      if (product.discount != null)
-                        Text(
-                          "${product.price.toStringAsFixed(2)}đ",
-                          style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                        ),
-                      const SizedBox(width: AppSizes.xs),
                       Text(
-                        "${product.discount != null ? (product.price - (product.price * (product.discount! / 100))).toStringAsFixed(2) : product.price.toStringAsFixed(2)}đ", // Discounted price
+                        "${product.discount != null ? (product.price - (product.price * (product.discount! / 100))).toStringAsFixed(2) : product.price.toStringAsFixed(2)}đ",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
                             .headlineMedium!
                             .copyWith(
-                              fontSize: 14,
-                              color: AppColors.primaryColor,
-                            ),
+                          fontSize: 14,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.xs),
+                      Text(
+                        "${product.price.toStringAsFixed(2)}đ",
+                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/presentation/commom/widgets/texts/section_heading.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/bottom_add_to_cart.dart';
-import 'package:front_shop/presentation/screens/ProductDetail/widgets/product_attributes.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/product_detail_image_slider.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/product_meta_data.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/widgets/rating_share_widget.dart';
@@ -21,7 +20,7 @@ class ProductDetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      bottomNavigationBar: TBottomAddToCart(),
+      bottomNavigationBar: TBottomAddToCart(product: product),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -36,31 +35,20 @@ class ProductDetailView extends ConsumerWidget {
                 bottom: AppSizes.defaultSpace,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// rating and share button
-                  TRaitingAndShare(),
+                  TRaitingAndShare(product: product),
 
                   /// price, title, stock and brand
-                  TProductMetaData(),
-
-                  /// attributes
-                  TProductAttributes(),
-                  const SizedBox(height: AppSizes.spaceBtwSections),
-
-                  /// checkout
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () {}, child: Text("Checkout")),
-                  ),
-                  const SizedBox(height: AppSizes.spaceBtwSections),
+                  TProductMetaData(product: product),
 
                   /// description
                   const TSectionHeading(
                       title: 'Description', showActionButton: false),
                   const SizedBox(height: AppSizes.spaceBtwItems),
-                  const ReadMoreText(
-                    'This is a Product description for Blue Nike Sleeve less vest. There are more things that can be added but i am just practicing and nothing else.',
+                  ReadMoreText(
+                    product.description,
                     trimLines: 2,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: "Show more",
@@ -70,6 +58,7 @@ class ProductDetailView extends ConsumerWidget {
                     lessStyle:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                   ),
+                  const SizedBox(height: AppSizes.spaceBtwSections),
 
                   /// reviews
                   const Divider(),
@@ -91,4 +80,6 @@ class ProductDetailView extends ConsumerWidget {
       ),
     );
   }
+
+
 }

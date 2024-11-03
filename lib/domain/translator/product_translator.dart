@@ -8,6 +8,7 @@ class ProductTranslator {
       name: entity.name,
       description: entity.description,
       price: entity.price,
+      discount: entity.discount,
       stock: entity.stock,
       size: entity.size,
       color: entity.color,
@@ -25,5 +26,9 @@ class ProductTranslator {
 
   static Products translateAll(final ProductsEntity entity) {
     return Products(result: entity.result.map((e) => translate(e)).toList());
+  }
+  // New method to translate a list of ProductEntity
+  static List<Product> translateListAll(List<ProductEntity> entities) {
+    return entities.map((entity) => translate(entity)).toList();
   }
 }

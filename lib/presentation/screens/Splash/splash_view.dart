@@ -5,6 +5,7 @@ import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../utils/preference_util.dart';
 import '../Onboarding/onboarding.dart';
 
@@ -13,18 +14,11 @@ class SplashView extends ConsumerWidget {
 
   const SplashView({super.key});
 
-  Future<void> _navigationBasedOnConditions(BuildContext context, WidgetRef ref) async {
+  Future<void> _navigationBasedOnConditions(
+      BuildContext context, WidgetRef ref, String? token) async {
+    final isTokenExpired = await PreferenceUtil.isTokenExpired();
     final pref = await SharedPreferences.getInstance();
     final isFirstLaunch = pref.getBool('isFirstLaunch') ?? true;
-
-    // Check token expiration
-    final token = ref.watch(tokenStateProvider).maybeWhen(
-      data: (token) => token,
-      orElse: () => null,
-    );
-
-    // Assuming you have a method to check if the token is expired
-    final isTokenExpired = await PreferenceUtil.isTokenExpired();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (token != null && !isTokenExpired) {
@@ -44,7 +38,9 @@ class SplashView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(tokenStateProvider, (previous, next) {
-      next.whenData((_) => _navigationBasedOnConditions(context, ref));
+      next.whenData((token) {
+        _navigationBasedOnConditions(context, ref, token);
+      });
     });
 
     return const Scaffold(

@@ -32,3 +32,4 @@ class Product with _$Product {
     required bool available,
   }) = _Product;
 }
+

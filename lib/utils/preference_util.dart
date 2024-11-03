@@ -7,6 +7,7 @@ class PreferenceUtil {
   static const String _tokenExpiry = 'TokenExpiry';
   static const String _isFirstTime = 'isFirstTime';
   static const String _isFirstAllowLocation = 'isFirstAllowLocation';
+  static const String _favorites = 'favorites';
 
   // Store the authentication token and its expiration
   static Future<bool> setAuthToken(String token) async {
@@ -70,5 +71,31 @@ class PreferenceUtil {
   static Future<bool> setIsFirstAllowLocation(bool isFirstAllowLocation) async {
     final pref = await SharedPreferences.getInstance();
     return pref.setBool(_isFirstAllowLocation, isFirstAllowLocation);
+  }
+
+  // Methods to manage favorite products
+  static Future<bool> addFavorite(String productId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favorites = prefs.getStringList(_favorites) ?? [];
+    if (!favorites.contains(productId)) {
+      favorites.add(productId);
+      return await prefs.setStringList(_favorites, favorites);
+    }
+    return false; // Already exists
+  }
+
+  static Future<bool> removeFavorite(String productId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favorites = prefs.getStringList(_favorites) ?? [];
+    if (favorites.contains(productId)) {
+      favorites.remove(productId);
+      return await prefs.setStringList(_favorites, favorites);
+    }
+    return false; // Not found
+  }
+
+  static Future<List<String>> getFavorites() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_favorites) ?? [];
   }
 }

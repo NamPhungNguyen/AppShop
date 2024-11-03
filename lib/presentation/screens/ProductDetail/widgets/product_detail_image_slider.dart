@@ -8,22 +8,20 @@ import '../../../commom/widgets/Appbar/appbar.dart';
 import '../../../commom/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
 import '../../../commom/widgets/icons/circular_icon.dart';
 import '../../../commom/widgets/images/round_image.dart';
-import 'full_image_view.dart'; // Import the new full image view
+import 'full_image_view.dart';
 
 class TProductImageSlider extends StatefulWidget {
   final Product product;
 
-  const TProductImageSlider({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
+  const TProductImageSlider({Key? key, required this.product})
+      : super(key: key);
 
   @override
   _TProductImageSliderState createState() => _TProductImageSliderState();
 }
 
 class _TProductImageSliderState extends State<TProductImageSlider> {
-  int _selectedImageIndex = 0; // Track the currently selected image index
+  int _selectedImageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,25 +37,19 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
                   MaterialPageRoute(
                     builder: (_) => FullImageView(
                       imageUrls: widget.product.imgProduct,
-                      // Pass all image URLs
-                      initialIndex:
-                          _selectedImageIndex, // Pass the selected index
+                      initialIndex: _selectedImageIndex,
                     ),
                   ),
                 );
               },
               child: SizedBox(
                 height: 400,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.all(AppSizes.productImageRadius * 2),
-                  child: Center(
-                    child: Image.network(
-                      widget.product.imgProduct.isNotEmpty
-                          ? widget.product.imgProduct[_selectedImageIndex]
-                          : 'placeholder_image_url',
-                      fit: BoxFit.cover,
-                    ),
+                child: Center(
+                  child: Image.network(
+                    widget.product.imgProduct.isNotEmpty
+                        ? widget.product.imgProduct[_selectedImageIndex]
+                        : 'placeholder_image_url',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -86,7 +78,7 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
                       width: 80,
                       height: 80,
                       backgroundColor: Colors.white,
-                      padding: const EdgeInsets.all(AppSizes.sm),
+                      padding: const EdgeInsets.all(AppSizes.xs),
                       border: Border.all(
                         color: _selectedImageIndex == index
                             ? AppColors.primaryColor

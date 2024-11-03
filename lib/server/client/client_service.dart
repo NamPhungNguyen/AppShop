@@ -151,4 +151,25 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> addProductToFavorites(String productId) async {
+    final res = await clientApi.addProductToFavorites(
+        await Util.createAuthorization(), productId);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> removeProductToFavorites(String productId) async {
+    final res = await clientApi.removeProductToFavorites(
+        await Util.createAuthorization(), productId);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<List<ProductEntity>> fetchAllProductToFavorites() async {
+    final res = await clientApi
+        .fetchAllProductToFavorites(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

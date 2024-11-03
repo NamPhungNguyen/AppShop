@@ -12,6 +12,7 @@ import 'package:front_shop/domain/usecases/signup_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/user_usecase.dart';
 import 'package:front_shop/domain/usecases/user_usecase_impl.dart';
 import 'package:front_shop/server/data/providers/category_repository_provider.dart';
+import 'package:front_shop/server/data/providers/favorite_repository_provider.dart';
 import 'package:front_shop/server/data/providers/location_repository_provider.dart';
 import 'package:front_shop/server/data/providers/login_repository_provider.dart';
 import 'package:front_shop/server/data/providers/product_repository_provider.dart';
@@ -41,4 +42,8 @@ final categoryUsecaseProvider = Provider<CategoryUsecase>(
 
 final productUsecaseProvider = Provider<ProductUsecase>(
   (ref) => ProductUsecaseImpl(ref.watch(productRepositoryProvider)),
+);
+
+final favoriteUsecaseProvider = Provider<ProductUsecase>(
+  (ref) => ProductUsecaseImpl(ref.watch(favoriteRepositoryProvider)),
 );
