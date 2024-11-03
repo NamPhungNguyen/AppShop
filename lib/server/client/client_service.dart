@@ -172,4 +172,25 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> createCartForUser() async {
+    final res =
+        await clientApi.createCartForUser(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> addProductToCart(
+      int productId, int quantity, String color, String size) async {
+    Map<String, dynamic> body = {
+      'productId': productId,
+      'quantity': quantity,
+      'color': color,
+      'size': size
+    };
+    final res = await clientApi.addProductToCart(
+        await Util.createAuthorization(), body);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

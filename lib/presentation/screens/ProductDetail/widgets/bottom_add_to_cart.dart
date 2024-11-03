@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/presentation/commom/widgets/images/round_image.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 
 import '../../../../domain/models/product.dart';
+import '../../../../main.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../commom/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../commom/widgets/texts/product_price_text.dart';
 
-class TBottomAddToCart extends StatelessWidget {
+class TBottomAddToCart extends ConsumerWidget {
   final Product product;
 
   const TBottomAddToCart({Key? key, required this.product}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.defaultSpace,
         vertical: AppSizes.defaultSpace / 2,
       ),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.light,
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(AppSizes.cardRadiusLg),
           topRight: Radius.circular(AppSizes.cardRadiusLg),
         ),
       ),
       child: ElevatedButton(
         onPressed: () {
-          _showAddToCartOptions(context);
+          _showAddToCartOptions(context, ref);
         },
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.all(AppSizes.md),
@@ -40,7 +43,7 @@ class TBottomAddToCart extends StatelessWidget {
     );
   }
 
-  void _showAddToCartOptions(BuildContext context) {
+  void _showAddToCartOptions(BuildContext context, WidgetRef ref) {
     final selectedColorNotifier = ValueNotifier<String?>(null);
     final selectedSizeNotifier = ValueNotifier<String?>(null);
     final quantityNotifier = ValueNotifier<int>(1);
@@ -54,8 +57,8 @@ class TBottomAddToCart extends StatelessWidget {
             originalPrice * (1 - discountPercentage / 100);
         return Padding(
           padding:
-          const EdgeInsets.symmetric(horizontal: AppSizes.spaceBtwItems)
-              .copyWith(bottom: AppSizes.spaceBtwItems),
+              const EdgeInsets.symmetric(horizontal: AppSizes.spaceBtwItems)
+                  .copyWith(bottom: AppSizes.spaceBtwItems),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -73,8 +76,8 @@ class TBottomAddToCart extends StatelessWidget {
                     children: [
                       ProductPriceText(
                         price: (discountPercentage > 0
-                            ? discountedPrice
-                            : originalPrice)
+                                ? discountedPrice
+                                : originalPrice)
                             .toStringAsFixed(2),
                         isLarge: true,
                       ),
@@ -86,8 +89,8 @@ class TBottomAddToCart extends StatelessWidget {
                                 .textTheme
                                 .titleSmall!
                                 .apply(
-                                decoration: TextDecoration.lineThrough,
-                                color: AppColors.tertiaryText),
+                                    decoration: TextDecoration.lineThrough,
+                                    color: AppColors.tertiaryText),
                           ),
                           const SizedBox(width: AppSizes.spaceBtwItems),
                           TRoundedContainer(
@@ -126,8 +129,8 @@ class TBottomAddToCart extends StatelessWidget {
                           selectedColorNotifier.value = colorOption;
                         },
                         child: Container(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: selectedColor == colorOption
@@ -239,8 +242,31 @@ class TBottomAddToCart extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Handle Buy Now action with selected options
+                  onPressed: () async {
+                    final selectedColor = selectedColorNotifier.value;
+                    final selectedSize = selectedSizeNotifier.value;
+                    final quantity = quantityNotifier.value;
+
+                    if (selectedColor != null && selectedSize != null) {
+                      await ref
+                          .read(cartStateProvider.notifier)
+                          .addProductToCart(product.productId, quantity,
+                              selectedColor, selectedSize);
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: 'Product added to cart!',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: 'Please select a color and size.',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(AppSizes.md),

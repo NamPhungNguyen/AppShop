@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/usecases/cart_usecase.dart';
+import 'package:front_shop/domain/usecases/cart_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/category_usecase.dart';
 import 'package:front_shop/domain/usecases/category_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/location_usecase.dart';
@@ -11,6 +13,7 @@ import 'package:front_shop/domain/usecases/signup_usecase.dart';
 import 'package:front_shop/domain/usecases/signup_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/user_usecase.dart';
 import 'package:front_shop/domain/usecases/user_usecase_impl.dart';
+import 'package:front_shop/server/data/providers/cart_repository_provider.dart';
 import 'package:front_shop/server/data/providers/category_repository_provider.dart';
 import 'package:front_shop/server/data/providers/favorite_repository_provider.dart';
 import 'package:front_shop/server/data/providers/location_repository_provider.dart';
@@ -46,4 +49,8 @@ final productUsecaseProvider = Provider<ProductUsecase>(
 
 final favoriteUsecaseProvider = Provider<ProductUsecase>(
   (ref) => ProductUsecaseImpl(ref.watch(favoriteRepositoryProvider)),
+);
+
+final cartUsecaseProvider = Provider<CartUsecase>(
+  (ref) => CartUsecaseImpl(ref.watch(cartRepositoryProvider)),
 );

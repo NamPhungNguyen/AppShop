@@ -10,6 +10,7 @@ import 'package:front_shop/presentation/screens/Menu/Account/widgets/profile_men
 import '../../../../main.dart';
 import '../../../../utils/assets_path_util.dart';
 import '../../../../utils/constants/sizes.dart';
+import '../../../../utils/preference_util.dart';
 import '../../../commom/widgets/Appbar/appbar.dart';
 import '../../../commom/widgets/custom_shapes/containers/section_heading.dart';
 import '../../../commom/widgets/custom_shapes/containers/t_circular_image.dart';
@@ -101,6 +102,8 @@ class ProfileView extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         await ref.read(loginStateProvider.notifier).logout();
+                        await PreferenceUtil.clearUserData();
+
                         Navigator.pushNamed(context, LoginView.routeName);
                         Fluttertoast.showToast(
                           msg: 'Logged out successfully!',

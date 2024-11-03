@@ -84,6 +84,17 @@ abstract class ClientApi {
   Future<HttpResponse<List<ProductEntity>>> fetchAllProductToFavorites(
     @Header("Authorization") authorization,
   );
+
+  @POST('/cart/create')
+  Future<HttpResponse<void>> createCartForUser(
+    @Header("Authorization") authorization,
+  );
+
+  @POST('/cart/add-item-to-cart')
+  Future<HttpResponse<void>> addProductToCart(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
 }
 
 final clientApi = ClientApi(

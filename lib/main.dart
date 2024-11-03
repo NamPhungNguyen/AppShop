@@ -17,6 +17,7 @@ import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
 
 import 'domain/models/login.dart';
+import 'domain/states/cart_state.dart';
 import 'domain/states/login_state.dart';
 
 // TokenState provider
@@ -70,6 +71,10 @@ final homeStateProvider =
 final favoriteStateProvider =
     StateNotifierProvider<FavoriteState, AsyncValue<List<Product>>>(
   (ref) => FavoriteState(ref),
+);
+
+final cartStateProvider = StateNotifierProvider<CartState, AsyncValue<void>>(
+  (ref) => CartState(ref),
 );
 
 void main() async {

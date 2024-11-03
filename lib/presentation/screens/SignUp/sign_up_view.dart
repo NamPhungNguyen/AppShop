@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/presentation/commom/widgets/Appbar/appbar.dart';
-import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
+
 import '../../../main.dart';
 import '../../commom/widgets/Button/button_primary.dart';
 import '../../commom/widgets/Dialog/base_dialog_view.dart';
@@ -96,9 +97,10 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
       next.when(
         data: (signup) {
           setState(() {
-            isLoading = false; // Stop loading on success
+            isLoading = false;
           });
-          Navigator.of(context).pop(); // Dismiss loading dialog
+          Navigator.of(context).pop();
+
           BaseDialogView(
             titleDialog: "Signup Successful!",
             imageDialog: AssetsPathUtil.dialog("checkmark.png"),
@@ -117,7 +119,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
             isLoading = false;
           });
           String errorMessage =
-          error.toString().replaceFirst('Exception: ', '');
+              error.toString().replaceFirst('Exception: ', '');
           Fluttertoast.showToast(
             msg: errorMessage,
             toastLength: Toast.LENGTH_SHORT,
@@ -142,110 +144,110 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
         child: isLoading
             ? Center(child: CircularProgressIndicator()) // Show loader
             : ListView(
-          children: [
-            Padding(
-              padding:
-              const EdgeInsets.only(bottom: AppSizes.spaceBtwItems),
-              child: Text(
-                "Create an\naccount",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(fontSize: 32),
-              ),
-            ),
-            InputFieldPrimary(
-              labelText: 'Username',
-              controller: usernameController,
-              icon: const Icon(Iconsax.user),
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'Email',
-              controller: emailController,
-              icon: const Icon(Icons.email_outlined),
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'First Name',
-              controller: fullNameController,
-              icon: const Icon(Iconsax.personalcard),
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'Phone',
-              controller: phoneNumberController,
-              icon: const Icon(Iconsax.mobile),
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'Password',
-              isPassword: true,
-              controller: passwordController,
-              icon: const Icon(Icons.lock),
-              textInputAction: TextInputAction.next,
-            ),
-            const SizedBox(height: AppSizes.md),
-            InputFieldPrimary(
-              labelText: 'Confirm Password',
-              isPassword: true,
-              controller: repeatPasswordController,
-              icon: const Icon(Icons.lock),
-              textInputAction: TextInputAction.done,
-            ),
-
-            /// privacy
-            Row(
-              children: [
-                Checkbox(
-                  value: isPrivacyChecked,
-                  onChanged: (bool? newValue) {
-                    setState(() {
-                      isPrivacyChecked = newValue ?? false;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Text.rich(
-                    TextSpan(
-                      text: "I agree to the ",
-                      style: const TextStyle(color: Color(0xFF676767)),
-                      children: [
-                        TextSpan(
-                          text: "Privacy Policy",
-                          style:
-                          const TextStyle(color: AppColors.primaryColor),
-                          recognizer: TapGestureRecognizer()..onTap = () {},
-                        ),
-                      ],
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: AppSizes.spaceBtwItems),
+                    child: Text(
+                      "Create an\naccount",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontSize: 32),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  InputFieldPrimary(
+                    labelText: 'Username',
+                    controller: usernameController,
+                    icon: const Icon(Iconsax.user),
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  InputFieldPrimary(
+                    labelText: 'Email',
+                    controller: emailController,
+                    icon: const Icon(Icons.email_outlined),
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  InputFieldPrimary(
+                    labelText: 'First Name',
+                    controller: fullNameController,
+                    icon: const Icon(Iconsax.personalcard),
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  InputFieldPrimary(
+                    labelText: 'Phone',
+                    controller: phoneNumberController,
+                    icon: const Icon(Iconsax.mobile),
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  InputFieldPrimary(
+                    labelText: 'Password',
+                    isPassword: true,
+                    controller: passwordController,
+                    icon: const Icon(Icons.lock),
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  InputFieldPrimary(
+                    labelText: 'Confirm Password',
+                    isPassword: true,
+                    controller: repeatPasswordController,
+                    icon: const Icon(Icons.lock),
+                    textInputAction: TextInputAction.done,
+                  ),
 
-            /// button
-            Padding(
-              padding: const EdgeInsets.only(top: 22),
-              child: ButtonPrimary(
-                text: "Create Account",
-                onPressed: () {
-                  if (_validateInputs()) {
-                    ref.read(signUpStateProvider.notifier).signUp(
-                      usernameController.text.trim(),
-                      passwordController.text.trim(),
-                      emailController.text.trim(),
-                      fullNameController.text.trim(),
-                      phoneNumberController.text.trim(),
-                    );
-                  }
-                },
+                  /// privacy
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: isPrivacyChecked,
+                        onChanged: (bool? newValue) {
+                          setState(() {
+                            isPrivacyChecked = newValue ?? false;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            text: "I agree to the ",
+                            style: const TextStyle(color: Color(0xFF676767)),
+                            children: [
+                              TextSpan(
+                                text: "Privacy Policy",
+                                style: const TextStyle(
+                                    color: AppColors.primaryColor),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  /// button
+                  Padding(
+                    padding: const EdgeInsets.only(top: 22),
+                    child: ButtonPrimary(
+                      text: "Create Account",
+                      onPressed: () {
+                        if (_validateInputs()) {
+                          ref.read(signUpStateProvider.notifier).signUp(
+                                usernameController.text.trim(),
+                                passwordController.text.trim(),
+                                emailController.text.trim(),
+                                fullNameController.text.trim(),
+                                phoneNumberController.text.trim(),
+                              );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
 }
-

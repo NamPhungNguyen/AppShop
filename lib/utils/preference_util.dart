@@ -98,4 +98,11 @@ class PreferenceUtil {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(_favorites) ?? [];
   }
+
+  static Future<void> clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_authToken); // Remove the auth token
+    await prefs.remove(_tokenExpiry); // Remove the token expiry
+    await prefs.remove('userId'); // Remove the user ID
+  }
 }

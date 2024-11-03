@@ -9,6 +9,7 @@ import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../domain/domain_modules.dart';
 import '../../../main.dart';
 import '../../../utils/preference_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
@@ -33,14 +34,12 @@ class LoginView extends ConsumerWidget {
           if (updatedLogin.result.authenticated) {
             PreferenceUtil.setAuthToken(updatedLogin.result.token);
 
-            // Check if this is the first login
             bool isFirstLogin = await PreferenceUtil.getIsFirstAllowLocation();
             if (isFirstLogin) {
-              // Navigate to Allow Location screen and set first login to false
               await Navigator.pushNamed(context, AllowLocationView.routeName);
               await PreferenceUtil.setIsFirstAllowLocation(false);
             } else {
-              // Navigate directly to Home screen
+              await createCartForUser(ref);
               Navigator.pushNamed(context, BottomBar.routeName);
             }
 
@@ -109,9 +108,9 @@ class LoginView extends ConsumerWidget {
                 child: Text(
                   "Forgot password?",
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    fontSize: 16,
-                    color: AppColors.primaryColor,
-                  ),
+                        fontSize: 16,
+                        color: AppColors.primaryColor,
+                      ),
                 ),
               ),
             ),
@@ -135,12 +134,10 @@ class LoginView extends ConsumerWidget {
                         );
                         return;
                       }
-                      ref
-                          .read(loginStateProvider.notifier)
-                          .login(
-                        emailController.text,
-                        passwordController.text,
-                      );
+                      ref.read(loginStateProvider.notifier).login(
+                            emailController.text,
+                            passwordController.text,
+                          );
                     },
                   ),
               ],
@@ -154,5 +151,20 @@ class LoginView extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> createCartForUser(WidgetRef ref) async {
+    try {
+      final cartUsecase = ref.read(cartUsecaseProvider);
+      await cartUsecase.createCartForUser();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Failed to create cart: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
   }
 }
