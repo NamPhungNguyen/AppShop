@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../commom/widgets/products/cart/add_remove_button.dart';
 import '../../../../commom/widgets/products/cart/cart_item.dart';
 import '../../../../commom/widgets/texts/product_price_text.dart';
 
 class TCartItems extends StatelessWidget {
-  const TCartItems({super.key,  this.showAddRemoveButtons = true});
+  const TCartItems({super.key, this.showAddRemoveButtons = true});
 
   final bool showAddRemoveButtons;
 
@@ -16,7 +17,7 @@ class TCartItems extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(
         height: AppSizes.spaceBtwSections,
       ),
-      itemCount: 2,
+      itemCount: 3,
       itemBuilder: (_, index) => Column(
         children: [
           /// cart items
@@ -37,8 +38,9 @@ class TCartItems extends StatelessWidget {
                     TProductQuantityWithAddRemoveButton(),
                   ],
                 ),
+
                 /// product total price
-                ProductPriceText(price: '256'),
+                ProductPriceText(price: '256', isLarge: true),
               ],
             )
         ],

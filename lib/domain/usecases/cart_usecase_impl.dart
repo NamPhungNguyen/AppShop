@@ -1,3 +1,5 @@
+import 'package:front_shop/domain/models/cart_product.dart';
+import 'package:front_shop/domain/translator/cart_product_translator.dart';
 import 'package:front_shop/domain/usecases/cart_usecase.dart';
 import 'package:front_shop/server/data/repository/cart_repository.dart';
 
@@ -16,5 +18,11 @@ class CartUsecaseImpl implements CartUsecase {
       int productId, int quantity, String color, String size) async {
     return await _cartRepository.addProductToCart(
         productId, quantity, color, size);
+  }
+
+  @override
+  Future<CartProducts> fetchCartUser() async {
+    final entity = await _cartRepository.fetchCartUser();
+    return CartProductTranslator.translateAll(entity);
   }
 }

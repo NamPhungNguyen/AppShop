@@ -9,6 +9,8 @@ import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:front_shop/utils/header_token.dart';
 
+import '../data/entities/cart_product_entity.dart';
+
 class ClientService {
   factory ClientService() => _instance;
 
@@ -190,6 +192,12 @@ class ClientService {
     };
     final res = await clientApi.addProductToCart(
         await Util.createAuthorization(), body);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<CartProductsEntity> fetchCartUser() async {
+    final res = await clientApi.fetchCartUser(await Util.createAuthorization());
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

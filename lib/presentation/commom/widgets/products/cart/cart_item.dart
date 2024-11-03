@@ -41,7 +41,8 @@ class TCartItem extends StatelessWidget {
                     text: 'Green',
                     style: Theme.of(context).textTheme.bodyLarge),
                 TextSpan(
-                    text: ' Size ', style: Theme.of(context).textTheme.bodySmall),
+                    text: ' Size ',
+                    style: Theme.of(context).textTheme.bodySmall),
                 TextSpan(
                     text: 'XXL', style: Theme.of(context).textTheme.bodyLarge),
               ]))

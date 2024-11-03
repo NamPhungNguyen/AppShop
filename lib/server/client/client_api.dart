@@ -7,6 +7,8 @@ import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../data/entities/cart_product_entity.dart';
+
 part 'client_api.g.dart';
 
 @RestApi(baseUrl: "")
@@ -94,6 +96,11 @@ abstract class ClientApi {
   Future<HttpResponse<void>> addProductToCart(
     @Header("Authorization") authorization,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/cart/fetch-cart')
+  Future<HttpResponse<CartProductsEntity>> fetchCartUser(
+    @Header("Authorization") authorization,
   );
 }
 

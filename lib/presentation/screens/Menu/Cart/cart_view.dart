@@ -12,17 +12,20 @@ class CartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TAppbar(title: Text("Cart", style: Theme.of(context).textTheme.headlineSmall)),
-      body: Padding(
+      appBar: TAppbar(
+          title:
+              Text("Cart", style: Theme.of(context).textTheme.headlineSmall)),
+      body: const Padding(
         padding: EdgeInsets.all(AppSizes.defaultSpace),
         child: TCartItems(),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
-        child:
-            ElevatedButton(onPressed: () {
+        child: ElevatedButton(
+            onPressed: () {
               Navigator.pushNamed(context, CheckoutView.routeName);
-            }, child: Text('Checkout \$256.0')),
+            },
+            child: Text('Checkout \$256.0')),
       ),
     );
   }
