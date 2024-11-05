@@ -102,6 +102,12 @@ abstract class ClientApi {
   Future<HttpResponse<CartProductsEntity>> fetchCartUser(
     @Header("Authorization") authorization,
   );
+
+  @DELETE('/cart/items/{cartId}')
+  Future<HttpResponse<void>> deleteProductFromCart(
+    @Header("Authorization") authorization,
+    @Path("cartId") String cartId,
+  );
 }
 
 final clientApi = ClientApi(

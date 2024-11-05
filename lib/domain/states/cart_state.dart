@@ -1,31 +1,60 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/domain_modules.dart';
+import 'package:front_shop/domain/models/cart_product.dart';
 
-class CartState extends StateNotifier<AsyncValue<void>> {
-  final StateNotifierProviderRef _ref;
+class CartState extends StateNotifier<AsyncValue<CartProducts>> {
+  final Ref _ref;
 
-  CartState(this._ref) : super(const AsyncData(null));
+  CartState(this._ref) : super(const AsyncData(CartProducts(result: []))) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await fetchCartUser();
+  }
 
   Future<void> createCartForUser() async {
     state = const AsyncLoading();
     try {
-      final cartUsecase = await _ref.read(cartUsecaseProvider);
+      final cartUsecase = _ref.read(cartUsecaseProvider);
       await cartUsecase.createCartForUser();
-      state = const AsyncData(null);
-    } catch (error) {
-      state = AsyncError(error, StackTrace.current);
+      state = const AsyncData(CartProducts(result: []));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
     }
   }
 
   Future<void> addProductToCart(
       int productId, int quantity, String color, String size) async {
-    state = const AsyncLoading(); // Set state to loading
+    state = const AsyncLoading();
     try {
-      final cartUsecase = await _ref.read(cartUsecaseProvider);
+      final cartUsecase = _ref.read(cartUsecaseProvider);
       await cartUsecase.addProductToCart(productId, quantity, color, size);
-      state = const AsyncData(null); // Set state to success
-    } catch (error) {
-      state = AsyncError(error, StackTrace.current); // Set state to error
+      await fetchCartUser();
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
+  }
+
+  Future<void> deleteProductFromCart(String cartId) async {
+    state = const AsyncLoading();
+    try {
+      final cartUsecase = _ref.read(cartUsecaseProvider);
+      await cartUsecase.deleteProductFromCart(cartId);
+      await fetchCartUser();
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
+  }
+
+  Future<void> fetchCartUser() async {
+    state = const AsyncLoading();
+    try {
+      final cartUsecase = _ref.read(cartUsecaseProvider);
+      final cartProducts = await cartUsecase.fetchCartUser();
+      state = AsyncData(cartProducts);
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
     }
   }
 }

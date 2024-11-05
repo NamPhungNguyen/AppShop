@@ -4,8 +4,8 @@ import 'package:front_shop/presentation/commom/widgets/custom_shapes/containers/
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_address_section.dart';
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_amount_section.dart';
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_payment_section.dart';
-import 'package:front_shop/presentation/screens/Menu/Cart/widgets/cart_items.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
+
 import '../../commom/widgets/products/cart/coupon_widget.dart';
 
 class CheckoutView extends StatelessWidget {
@@ -17,16 +17,17 @@ class CheckoutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TAppbar(
-          showBackArrow: true,
-          title: Text('Order Review',
-              style: Theme.of(context).textTheme.headlineSmall)),
+        showBackArrow: true,
+        title: Text('Order summary',
+            style: Theme.of(context).textTheme.headlineSmall),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
               /// items in cart
-              TCartItems(showAddRemoveButtons: false),
+              // TCartItems(showAddRemoveButtons: false),
               SizedBox(height: AppSizes.spaceBtwSections),
 
               /// coupon textField
@@ -43,6 +44,7 @@ class CheckoutView extends StatelessWidget {
                     /// pricing
                     TBillingAmountSection(),
                     const SizedBox(height: AppSizes.spaceBtwItems),
+
                     /// divider
                     const Divider(),
                     const SizedBox(height: AppSizes.spaceBtwItems),
@@ -53,7 +55,6 @@ class CheckoutView extends StatelessWidget {
 
                     ///address
                     TBillingAddressSection(),
-
                   ],
                 ),
               )
@@ -63,13 +64,12 @@ class CheckoutView extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
-        child:
-        ElevatedButton(onPressed: () {
-          Navigator.pushNamed(context, CheckoutView.routeName);
-        }, child: Text('Checkout \$256.0')),
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, CheckoutView.routeName);
+            },
+            child: Text('Checkout \$256.0')),
       ),
     );
   }
 }
-
-

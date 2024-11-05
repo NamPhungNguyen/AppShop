@@ -25,4 +25,9 @@ class CartUsecaseImpl implements CartUsecase {
     final entity = await _cartRepository.fetchCartUser();
     return CartProductTranslator.translateAll(entity);
   }
+
+  @override
+  Future<void> deleteProductFromCart(String cartId) async {
+    return await _cartRepository.deleteProductFromCart(cartId);
+  }
 }

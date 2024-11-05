@@ -24,4 +24,9 @@ class CartRepositoryImpl implements CartRepository {
   Future<CartProductsEntity> fetchCartUser() async {
     return await _clientService.fetchCartUser();
   }
+
+  @override
+  Future<void> deleteProductFromCart(String cartId) async {
+    return await _clientService.deleteProductFromCart(cartId);
+  }
 }

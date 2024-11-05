@@ -7,4 +7,6 @@ abstract class CartRepository {
       int productId, int quantity, String color, String size);
 
   Future<CartProductsEntity> fetchCartUser();
+
+  Future<void> deleteProductFromCart(String cartId);
 }

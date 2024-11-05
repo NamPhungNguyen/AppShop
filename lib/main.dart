@@ -16,6 +16,7 @@ import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
 
+import 'domain/models/cart_product.dart';
 import 'domain/models/login.dart';
 import 'domain/states/cart_state.dart';
 import 'domain/states/login_state.dart';
@@ -73,7 +74,8 @@ final favoriteStateProvider =
   (ref) => FavoriteState(ref),
 );
 
-final cartStateProvider = StateNotifierProvider<CartState, AsyncValue<void>>(
+final cartStateProvider =
+    StateNotifierProvider<CartState, AsyncValue<CartProducts>>(
   (ref) => CartState(ref),
 );
 

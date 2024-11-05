@@ -8,14 +8,18 @@ class TSingleAddress extends StatelessWidget {
   const TSingleAddress({super.key, required this.selectedAddress});
 
   final bool selectedAddress;
+
   @override
   Widget build(BuildContext context) {
     return TRoundedContainer(
       padding: const EdgeInsets.all(AppSizes.md),
       width: double.infinity,
       showBorder: true,
-      backgroundColor: selectedAddress ? AppColors.primaryColor.withOpacity(0.5) : Colors.transparent,
-      borderColor: selectedAddress ? Colors.transparent : AppColors.borderPrimary,
+      backgroundColor: selectedAddress
+          ? AppColors.primaryColor.withOpacity(0.5)
+          : Colors.transparent,
+      borderColor:
+          selectedAddress ? Colors.transparent : AppColors.borderPrimary,
       margin: const EdgeInsets.only(bottom: AppSizes.spaceBtwItems),
       child: Stack(
         children: [
@@ -31,15 +35,18 @@ class TSingleAddress extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "8245, Ha Noi, viet name, user",
+                "Nguyen Phung Nam",
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSizes.sm / 2),
-              const Text('+123 456 789', maxLines: 1, overflow: TextOverflow.ellipsis),
+              const Text('+123 456 789',
+                  maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(height: AppSizes.sm / 2),
-              const Text("8232 Timy Coves, South Liana, Maine, 98343, USA", softWrap: true),
+              const Text(
+                  "91 P.Luong Dinh Cua, số nhà 4(nhà may quần áo), nghách 30, ngõ 91 phố lương định của, phương mai, đống đa, hà nội",
+                  softWrap: true),
             ],
           )
         ],

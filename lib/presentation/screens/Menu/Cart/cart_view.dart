@@ -1,31 +1,188 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/commom/widgets/Appbar/appbar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
-import 'package:front_shop/presentation/screens/Menu/Cart/widgets/cart_items.dart';
-import 'package:front_shop/utils/constants/sizes.dart';
 
-class CartView extends StatelessWidget {
+import '../../../commom/widgets/products/cart/cart_item.dart';
+
+class CartView extends ConsumerStatefulWidget {
   static const String routeName = "/cart_view";
 
   const CartView({super.key});
 
   @override
+  ConsumerState<CartView> createState() => _CartViewState();
+}
+
+class _CartViewState extends ConsumerState<CartView> {
+  List<bool> selectedItems = [];
+  bool selectAll = true;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedItems = [];
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final cartState = ref.watch(cartStateProvider);
+
     return Scaffold(
-      appBar: TAppbar(
-          title:
-              Text("Cart", style: Theme.of(context).textTheme.headlineSmall)),
-      body: const Padding(
-        padding: EdgeInsets.all(AppSizes.defaultSpace),
-        child: TCartItems(),
+      appBar: AppBar(
+        title: Text("Cart", style: Theme.of(context).textTheme.headlineMedium),
+      ),
+      body: cartState.when(
+        data: (cartProducts) {
+          if (selectedItems.length != cartProducts.result.length) {
+            selectedItems =
+                List<bool>.filled(cartProducts.result.length, selectAll);
+          }
+
+          if (cartProducts.result.isEmpty) {
+            return const Center(child: Text("Your cart is empty"));
+          }
+
+          double totalPrice = 0.0;
+          for (int i = 0; i < selectedItems.length; i++) {
+            if (selectedItems[i]) {
+              totalPrice += cartProducts.result[i].price;
+            }
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: selectAll,
+                      onChanged: (value) {
+                        setState(() {
+                          selectAll = value ?? false;
+                          for (int i = 0; i < selectedItems.length; i++) {
+                            selectedItems[i] = selectAll;
+                          }
+                        });
+                      },
+                    ),
+                    const Text("Select All"),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cartProducts.result.length,
+                    itemBuilder: (context, index) {
+                      final product = cartProducts.result[index];
+                      return Dismissible(
+                        key: Key(product.productId.toString()),
+                        background: Container(
+                          color: Colors.red,
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Icon(Icons.delete, color: Colors.white),
+                          ),
+                        ),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) async {
+                          try {
+                            await ref
+                                .read(cartStateProvider.notifier)
+                                .deleteProductFromCart(
+                                    product.cartItemId.toString());
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    "${product.productName} removed from cart"),
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Error removing item: $e"),
+                              ),
+                            );
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedItems[index] = !selectedItems[index];
+                                });
+                              },
+                              child: Container(
+                                width: 24.0,
+                                height: 24.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: selectedItems[index]
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    selectedItems[index] ? Icons.check : null,
+                                    color: selectedItems[index]
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.transparent,
+                                    size: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8.0), // Spacing
+                            Expanded(
+                              child: TCartItem(
+                                imageUrl: product.imageUrl,
+                                title: product.productName,
+                                color: product.color,
+                                size: product.size,
+                              ),
+                            ),
+                            // Display the product price
+                            Text(
+                              '\$${product.price.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // Display total price
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    'Total: \$${totalPrice.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text("Error: $error")),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(AppSizes.defaultSpace),
+        padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, CheckoutView.routeName);
-            },
-            child: Text('Checkout \$256.0')),
+          onPressed: () {
+            Navigator.pushNamed(context, CheckoutView.routeName);
+          },
+          child: Text('Checkout'),
+        ),
       ),
     );
   }

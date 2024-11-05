@@ -201,4 +201,13 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> deleteProductFromCart(String cartId) async {
+    final res = await clientApi.deleteProductFromCart(
+      await Util.createAuthorization(),
+      cartId,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

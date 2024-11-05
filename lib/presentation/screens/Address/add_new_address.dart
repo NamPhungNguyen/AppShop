@@ -27,25 +27,44 @@ class AddNewAddress extends StatelessWidget {
               const SizedBox(height: AppSizes.spaceBtwInputFields),
               TextFormField(
                   decoration: InputDecoration(
-                      prefixIcon: Icon(Iconsax.mobile), labelText: 'Phone Number')),
+                      prefixIcon: Icon(Iconsax.mobile),
+                      labelText: 'Phone Number')),
               const SizedBox(height: AppSizes.spaceBtwInputFields),
               Row(
                 children: [
-                  Expanded(child: TextFormField(decoration: const InputDecoration(prefixIcon: Icon(Iconsax.building_31), labelText: 'Street'))),
+                  Expanded(
+                      child: TextFormField(
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Iconsax.building_31),
+                              labelText: 'Street'))),
                   const SizedBox(width: AppSizes.spaceBtwInputFields),
-                  Expanded(child: TextFormField(decoration: const InputDecoration(prefixIcon: Icon(Iconsax.code), labelText: 'Postal Code'))),
+                  Expanded(
+                      child: TextFormField(
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Iconsax.code),
+                              labelText: 'Postal Code'))),
                 ],
               ),
               const SizedBox(height: AppSizes.spaceBtwInputFields),
               Row(
                 children: [
-                  Expanded(child: TextFormField(decoration: const InputDecoration(prefixIcon: Icon(Iconsax.building), labelText: 'City'))),
+                  Expanded(
+                      child: TextFormField(
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Iconsax.building),
+                              labelText: 'City'))),
                   const SizedBox(width: AppSizes.spaceBtwInputFields),
-                  Expanded(child: TextFormField(decoration: const InputDecoration(prefixIcon: Icon(Iconsax.activity), labelText: 'State'))),
+                  Expanded(
+                      child: TextFormField(
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(Iconsax.activity),
+                              labelText: 'State'))),
                 ],
               ),
               const SizedBox(height: AppSizes.spaceBtwInputFields),
-              SizedBox(width: double.infinity, child: ElevatedButton(onPressed: (){}, child: Text('Save')))
+              SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(onPressed: () {}, child: Text('Save')))
             ],
           )),
         ),
