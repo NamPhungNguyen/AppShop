@@ -60,12 +60,6 @@ class AccountView extends ConsumerWidget {
                     },
                   ),
                   SettingsMenuTile(
-                    icon: Iconsax.shopping_cart,
-                    title: "My cart",
-                    subTitle: 'Add, remove products and move to checkout',
-                    opTap: () {},
-                  ),
-                  SettingsMenuTile(
                     icon: Iconsax.bag_tick,
                     title: "My orders",
                     subTitle: 'In process and Completed Orders',

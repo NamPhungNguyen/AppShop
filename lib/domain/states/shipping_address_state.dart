@@ -8,7 +8,7 @@ class ShippingAddressState
 
   ShippingAddressState(this._ref) : super(const AsyncValue.loading());
 
-  Future<void> fetchAllShippingAdress() async {
+  Future<void> fetchAllShippingAddress() async {
     state = const AsyncValue.loading();
     try {
       final shippingAddressUsecase = _ref.watch(shippingAddressUsecaseProvider);
@@ -42,7 +42,7 @@ class ShippingAddressState
         isDefault: isDefault,
       );
 
-      await fetchAllShippingAdress();
+      await fetchAllShippingAddress();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -53,7 +53,7 @@ class ShippingAddressState
     try {
       final shippingAddressUsecase = _ref.watch(shippingAddressUsecaseProvider);
       await shippingAddressUsecase.deleteShippingAddress(addressId);
-      await fetchAllShippingAdress();
+      await fetchAllShippingAddress();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -64,7 +64,37 @@ class ShippingAddressState
     try {
       final shippingAddressUsecase = _ref.watch(shippingAddressUsecaseProvider);
       await shippingAddressUsecase.setDefaultShippingAddress(addressId);
-      await fetchAllShippingAdress();
+      await fetchAllShippingAddress();
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> updateShippingAddress(
+    String addressId,
+    String fullName,
+    String phoneNumber,
+    String addressDetail,
+    String province,
+    String city, {
+    String? additionAddress,
+    bool? isDefault,
+  }) async {
+    state = const AsyncValue.loading();
+    try {
+      final shippingAddressUsecase = _ref.watch(shippingAddressUsecaseProvider);
+      await shippingAddressUsecase.updateShippingAddress(
+        addressId,
+        fullName,
+        phoneNumber,
+        addressDetail,
+        province,
+        city,
+        additionAddress: additionAddress,
+        isDefault: isDefault,
+      );
+
+      await fetchAllShippingAddress();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

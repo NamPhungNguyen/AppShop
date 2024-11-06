@@ -9,7 +9,7 @@ class ShippingAddress with _$ShippingAddress {
     required String fullName,
     required String phoneNumber,
     required String addressDetail,
-    required String additionalAddress,
+    String? additionalAddress,
     required String province,
     required String city,
     required String country,

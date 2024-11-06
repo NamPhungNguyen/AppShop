@@ -17,6 +17,7 @@ import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 
 import '../../../domain/models/product.dart';
 import '../Address/address_view.dart';
+import '../Address/update_address.dart';
 import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
 import '../Menu/Account/update_email.dart';
@@ -45,9 +46,11 @@ class MainView {
       case ForgotPasswordView.routeName:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case ForgotPasswordCodeView.routeName:
-        return MaterialPageRoute(builder: (_) => const ForgotPasswordCodeView());
+        return MaterialPageRoute(
+            builder: (_) => const ForgotPasswordCodeView());
       case ForgotCreateNewPasswordView.routeName:
-        return MaterialPageRoute(builder: (_) => const ForgotCreateNewPasswordView());
+        return MaterialPageRoute(
+            builder: (_) => const ForgotCreateNewPasswordView());
       case AllowLocationView.routeName:
         return MaterialPageRoute(builder: (_) => const AllowLocationView());
       case EnterYourLocationView.routeName:
@@ -75,6 +78,8 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const AddressView());
       case AddNewAddress.routeName:
         return MaterialPageRoute(builder: (_) => const AddNewAddress());
+      case UpdateAddress.routeName:
+        return MaterialPageRoute(builder: (_) => const UpdateAddress());
       case OrderView.routeName:
         return MaterialPageRoute(builder: (_) => const OrderView());
       case UpdateProfileNameView.routeName:
@@ -82,7 +87,8 @@ class MainView {
       case UpdatePhoneNumberView.routeName:
         return MaterialPageRoute(builder: (_) => const UpdatePhoneNumberView());
       case UpdateProfileEmailView.routeName:
-        return MaterialPageRoute(builder: (_) => const UpdateProfileEmailView());
+        return MaterialPageRoute(
+            builder: (_) => const UpdateProfileEmailView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

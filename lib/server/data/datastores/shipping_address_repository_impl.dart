@@ -43,4 +43,20 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
   Future<void> setDefaultShippingAddress(String addressId) async {
     return await _clientService.setDefaultShippingAddress(addressId);
   }
+
+  @override
+  Future<void> updateShippingAddress(String addressId, String fullName,
+      String phoneNumber, String addressDetail, String province, String city,
+      {String? additionAddress, bool? isDefault}) async {
+    return await _clientService.updateShippingAddress(
+      addressId,
+      fullName,
+      phoneNumber,
+      addressDetail,
+      province,
+      city,
+      additionAddress: additionAddress,
+      isDefault: isDefault,
+    );
+  }
 }

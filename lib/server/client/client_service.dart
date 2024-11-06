@@ -268,4 +268,40 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> updateShippingAddress(
+    String addressId,
+    String fullName,
+    String phoneNumber,
+    String addressDetail,
+    String province,
+    String city, {
+    String? additionAddress,
+    bool? isDefault,
+  }) async {
+    Map<String, dynamic> body = {};
+
+    body['fullName'] = fullName;
+    body['phoneNumber'] = phoneNumber;
+    body['addressDetail'] = addressDetail;
+    body['province'] = province;
+    body['city'] = city;
+
+    if (additionAddress != null && additionAddress.isNotEmpty) {
+      body['additionAddress'] = additionAddress;
+    }
+
+    if (isDefault != null) {
+      body['isDefault'] = isDefault;
+    }
+
+    final res = await clientApi.updateShippingAddress(
+      await Util.createAuthorization(),
+      addressId,
+      body,
+    );
+
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

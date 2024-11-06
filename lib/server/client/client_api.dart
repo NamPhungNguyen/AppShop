@@ -132,6 +132,13 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
     @Path("addressId") String addressId,
   );
+
+  @PUT('/shipping-address/update/{addressId}')
+  Future<HttpResponse<void>> updateShippingAddress(
+    @Header("Authorization") authorization,
+    @Path("addressId") String addressId,
+    @Body() Map<String, dynamic> body,
+  );
 }
 
 final clientApi = ClientApi(

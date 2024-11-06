@@ -20,7 +20,7 @@ mixin _$ShippingAddress {
   String get fullName => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   String get addressDetail => throw _privateConstructorUsedError;
-  String get additionalAddress => throw _privateConstructorUsedError;
+  String? get additionalAddress => throw _privateConstructorUsedError;
   String get province => throw _privateConstructorUsedError;
   String get city => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $ShippingAddressCopyWith<$Res> {
       String fullName,
       String phoneNumber,
       String addressDetail,
-      String additionalAddress,
+      String? additionalAddress,
       String province,
       String city,
       String country,
@@ -70,7 +70,7 @@ class _$ShippingAddressCopyWithImpl<$Res, $Val extends ShippingAddress>
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? addressDetail = null,
-    Object? additionalAddress = null,
+    Object? additionalAddress = freezed,
     Object? province = null,
     Object? city = null,
     Object? country = null,
@@ -93,10 +93,10 @@ class _$ShippingAddressCopyWithImpl<$Res, $Val extends ShippingAddress>
           ? _value.addressDetail
           : addressDetail // ignore: cast_nullable_to_non_nullable
               as String,
-      additionalAddress: null == additionalAddress
+      additionalAddress: freezed == additionalAddress
           ? _value.additionalAddress
           : additionalAddress // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       province: null == province
           ? _value.province
           : province // ignore: cast_nullable_to_non_nullable
@@ -130,7 +130,7 @@ abstract class _$$ShippingAddressImplCopyWith<$Res>
       String fullName,
       String phoneNumber,
       String addressDetail,
-      String additionalAddress,
+      String? additionalAddress,
       String province,
       String city,
       String country,
@@ -154,7 +154,7 @@ class __$$ShippingAddressImplCopyWithImpl<$Res>
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? addressDetail = null,
-    Object? additionalAddress = null,
+    Object? additionalAddress = freezed,
     Object? province = null,
     Object? city = null,
     Object? country = null,
@@ -177,10 +177,10 @@ class __$$ShippingAddressImplCopyWithImpl<$Res>
           ? _value.addressDetail
           : addressDetail // ignore: cast_nullable_to_non_nullable
               as String,
-      additionalAddress: null == additionalAddress
+      additionalAddress: freezed == additionalAddress
           ? _value.additionalAddress
           : additionalAddress // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       province: null == province
           ? _value.province
           : province // ignore: cast_nullable_to_non_nullable
@@ -209,7 +209,7 @@ class _$ShippingAddressImpl implements _ShippingAddress {
       required this.fullName,
       required this.phoneNumber,
       required this.addressDetail,
-      required this.additionalAddress,
+      this.additionalAddress,
       required this.province,
       required this.city,
       required this.country,
@@ -224,7 +224,7 @@ class _$ShippingAddressImpl implements _ShippingAddress {
   @override
   final String addressDetail;
   @override
-  final String additionalAddress;
+  final String? additionalAddress;
   @override
   final String province;
   @override
@@ -282,7 +282,7 @@ abstract class _ShippingAddress implements ShippingAddress {
       required final String fullName,
       required final String phoneNumber,
       required final String addressDetail,
-      required final String additionalAddress,
+      final String? additionalAddress,
       required final String province,
       required final String city,
       required final String country,
@@ -297,7 +297,7 @@ abstract class _ShippingAddress implements ShippingAddress {
   @override
   String get addressDetail;
   @override
-  String get additionalAddress;
+  String? get additionalAddress;
   @override
   String get province;
   @override

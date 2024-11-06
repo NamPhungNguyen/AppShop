@@ -1,8 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'shipping_address_entity.g.dart';
-
 part 'shipping_address_entity.freezed.dart';
+part 'shipping_address_entity.g.dart';
 
 @freezed
 class ShippingAddressEntity with _$ShippingAddressEntity {
@@ -11,7 +10,7 @@ class ShippingAddressEntity with _$ShippingAddressEntity {
     required String fullName,
     required String phoneNumber,
     required String addressDetail,
-    required String additionalAddress,
+    String? additionalAddress,
     required String province,
     required String city,
     required String country,

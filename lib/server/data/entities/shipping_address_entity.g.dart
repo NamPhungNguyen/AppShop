@@ -13,7 +13,7 @@ _$ShippingAddressEntityImpl _$$ShippingAddressEntityImplFromJson(
       fullName: json['fullName'] as String,
       phoneNumber: json['phoneNumber'] as String,
       addressDetail: json['addressDetail'] as String,
-      additionalAddress: json['additionalAddress'] as String,
+      additionalAddress: json['additionalAddress'] as String?,
       province: json['province'] as String,
       city: json['city'] as String,
       country: json['country'] as String,

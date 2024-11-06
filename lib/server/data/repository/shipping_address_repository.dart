@@ -14,5 +14,17 @@ abstract class ShippingAddressRepository {
   });
 
   Future<void> deleteShippingAddress(String addressId);
+
   Future<void> setDefaultShippingAddress(String addressId);
+
+  Future<void> updateShippingAddress(
+    String addressId,
+    String fullName,
+    String phoneNumber,
+    String addressDetail,
+    String province,
+    String city, {
+    String? additionAddress,
+    bool? isDefault,
+  });
 }

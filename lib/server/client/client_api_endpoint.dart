@@ -6,6 +6,6 @@ class ClientApiEndpoint {
   ClientApiEndpoint._internal();
 
   String baseUrl() {
-    return "http://172.25.32.1:8080/shopping";
+    return "http://192.168.1.17:8080/shopping";
   }
 }

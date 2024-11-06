@@ -44,4 +44,20 @@ class ShippingAddressUsecaseImpl implements ShippingAddressUsecase {
   Future<void> setDefaultShippingAddress(String addressId) async {
     return _shippingAddressRepository.setDefaultShippingAddress(addressId);
   }
+
+  @override
+  Future<void> updateShippingAddress(String addressId, String fullName,
+      String phoneNumber, String addressDetail, String province, String city,
+      {String? additionAddress, bool? isDefault}) async {
+    return _shippingAddressRepository.updateShippingAddress(
+      addressId,
+      fullName,
+      phoneNumber,
+      addressDetail,
+      province,
+      city,
+      additionAddress: additionAddress,
+      isDefault: isDefault,
+    );
+  }
 }
