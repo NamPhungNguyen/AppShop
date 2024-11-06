@@ -8,6 +8,7 @@ import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../data/entities/cart_product_entity.dart';
+import '../data/entities/shipping_address_entity.dart';
 
 part 'client_api.g.dart';
 
@@ -107,6 +108,11 @@ abstract class ClientApi {
   Future<HttpResponse<void>> deleteProductFromCart(
     @Header("Authorization") authorization,
     @Path("cartId") String cartId,
+  );
+
+  @GET('/shipping-address/addresses')
+  Future<HttpResponse<ShippingAddressesEntity>> fetchAllShippingAdress(
+    @Header("Authorization") authorization,
   );
 }
 
