@@ -10,7 +10,38 @@ class ShippingAddressUsecaseImpl implements ShippingAddressUsecase {
 
   @override
   Future<ShippingAddresses> fetchAllShippingAdress() async {
-    final entity = await _shippingAddressRepository.fetchAllShippingAdress();
+    final entity = await _shippingAddressRepository.fetchAllShippingAddress();
     return ShippingAddressTranslator.translateAll(entity);
+  }
+
+  @override
+  Future<void> addShippingAddress(
+    String fullName,
+    String phoneNumber,
+    String addressDetail,
+    String province,
+    String city, {
+    String? additionAddress,
+    bool isDefault = false,
+  }) async {
+    return _shippingAddressRepository.addShippingAddress(
+      fullName,
+      phoneNumber,
+      addressDetail,
+      province,
+      city,
+      additionAddress: additionAddress,
+      isDefault: isDefault,
+    );
+  }
+
+  @override
+  Future<void> deleteShippingAddress(String addressId) async {
+    return _shippingAddressRepository.deleteShippingAddress(addressId);
+  }
+
+  @override
+  Future<void> setDefaultShippingAddress(String addressId) async {
+    return _shippingAddressRepository.setDefaultShippingAddress(addressId);
   }
 }

@@ -111,8 +111,26 @@ abstract class ClientApi {
   );
 
   @GET('/shipping-address/addresses')
-  Future<HttpResponse<ShippingAddressesEntity>> fetchAllShippingAdress(
+  Future<HttpResponse<ShippingAddressesEntity>> fetchAllShippingAddress(
     @Header("Authorization") authorization,
+  );
+
+  @POST('/shipping-address/add')
+  Future<HttpResponse<void>> addShippingAddress(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE('/shipping-address/delete/{addressId}')
+  Future<HttpResponse<void>> deleteShippingAddress(
+    @Header("Authorization") authorization,
+    @Path("addressId") String addressId,
+  );
+
+  @PUT('/shipping-address/set-default/{addressId}')
+  Future<HttpResponse<void>> setDefaultShippingAddress(
+    @Header("Authorization") authorization,
+    @Path("addressId") String addressId,
   );
 }
 

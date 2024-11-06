@@ -212,9 +212,59 @@ class ClientService {
     return res.data;
   }
 
-  Future<ShippingAddressesEntity> fetchAllShippingAdress() async {
+  Future<ShippingAddressesEntity> fetchAllShippingAddress() async {
     final res = await clientApi
-        .fetchAllShippingAdress(await Util.createAuthorization());
+        .fetchAllShippingAddress(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> addShippingAddress(
+    String fullName,
+    String phoneNumber,
+    String addressDetail,
+    String province,
+    String city, {
+    String? additionAddress,
+    bool isDefault = false,
+  }) async {
+    Map<String, dynamic> body = {
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
+      'addressDetail': addressDetail,
+      'additionAddress': additionAddress,
+      'province': province,
+      'city': city,
+      'isDefault': isDefault,
+    };
+    if (additionAddress != null) {
+      body['additionAddress'] = additionAddress;
+    }
+
+    body['isDefault'] = isDefault;
+
+    final res = await clientApi.addShippingAddress(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> deleteShippingAddress(String addressId) async {
+    final res = await clientApi.deleteShippingAddress(
+      await Util.createAuthorization(),
+      addressId,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> setDefaultShippingAddress(String addressId) async {
+    final res = await clientApi.setDefaultShippingAddress(
+      await Util.createAuthorization(),
+      addressId,
+    );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
