@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/category.dart';
 import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
+import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
+import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
 import 'package:front_shop/domain/states/token_state.dart';
 import 'package:front_shop/domain/states/user_state.dart';
@@ -77,6 +79,11 @@ final favoriteStateProvider =
 final cartStateProvider =
     StateNotifierProvider<CartState, AsyncValue<CartProducts>>(
   (ref) => CartState(ref),
+);
+
+final shippingAddressStateProvider =
+    StateNotifierProvider<ShippingAddressState, AsyncValue<ShippingAddresses>>(
+  (ref) => ShippingAddressState(ref),
 );
 
 void main() async {
