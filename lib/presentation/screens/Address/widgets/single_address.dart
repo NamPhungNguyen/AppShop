@@ -36,12 +36,13 @@ class TSingleAddress extends StatelessWidget {
             right: 10,
             top: 0,
             child: GestureDetector(
-              onTap: onEdit, // Trigger the edit callback when tapped
+              onTap: onEdit,
               child: Text(
                 'Edit',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(color: AppColors.primaryColor),
               ),
             ),
           ),
@@ -80,9 +81,20 @@ class TSingleAddress extends StatelessWidget {
                       color: Colors.grey[700],
                     ),
               ),
+
+              // Additional Address (optional)
+              if (address.additionalAddress?.isNotEmpty ?? false) ...[
+                const SizedBox(height: AppSizes.sm / 2),
+                Text(
+                  '${address.additionalAddress}',
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[700],
+                      ),
+                ),
+              ],
             ],
           ),
-          // Add the toggle switch or icon for setting default
           Positioned(
             right: 10,
             bottom: 10,

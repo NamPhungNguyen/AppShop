@@ -9,8 +9,8 @@ class CartRepositoryImpl implements CartRepository {
   CartRepositoryImpl(this._clientService);
 
   @override
-  Future<void> createCartForUser() async {
-    return await _clientService.createCartForUser();
+  Future<void> createCartForUser(String userId) async {
+    return await _clientService.createCartForUser(userId);
   }
 
   @override

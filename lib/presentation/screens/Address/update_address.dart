@@ -1,36 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/presentation/commom/widgets/Appbar/appbar.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../main.dart';
+
 class UpdateAddress extends ConsumerStatefulWidget {
   static const String routeName = "/update_address";
 
-  const UpdateAddress({super.key});
+  const UpdateAddress({super.key, required this.address});
+
+  final ShippingAddress address;
 
   @override
   ConsumerState<UpdateAddress> createState() => _UpdateAddressState();
 }
 
 class _UpdateAddressState extends ConsumerState<UpdateAddress> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _provinceController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _streetController = TextEditingController();
-  final TextEditingController _additionalAddressController =
-      TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _nameController;
+  late TextEditingController _phoneController;
+  late TextEditingController _provinceController;
+  late TextEditingController _cityController;
+  late TextEditingController _streetController;
+  late TextEditingController _additionalAddressController;
+
   bool isDefault = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.address.fullName);
+    _phoneController = TextEditingController(text: widget.address.phoneNumber);
+    _provinceController = TextEditingController(text: widget.address.province);
+    _cityController = TextEditingController(text: widget.address.city);
+    _streetController =
+        TextEditingController(text: widget.address.addressDetail);
+    _additionalAddressController =
+        TextEditingController(text: widget.address.additionalAddress ?? '');
+    isDefault = widget.address.isDefault;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _provinceController.dispose();
+    _cityController.dispose();
+    _streetController.dispose();
+    _additionalAddressController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _updateAddress() async {
+    if (_formKey.currentState!.validate()) {
+      await ref
+          .read(shippingAddressStateProvider.notifier)
+          .updateShippingAddress(
+            widget.address.addressId.toString(),
+            _nameController.text,
+            _phoneController.text,
+            _streetController.text,
+            _provinceController.text,
+            _cityController.text,
+            additionAddress: _additionalAddressController.text.isNotEmpty
+                ? _additionalAddressController.text
+                : null,
+            isDefault: isDefault,
+          );
+      Navigator.pop(context);
+    }
+
+    Fluttertoast.showToast(
+      msg: "Update address successfully!",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TAppbar(
+      appBar: TAppbar(
         showBackArrow: true,
-        title: Text('Update Address'),
+        title: const Text('Update Address'),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.delete,
+              color: AppColors.primaryColor,
+            ),
+            onPressed: () {
+              if (widget.address.isDefault) {
+                Fluttertoast.showToast(
+                  msg:
+                      'You cannot delete the default address. Please set another address as default first.',
+                  gravity: ToastGravity.BOTTOM,
+                  toastLength: Toast.LENGTH_SHORT,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Delete Address"),
+                      content: const Text(
+                          "Are you sure you want to delete this address?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            // Proceed with deleting the address
+                            await ref
+                                .read(shippingAddressStateProvider.notifier)
+                                .deleteShippingAddress(
+                                    widget.address.addressId.toString());
+                            Navigator.of(context).pop();
+                            Fluttertoast.showToast(
+                              msg: 'Delete address successfully!',
+                              gravity: ToastGravity.BOTTOM,
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                            Navigator.of(context)
+                                .pop(); // Pop back after deleting
+                          },
+                          child: const Text("Delete"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -145,7 +260,7 @@ class _UpdateAddressState extends ConsumerState<UpdateAddress> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _updateAddress,
                     child: const Text('Update'),
                   ),
                 ),

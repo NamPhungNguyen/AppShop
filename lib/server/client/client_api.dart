@@ -88,9 +88,9 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
-  @POST('/cart/create')
+  @POST('/cart/create/{userId}')
   Future<HttpResponse<void>> createCartForUser(
-    @Header("Authorization") authorization,
+    @Path("userId") String userId,
   );
 
   @POST('/cart/add-item-to-cart')

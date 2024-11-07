@@ -9,8 +9,8 @@ class CartUsecaseImpl implements CartUsecase {
   CartUsecaseImpl(this._cartRepository);
 
   @override
-  Future<void> createCartForUser() async {
-    return await _cartRepository.createCartForUser();
+  Future<void> createCartForUser(String userId) async {
+    return await _cartRepository.createCartForUser(userId);
   }
 
   @override

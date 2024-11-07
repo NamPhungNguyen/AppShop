@@ -9,7 +9,6 @@ import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../domain/domain_modules.dart';
 import '../../../main.dart';
 import '../../../utils/preference_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
@@ -39,7 +38,6 @@ class LoginView extends ConsumerWidget {
               await Navigator.pushNamed(context, AllowLocationView.routeName);
               await PreferenceUtil.setIsFirstAllowLocation(false);
             } else {
-              await createCartForUser(ref);
               Navigator.pushNamed(context, BottomBar.routeName);
             }
 
@@ -151,20 +149,5 @@ class LoginView extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  Future<void> createCartForUser(WidgetRef ref) async {
-    try {
-      final cartUsecase = ref.read(cartUsecaseProvider);
-      await cartUsecase.createCartForUser();
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Failed to create cart: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
   }
 }
