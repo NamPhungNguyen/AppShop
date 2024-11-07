@@ -9,4 +9,6 @@ abstract class CartUsecase {
   Future<CartProducts> fetchCartUser();
 
   Future<void> deleteProductFromCart(String cartId);
+
+  Future<void> updateItemQuantityFromCart(String cartItemId, int quantity);
 }

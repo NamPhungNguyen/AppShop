@@ -30,4 +30,11 @@ class CartUsecaseImpl implements CartUsecase {
   Future<void> deleteProductFromCart(String cartId) async {
     return await _cartRepository.deleteProductFromCart(cartId);
   }
+
+  @override
+  Future<void> updateItemQuantityFromCart(
+      String cartItemId, int quantity) async {
+    return await _cartRepository.updateItemQuantityFromCart(
+        cartItemId, quantity);
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
+import 'package:front_shop/utils/constants/sizes.dart';
 
+import '../../../../main.dart';
 import '../../../commom/widgets/products/cart/cart_item.dart';
 
 class CartView extends ConsumerStatefulWidget {
@@ -31,6 +32,7 @@ class _CartViewState extends ConsumerState<CartView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Cart", style: Theme.of(context).textTheme.headlineMedium),
+        automaticallyImplyLeading: false,
       ),
       body: cartState.when(
         data: (cartProducts) {
@@ -44,9 +46,12 @@ class _CartViewState extends ConsumerState<CartView> {
           }
 
           double totalPrice = 0.0;
+
           for (int i = 0; i < selectedItems.length; i++) {
             if (selectedItems[i]) {
-              totalPrice += cartProducts.result[i].price;
+              double discountedPrice = cartProducts.result[i].price *
+                  (1 - cartProducts.result[i].discount / 100);
+              totalPrice += discountedPrice * cartProducts.result[i].quantity;
             }
           }
 
@@ -75,6 +80,9 @@ class _CartViewState extends ConsumerState<CartView> {
                     itemCount: cartProducts.result.length,
                     itemBuilder: (context, index) {
                       final product = cartProducts.result[index];
+                      double discountedPrice =
+                          product.price * (1 - product.discount / 100);
+
                       return Dismissible(
                         key: Key(product.productId.toString()),
                         background: Container(
@@ -88,18 +96,49 @@ class _CartViewState extends ConsumerState<CartView> {
                         direction: DismissDirection.endToStart,
                         onDismissed: (direction) async {
                           try {
-                            await ref
-                                .read(cartStateProvider.notifier)
-                                .deleteProductFromCart(
-                                    product.cartItemId.toString());
+                            if (!mounted) return;
+                            bool shouldDelete = await showDialog<bool>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Deletion'),
+                                      content: const Text(
+                                          'Are you sure you want to remove this item from the cart?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ) ??
+                                false;
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    "${product.productName} removed from cart"),
-                              ),
-                            );
+                            if (shouldDelete) {
+                              await ref
+                                  .read(cartStateProvider.notifier)
+                                  .deleteProductFromCart(
+                                      product.cartItemId.toString());
+
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      "${product.productName} removed from cart"),
+                                ),
+                              );
+                            }
                           } catch (e) {
+                            if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Error removing item: $e"),
@@ -138,18 +177,38 @@ class _CartViewState extends ConsumerState<CartView> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8.0), // Spacing
+                            const SizedBox(width: 8.0),
                             Expanded(
                               child: TCartItem(
                                 imageUrl: product.imageUrl,
                                 title: product.productName,
                                 color: product.color,
                                 size: product.size,
+                                quantity: product.quantity,
+                                onIncrement: () async {
+                                  await ref
+                                      .read(cartStateProvider.notifier)
+                                      .updateItemQuantity(
+                                        product.cartItemId.toString(),
+                                        product.quantity + 1,
+                                      );
+                                },
+                                onDecrement: () async {
+                                  if (product.quantity > 1) {
+                                    await ref
+                                        .read(cartStateProvider.notifier)
+                                        .updateItemQuantity(
+                                          product.cartItemId.toString(),
+                                          product.quantity - 1,
+                                        );
+                                  }
+                                },
                               ),
                             ),
-                            // Display the product price
+                            // Display the discounted price
                             Text(
-                              '\$${product.price.toStringAsFixed(2)}',
+                              '\$${discountedPrice.toStringAsFixed(2)}',
+                              // Show discounted price
                               style: const TextStyle(
                                 color: Colors.grey,
                               ),
@@ -162,7 +221,9 @@ class _CartViewState extends ConsumerState<CartView> {
                 ),
                 // Display total price
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppSizes.spaceBtwItems,
+                  ),
                   child: Text(
                     'Total: \$${totalPrice.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleMedium,
@@ -181,7 +242,7 @@ class _CartViewState extends ConsumerState<CartView> {
           onPressed: () {
             Navigator.pushNamed(context, CheckoutView.routeName);
           },
-          child: Text('Checkout'),
+          child: const Text('Checkout'),
         ),
       ),
     );

@@ -58,4 +58,16 @@ class CartState extends StateNotifier<AsyncValue<CartProducts>> {
       state = AsyncError(error, stackTrace);
     }
   }
+
+  Future<void> updateItemQuantity(String cartItemId, int quantity) async {
+    state = const AsyncLoading();
+    try {
+      final cartUsecase = _ref.read(cartUsecaseProvider);
+      await cartUsecase.updateItemQuantityFromCart(cartItemId, quantity);
+      await fetchCartUser();
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      print('Error updating cart item quantity: $error');
+    }
+  }
 }

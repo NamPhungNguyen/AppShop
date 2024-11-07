@@ -13,6 +13,9 @@ class CartProduct with _$CartProduct {
     required String size,
     required String color,
     required int quantity,
+    required double discount,
+    required double totalPrice,
+    required double discountPrice,
   }) = _CartProduct;
 }
 

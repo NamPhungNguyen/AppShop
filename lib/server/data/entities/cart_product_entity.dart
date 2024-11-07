@@ -14,6 +14,10 @@ class CartProductEntity with _$CartProductEntity {
     required String size,
     required String color,
     required int quantity,
+    required double discount,
+    required double totalPrice,
+    required double discountPrice,
+
   }) = _CartProductEntity;
 
   factory CartProductEntity.fromJson(Map<String, dynamic> json) => _$CartProductEntityFromJson(json);

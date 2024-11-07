@@ -29,4 +29,11 @@ class CartRepositoryImpl implements CartRepository {
   Future<void> deleteProductFromCart(String cartId) async {
     return await _clientService.deleteProductFromCart(cartId);
   }
+
+  @override
+  Future<void> updateItemQuantityFromCart(
+      String cartItemId, int quantity) async {
+    return await _clientService.updateItemQuantityFromCart(
+        cartItemId, quantity);
+  }
 }

@@ -28,6 +28,9 @@ mixin _$CartProductEntity {
   String get size => throw _privateConstructorUsedError;
   String get color => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
+  double get discount => throw _privateConstructorUsedError;
+  double get totalPrice => throw _privateConstructorUsedError;
+  double get discountPrice => throw _privateConstructorUsedError;
 
   /// Serializes this CartProductEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +56,10 @@ abstract class $CartProductEntityCopyWith<$Res> {
       double price,
       String size,
       String color,
-      int quantity});
+      int quantity,
+      double discount,
+      double totalPrice,
+      double discountPrice});
 }
 
 /// @nodoc
@@ -79,6 +85,9 @@ class _$CartProductEntityCopyWithImpl<$Res, $Val extends CartProductEntity>
     Object? size = null,
     Object? color = null,
     Object? quantity = null,
+    Object? discount = null,
+    Object? totalPrice = null,
+    Object? discountPrice = null,
   }) {
     return _then(_value.copyWith(
       cartItemId: null == cartItemId
@@ -113,6 +122,18 @@ class _$CartProductEntityCopyWithImpl<$Res, $Val extends CartProductEntity>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      discount: null == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalPrice: null == totalPrice
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountPrice: null == discountPrice
+          ? _value.discountPrice
+          : discountPrice // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -133,7 +154,10 @@ abstract class _$$CartProductEntityImplCopyWith<$Res>
       double price,
       String size,
       String color,
-      int quantity});
+      int quantity,
+      double discount,
+      double totalPrice,
+      double discountPrice});
 }
 
 /// @nodoc
@@ -157,6 +181,9 @@ class __$$CartProductEntityImplCopyWithImpl<$Res>
     Object? size = null,
     Object? color = null,
     Object? quantity = null,
+    Object? discount = null,
+    Object? totalPrice = null,
+    Object? discountPrice = null,
   }) {
     return _then(_$CartProductEntityImpl(
       cartItemId: null == cartItemId
@@ -191,6 +218,18 @@ class __$$CartProductEntityImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      discount: null == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalPrice: null == totalPrice
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountPrice: null == discountPrice
+          ? _value.discountPrice
+          : discountPrice // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -206,7 +245,10 @@ class _$CartProductEntityImpl implements _CartProductEntity {
       required this.price,
       required this.size,
       required this.color,
-      required this.quantity});
+      required this.quantity,
+      required this.discount,
+      required this.totalPrice,
+      required this.discountPrice});
 
   factory _$CartProductEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartProductEntityImplFromJson(json);
@@ -227,10 +269,16 @@ class _$CartProductEntityImpl implements _CartProductEntity {
   final String color;
   @override
   final int quantity;
+  @override
+  final double discount;
+  @override
+  final double totalPrice;
+  @override
+  final double discountPrice;
 
   @override
   String toString() {
-    return 'CartProductEntity(cartItemId: $cartItemId, productId: $productId, productName: $productName, imageUrl: $imageUrl, price: $price, size: $size, color: $color, quantity: $quantity)';
+    return 'CartProductEntity(cartItemId: $cartItemId, productId: $productId, productName: $productName, imageUrl: $imageUrl, price: $price, size: $size, color: $color, quantity: $quantity, discount: $discount, totalPrice: $totalPrice, discountPrice: $discountPrice)';
   }
 
   @override
@@ -250,13 +298,30 @@ class _$CartProductEntityImpl implements _CartProductEntity {
             (identical(other.size, size) || other.size == size) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.quantity, quantity) ||
-                other.quantity == quantity));
+                other.quantity == quantity) &&
+            (identical(other.discount, discount) ||
+                other.discount == discount) &&
+            (identical(other.totalPrice, totalPrice) ||
+                other.totalPrice == totalPrice) &&
+            (identical(other.discountPrice, discountPrice) ||
+                other.discountPrice == discountPrice));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, cartItemId, productId,
-      productName, imageUrl, price, size, color, quantity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      cartItemId,
+      productId,
+      productName,
+      imageUrl,
+      price,
+      size,
+      color,
+      quantity,
+      discount,
+      totalPrice,
+      discountPrice);
 
   /// Create a copy of CartProductEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -284,7 +349,10 @@ abstract class _CartProductEntity implements CartProductEntity {
       required final double price,
       required final String size,
       required final String color,
-      required final int quantity}) = _$CartProductEntityImpl;
+      required final int quantity,
+      required final double discount,
+      required final double totalPrice,
+      required final double discountPrice}) = _$CartProductEntityImpl;
 
   factory _CartProductEntity.fromJson(Map<String, dynamic> json) =
       _$CartProductEntityImpl.fromJson;
@@ -305,6 +373,12 @@ abstract class _CartProductEntity implements CartProductEntity {
   String get color;
   @override
   int get quantity;
+  @override
+  double get discount;
+  @override
+  double get totalPrice;
+  @override
+  double get discountPrice;
 
   /// Create a copy of CartProductEntity
   /// with the given fields replaced by the non-null parameter values.

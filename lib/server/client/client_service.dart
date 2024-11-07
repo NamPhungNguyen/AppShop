@@ -305,4 +305,16 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> updateItemQuantityFromCart(
+      String cartItemId, int quantity) async {
+    Map<String, dynamic> body = {'quantity': quantity};
+    final res = await clientApi.updateItemQuantityFromCart(
+      await Util.createAuthorization(),
+      cartItemId,
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

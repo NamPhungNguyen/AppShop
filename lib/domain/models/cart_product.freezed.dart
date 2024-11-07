@@ -24,6 +24,9 @@ mixin _$CartProduct {
   String get size => throw _privateConstructorUsedError;
   String get color => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
+  double get discount => throw _privateConstructorUsedError;
+  double get totalPrice => throw _privateConstructorUsedError;
+  double get discountPrice => throw _privateConstructorUsedError;
 
   /// Create a copy of CartProduct
   /// with the given fields replaced by the non-null parameter values.
@@ -46,7 +49,10 @@ abstract class $CartProductCopyWith<$Res> {
       double price,
       String size,
       String color,
-      int quantity});
+      int quantity,
+      double discount,
+      double totalPrice,
+      double discountPrice});
 }
 
 /// @nodoc
@@ -72,6 +78,9 @@ class _$CartProductCopyWithImpl<$Res, $Val extends CartProduct>
     Object? size = null,
     Object? color = null,
     Object? quantity = null,
+    Object? discount = null,
+    Object? totalPrice = null,
+    Object? discountPrice = null,
   }) {
     return _then(_value.copyWith(
       cartItemId: null == cartItemId
@@ -106,6 +115,18 @@ class _$CartProductCopyWithImpl<$Res, $Val extends CartProduct>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      discount: null == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalPrice: null == totalPrice
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountPrice: null == discountPrice
+          ? _value.discountPrice
+          : discountPrice // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -126,7 +147,10 @@ abstract class _$$CartProductImplCopyWith<$Res>
       double price,
       String size,
       String color,
-      int quantity});
+      int quantity,
+      double discount,
+      double totalPrice,
+      double discountPrice});
 }
 
 /// @nodoc
@@ -150,6 +174,9 @@ class __$$CartProductImplCopyWithImpl<$Res>
     Object? size = null,
     Object? color = null,
     Object? quantity = null,
+    Object? discount = null,
+    Object? totalPrice = null,
+    Object? discountPrice = null,
   }) {
     return _then(_$CartProductImpl(
       cartItemId: null == cartItemId
@@ -184,6 +211,18 @@ class __$$CartProductImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      discount: null == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalPrice: null == totalPrice
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountPrice: null == discountPrice
+          ? _value.discountPrice
+          : discountPrice // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -199,7 +238,10 @@ class _$CartProductImpl implements _CartProduct {
       required this.price,
       required this.size,
       required this.color,
-      required this.quantity});
+      required this.quantity,
+      required this.discount,
+      required this.totalPrice,
+      required this.discountPrice});
 
   @override
   final int cartItemId;
@@ -217,10 +259,16 @@ class _$CartProductImpl implements _CartProduct {
   final String color;
   @override
   final int quantity;
+  @override
+  final double discount;
+  @override
+  final double totalPrice;
+  @override
+  final double discountPrice;
 
   @override
   String toString() {
-    return 'CartProduct(cartItemId: $cartItemId, productId: $productId, productName: $productName, imageUrl: $imageUrl, price: $price, size: $size, color: $color, quantity: $quantity)';
+    return 'CartProduct(cartItemId: $cartItemId, productId: $productId, productName: $productName, imageUrl: $imageUrl, price: $price, size: $size, color: $color, quantity: $quantity, discount: $discount, totalPrice: $totalPrice, discountPrice: $discountPrice)';
   }
 
   @override
@@ -240,12 +288,29 @@ class _$CartProductImpl implements _CartProduct {
             (identical(other.size, size) || other.size == size) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.quantity, quantity) ||
-                other.quantity == quantity));
+                other.quantity == quantity) &&
+            (identical(other.discount, discount) ||
+                other.discount == discount) &&
+            (identical(other.totalPrice, totalPrice) ||
+                other.totalPrice == totalPrice) &&
+            (identical(other.discountPrice, discountPrice) ||
+                other.discountPrice == discountPrice));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, cartItemId, productId,
-      productName, imageUrl, price, size, color, quantity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      cartItemId,
+      productId,
+      productName,
+      imageUrl,
+      price,
+      size,
+      color,
+      quantity,
+      discount,
+      totalPrice,
+      discountPrice);
 
   /// Create a copy of CartProduct
   /// with the given fields replaced by the non-null parameter values.
@@ -265,7 +330,10 @@ abstract class _CartProduct implements CartProduct {
       required final double price,
       required final String size,
       required final String color,
-      required final int quantity}) = _$CartProductImpl;
+      required final int quantity,
+      required final double discount,
+      required final double totalPrice,
+      required final double discountPrice}) = _$CartProductImpl;
 
   @override
   int get cartItemId;
@@ -283,6 +351,12 @@ abstract class _CartProduct implements CartProduct {
   String get color;
   @override
   int get quantity;
+  @override
+  double get discount;
+  @override
+  double get totalPrice;
+  @override
+  double get discountPrice;
 
   /// Create a copy of CartProduct
   /// with the given fields replaced by the non-null parameter values.

@@ -99,6 +99,13 @@ abstract class ClientApi {
     @Body() Map<String, dynamic> body,
   );
 
+  @PUT('/cart/update-item-quantity/{cartItemId}')
+  Future<HttpResponse<void>> updateItemQuantityFromCart(
+    @Header("Authorization") authorization,
+    @Path("cartItemId") String cartItemId,
+    @Body() Map<String, dynamic> body,
+  );
+
   @GET('/cart/fetch-cart')
   Future<HttpResponse<CartProductsEntity>> fetchCartUser(
     @Header("Authorization") authorization,

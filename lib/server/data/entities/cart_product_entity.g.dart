@@ -17,6 +17,9 @@ _$CartProductEntityImpl _$$CartProductEntityImplFromJson(
       size: json['size'] as String,
       color: json['color'] as String,
       quantity: (json['quantity'] as num).toInt(),
+      discount: (json['discount'] as num).toDouble(),
+      totalPrice: (json['totalPrice'] as num).toDouble(),
+      discountPrice: (json['discountPrice'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$CartProductEntityImplToJson(
@@ -30,6 +33,9 @@ Map<String, dynamic> _$$CartProductEntityImplToJson(
       'size': instance.size,
       'color': instance.color,
       'quantity': instance.quantity,
+      'discount': instance.discount,
+      'totalPrice': instance.totalPrice,
+      'discountPrice': instance.discountPrice,
     };
 
 _$CartProductsEntityImpl _$$CartProductsEntityImplFromJson(

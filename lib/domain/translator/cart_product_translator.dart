@@ -12,6 +12,9 @@ class CartProductTranslator {
       size: entity.size,
       color: entity.color,
       quantity: entity.quantity,
+      discount: entity.discount,
+      discountPrice: entity.discountPrice,
+      totalPrice: entity.totalPrice,
     );
   }
 
