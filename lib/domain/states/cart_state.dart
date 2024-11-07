@@ -13,14 +13,15 @@ class CartState extends StateNotifier<AsyncValue<CartProducts>> {
     await fetchCartUser();
   }
 
-  Future<void> createCartForUser() async {
+  Future<void> createCartForUser(String userId) async {
     state = const AsyncLoading();
     try {
       final cartUsecase = _ref.read(cartUsecaseProvider);
-      await cartUsecase.createCartForUser();
+      await cartUsecase.createCartForUser(userId);
       state = const AsyncData(CartProducts(result: []));
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
+      print('Error creating cart: $error');
     }
   }
 

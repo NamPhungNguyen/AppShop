@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/presentation/screens/Address/add_new_address.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
@@ -79,7 +80,12 @@ class MainView {
       case AddNewAddress.routeName:
         return MaterialPageRoute(builder: (_) => const AddNewAddress());
       case UpdateAddress.routeName:
-        return MaterialPageRoute(builder: (_) => const UpdateAddress());
+        final shippingAddress = settings.arguments as ShippingAddress;
+        return MaterialPageRoute(
+          builder: (_) => UpdateAddress(
+            address: shippingAddress,
+          ),
+        );
       case OrderView.routeName:
         return MaterialPageRoute(builder: (_) => const OrderView());
       case UpdateProfileNameView.routeName:

@@ -176,9 +176,10 @@ class ClientService {
     return res.data;
   }
 
-  Future<void> createCartForUser() async {
-    final res =
-        await clientApi.createCartForUser(await Util.createAuthorization());
+  Future<void> createCartForUser(String userId) async {
+    final res = await clientApi.createCartForUser(
+      userId,
+    );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

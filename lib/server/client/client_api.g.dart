@@ -487,11 +487,10 @@ class _ClientApi implements ClientApi {
   }
 
   @override
-  Future<HttpResponse<void>> createCartForUser(dynamic authorization) async {
+  Future<HttpResponse<void>> createCartForUser(String userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': authorization};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<void>>(Options(
       method: 'POST',
@@ -500,7 +499,7 @@ class _ClientApi implements ClientApi {
     )
         .compose(
           _dio.options,
-          '/cart/create',
+          '/cart/create/${userId}',
           queryParameters: queryParameters,
           data: _data,
         )

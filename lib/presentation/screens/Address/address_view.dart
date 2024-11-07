@@ -60,7 +60,7 @@ class _AddressViewState extends ConsumerState<AddressView> {
                       .setDefaultShippingAddress(address.addressId.toString());
                 },
                 onEdit: () {
-                  Navigator.pushNamed(context, UpdateAddress.routeName);
+                  Navigator.pushNamed(context, UpdateAddress.routeName, arguments: address);
                 },
               );
             },

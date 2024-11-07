@@ -99,13 +99,21 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
           setState(() {
             isLoading = false;
           });
+
+          final userId = signup.result.id;
+          ref
+              .read(cartStateProvider.notifier)
+              .createCartForUser(userId.toString());
+
           Navigator.of(context).pop();
 
           BaseDialogView(
             titleDialog: "Signup Successful!",
             imageDialog: AssetsPathUtil.dialog("checkmark.png"),
             onPressed: () {
-              Navigator.pushNamed(context, LoginView.routeName);
+              if (mounted) {
+                Navigator.pushNamed(context, LoginView.routeName);
+              }
             },
           ).showBaseDialog(context);
         },
@@ -142,7 +150,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
         child: isLoading
-            ? Center(child: CircularProgressIndicator()) // Show loader
+            ? const Center(child: CircularProgressIndicator()) // Show loader
             : ListView(
                 children: [
                   Padding(

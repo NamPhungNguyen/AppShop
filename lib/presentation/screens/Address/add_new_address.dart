@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/commom/widgets/Appbar/appbar.dart';
@@ -24,7 +25,7 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _additionalAddressController =
-  TextEditingController();
+      TextEditingController();
   bool isDefault = false;
 
   @override
@@ -41,20 +42,23 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
   Future<void> _saveAddress() async {
     if (_formKey.currentState!.validate()) {
       // Adding a new address
-      await ref
-          .read(shippingAddressStateProvider.notifier)
-          .addShippingAddress(
-        _nameController.text,
-        _phoneController.text,
-        _streetController.text,
-        _provinceController.text,
-        _cityController.text,
-        additionAddress: _additionalAddressController.text.isNotEmpty
-            ? _additionalAddressController.text
-            : null,
-        isDefault: isDefault,
-      );
+      await ref.read(shippingAddressStateProvider.notifier).addShippingAddress(
+            _nameController.text,
+            _phoneController.text,
+            _streetController.text,
+            _provinceController.text,
+            _cityController.text,
+            additionAddress: _additionalAddressController.text.isNotEmpty
+                ? _additionalAddressController.text
+                : null,
+            isDefault: isDefault,
+          );
       Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: 'Add address successfully!',
+        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_SHORT,
+      );
     }
   }
 
