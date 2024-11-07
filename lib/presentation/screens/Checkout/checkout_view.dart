@@ -5,6 +5,7 @@ import 'package:front_shop/presentation/screens/Checkout/widgets/billing_address
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_amount_section.dart';
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_payment_section.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../commom/widgets/products/cart/coupon_widget.dart';
 
@@ -18,46 +19,57 @@ class CheckoutView extends StatelessWidget {
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
-        title: Text('Order summary',
-            style: Theme.of(context).textTheme.headlineSmall),
+        title: Text(
+          'Order summary',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.defaultSpace),
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(onPressed: (){}, icon: const Icon(Iconsax.location))
+                    ],
+                  )
+                ],
+              ),
               /// items in cart
               // TCartItems(showAddRemoveButtons: false),
-              SizedBox(height: AppSizes.spaceBtwSections),
+              const SizedBox(height: AppSizes.spaceBtwSections),
 
               /// coupon textField
-              TCouponCode(),
+              const TCouponCode(),
               const SizedBox(height: AppSizes.spaceBtwSections),
 
               /// -- billing section
-              TRoundedContainer(
+              const TRoundedContainer(
                 showBorder: true,
                 backgroundColor: Colors.white,
-                padding: const EdgeInsets.all(AppSizes.md),
+                padding: EdgeInsets.all(AppSizes.md),
                 child: Column(
                   children: [
                     /// pricing
                     TBillingAmountSection(),
-                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    SizedBox(height: AppSizes.spaceBtwItems),
 
                     /// divider
-                    const Divider(),
-                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    Divider(),
+                    SizedBox(height: AppSizes.spaceBtwItems),
 
                     /// payment methods
                     TBillingPaymentSection(),
-                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    SizedBox(height: AppSizes.spaceBtwItems),
 
                     ///address
                     TBillingAddressSection(),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -65,10 +77,11 @@ class CheckoutView extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, CheckoutView.routeName);
-            },
-            child: Text('Checkout \$256.0')),
+          onPressed: () {
+            Navigator.pushNamed(context, CheckoutView.routeName);
+          },
+          child: const Text('Checkout \$256.0'),
+        ),
       ),
     );
   }
