@@ -220,6 +220,13 @@ class ClientService {
     return res.data;
   }
 
+  Future<ShippingAddressDefaultEntity> getAddressDefault() async {
+    final res =
+        await clientApi.getAddressDefault(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
   Future<void> addShippingAddress(
     String fullName,
     String phoneNumber,

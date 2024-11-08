@@ -5,6 +5,7 @@ import 'package:front_shop/utils/constants/sizes.dart';
 
 import '../../../../main.dart';
 import '../../../commom/widgets/products/cart/cart_item.dart';
+import '../../../commom/widgets/texts/product_price_text.dart';
 
 class CartView extends ConsumerStatefulWidget {
   static const String routeName = "/cart_view";
@@ -205,28 +206,25 @@ class _CartViewState extends ConsumerState<CartView> {
                                 },
                               ),
                             ),
-                            // Display the discounted price
-                            Text(
-                              '\$${discountedPrice.toStringAsFixed(2)}',
-                              // Show discounted price
-                              style: const TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
+
+                            /// Display the discounted price
+                            ProductPriceText(
+                                price: discountedPrice.toStringAsFixed(2)),
                           ],
                         ),
                       );
                     },
                   ),
                 ),
-                // Display total price
+
+                /// Display total price
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: AppSizes.spaceBtwItems,
                   ),
-                  child: Text(
-                    'Total: \$${totalPrice.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  child: ProductPriceText(
+                    price: totalPrice.toStringAsFixed(2),
+                    isLarge: true,
                   ),
                 ),
               ],

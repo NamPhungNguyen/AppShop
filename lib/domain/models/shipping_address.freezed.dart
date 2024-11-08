@@ -451,3 +451,152 @@ abstract class _ShippingAddresses implements ShippingAddresses {
   _$$ShippingAddressesImplCopyWith<_$ShippingAddressesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$ShippingAddressDefault {
+  ShippingAddress get result => throw _privateConstructorUsedError;
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ShippingAddressDefaultCopyWith<ShippingAddressDefault> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ShippingAddressDefaultCopyWith<$Res> {
+  factory $ShippingAddressDefaultCopyWith(ShippingAddressDefault value,
+          $Res Function(ShippingAddressDefault) then) =
+      _$ShippingAddressDefaultCopyWithImpl<$Res, ShippingAddressDefault>;
+  @useResult
+  $Res call({ShippingAddress result});
+
+  $ShippingAddressCopyWith<$Res> get result;
+}
+
+/// @nodoc
+class _$ShippingAddressDefaultCopyWithImpl<$Res,
+        $Val extends ShippingAddressDefault>
+    implements $ShippingAddressDefaultCopyWith<$Res> {
+  _$ShippingAddressDefaultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? result = null,
+  }) {
+    return _then(_value.copyWith(
+      result: null == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as ShippingAddress,
+    ) as $Val);
+  }
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ShippingAddressCopyWith<$Res> get result {
+    return $ShippingAddressCopyWith<$Res>(_value.result, (value) {
+      return _then(_value.copyWith(result: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ShippingAddressDefaultImplCopyWith<$Res>
+    implements $ShippingAddressDefaultCopyWith<$Res> {
+  factory _$$ShippingAddressDefaultImplCopyWith(
+          _$ShippingAddressDefaultImpl value,
+          $Res Function(_$ShippingAddressDefaultImpl) then) =
+      __$$ShippingAddressDefaultImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({ShippingAddress result});
+
+  @override
+  $ShippingAddressCopyWith<$Res> get result;
+}
+
+/// @nodoc
+class __$$ShippingAddressDefaultImplCopyWithImpl<$Res>
+    extends _$ShippingAddressDefaultCopyWithImpl<$Res,
+        _$ShippingAddressDefaultImpl>
+    implements _$$ShippingAddressDefaultImplCopyWith<$Res> {
+  __$$ShippingAddressDefaultImplCopyWithImpl(
+      _$ShippingAddressDefaultImpl _value,
+      $Res Function(_$ShippingAddressDefaultImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? result = null,
+  }) {
+    return _then(_$ShippingAddressDefaultImpl(
+      result: null == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as ShippingAddress,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ShippingAddressDefaultImpl implements _ShippingAddressDefault {
+  const _$ShippingAddressDefaultImpl({required this.result});
+
+  @override
+  final ShippingAddress result;
+
+  @override
+  String toString() {
+    return 'ShippingAddressDefault(result: $result)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ShippingAddressDefaultImpl &&
+            (identical(other.result, result) || other.result == result));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, result);
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ShippingAddressDefaultImplCopyWith<_$ShippingAddressDefaultImpl>
+      get copyWith => __$$ShippingAddressDefaultImplCopyWithImpl<
+          _$ShippingAddressDefaultImpl>(this, _$identity);
+}
+
+abstract class _ShippingAddressDefault implements ShippingAddressDefault {
+  const factory _ShippingAddressDefault(
+      {required final ShippingAddress result}) = _$ShippingAddressDefaultImpl;
+
+  @override
+  ShippingAddress get result;
+
+  /// Create a copy of ShippingAddressDefault
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ShippingAddressDefaultImplCopyWith<_$ShippingAddressDefaultImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

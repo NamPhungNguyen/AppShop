@@ -9,9 +9,15 @@ class ShippingAddressUsecaseImpl implements ShippingAddressUsecase {
   const ShippingAddressUsecaseImpl(this._shippingAddressRepository);
 
   @override
-  Future<ShippingAddresses> fetchAllShippingAdress() async {
+  Future<ShippingAddresses> fetchAllShippingAddress() async {
     final entity = await _shippingAddressRepository.fetchAllShippingAddress();
     return ShippingAddressTranslator.translateAll(entity);
+  }
+
+  @override
+  Future<ShippingAddressDefault> getAddressDefault() async {
+    final entity = await _shippingAddressRepository.getAddressDefault();
+    return ShippingAddressTranslator.translateDefault(entity);
   }
 
   @override

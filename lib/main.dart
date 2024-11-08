@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/category.dart';
@@ -22,6 +24,7 @@ import 'domain/models/cart_product.dart';
 import 'domain/models/login.dart';
 import 'domain/states/cart_state.dart';
 import 'domain/states/login_state.dart';
+import 'domain/states/shipping_address_default_state.dart';
 
 // TokenState provider
 final tokenStateProvider =
@@ -86,8 +89,20 @@ final shippingAddressStateProvider =
   (ref) => ShippingAddressState(ref),
 );
 
+final shippingAddressDefaultStateProvider = StateNotifierProvider<
+    ShippingAddressDefaultState, AsyncValue<ShippingAddressDefault>>(
+  (ref) => ShippingAddressDefaultState(ref),
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp();
+    print("Firebase initialized successfully");
+  } catch (e) {
+    print("Error initializing Firebase: $e");
+  }
   runApp(const ProviderScope(child: MyApp()));
 }
 
