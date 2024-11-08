@@ -47,3 +47,16 @@ Map<String, dynamic> _$$ShippingAddressesEntityImplToJson(
     <String, dynamic>{
       'result': instance.result,
     };
+
+_$ShippingAddressDefaultEntityImpl _$$ShippingAddressDefaultEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ShippingAddressDefaultEntityImpl(
+      result: ShippingAddressEntity.fromJson(
+          json['result'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$ShippingAddressDefaultEntityImplToJson(
+        _$ShippingAddressDefaultEntityImpl instance) =>
+    <String, dynamic>{
+      'result': instance.result,
+    };

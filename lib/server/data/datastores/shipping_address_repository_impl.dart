@@ -14,6 +14,11 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
   }
 
   @override
+  Future<ShippingAddressDefaultEntity> getAddressDefault() async {
+    return await _clientService.getAddressDefault();
+  }
+
+  @override
   Future<void> addShippingAddress(
     String fullName,
     String phoneNumber,

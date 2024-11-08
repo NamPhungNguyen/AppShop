@@ -16,8 +16,8 @@ class UserProfileTile extends ConsumerWidget {
     return userState.when(
       data: (userInfo) => ListTile(
         leading: CircleAvatar(
-          child: Image.asset(
-            AssetsPathUtil.user("profile.png"),
+          child: Image.network(
+              userInfo.result.profileImg ?? AssetsPathUtil.user("profile.png"),
             width: 50,
             height: 50,
           ),

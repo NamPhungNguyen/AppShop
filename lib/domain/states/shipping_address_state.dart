@@ -13,7 +13,7 @@ class ShippingAddressState
     try {
       final shippingAddressUsecase = _ref.watch(shippingAddressUsecaseProvider);
       final shippingAddresses =
-          await shippingAddressUsecase.fetchAllShippingAdress();
+          await shippingAddressUsecase.fetchAllShippingAddress();
       state = AsyncValue.data(shippingAddresses);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

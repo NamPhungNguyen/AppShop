@@ -24,8 +24,7 @@ class ProductCardVertical extends ConsumerWidget {
     final favoriteProductsAsync = ref.watch(favoriteStateProvider);
 
     final isFavorite = favoriteProductsAsync.when(
-      data: (favoriteProducts) =>
-          favoriteProducts.contains(product),
+      data: (favoriteProducts) => favoriteProducts.contains(product),
       loading: () => false,
       error: (error, stack) => false,
     );
@@ -63,25 +62,27 @@ class ProductCardVertical extends ConsumerWidget {
                       applyImageRadius: true,
                     ),
                   ),
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: TRoundedContainer(
-                      radius: AppSizes.sm,
-                      backgroundColor: AppColors.textSecondary.withOpacity(0.8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSizes.sm, vertical: AppSizes.xs),
-                      child: Text(
-                        '-${product.discount}%',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge!
-                            .apply(color: Colors.black),
+                  if (product.discount != null)
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      child: TRoundedContainer(
+                        radius: AppSizes.sm,
+                        backgroundColor:
+                            AppColors.textSecondary.withOpacity(0.8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.sm, vertical: AppSizes.xs),
+                        child: Text(
+                          '-${product.discount}%',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .apply(color: Colors.black),
+                        ),
                       ),
                     ),
-                  ),
 
-                  // Favorite icon button
+                  /// Favorite icon button
                   Positioned(
                     top: 0,
                     right: 0,
@@ -95,7 +96,7 @@ class ProductCardVertical extends ConsumerWidget {
                           ref
                               .read(favoriteStateProvider.notifier)
                               .removeProductFromFavorites(
-                              product.productId.toString());
+                                  product.productId.toString());
                         } else {
                           ref
                               .read(favoriteStateProvider.notifier)
@@ -109,7 +110,7 @@ class ProductCardVertical extends ConsumerWidget {
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-            // Details
+            /// Details
             Padding(
               padding: const EdgeInsets.only(left: AppSizes.sm),
               child: Column(
@@ -139,16 +140,18 @@ class ProductCardVertical extends ConsumerWidget {
                   // Single star with rating number
                   Row(
                     children: [
-                      const Icon(Icons.star,
-                          color: Colors.amber, size: AppSizes.iconSm),
+                      if (product.rating != 0)
+                        const Icon(Icons.star,
+                            color: Colors.amber, size: AppSizes.iconSm),
                       const SizedBox(width: 4),
-                      Text(
-                        product.rating.toStringAsFixed(1),
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelSmall!
-                            .copyWith(fontSize: 12),
-                      ),
+                      if (product.rating != 0)
+                        Text(
+                          product.rating.toStringAsFixed(1),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(fontSize: 12),
+                        ),
                     ],
                   ),
 
@@ -162,19 +165,21 @@ class ProductCardVertical extends ConsumerWidget {
                             .textTheme
                             .headlineMedium!
                             .copyWith(
-                          fontSize: 14,
-                          color: AppColors.primaryColor,
-                        ),
+                              fontSize: 14,
+                              color: AppColors.primaryColor,
+                            ),
                       ),
                       const SizedBox(width: AppSizes.xs),
-                      Text(
-                        "${product.price.toStringAsFixed(2)}đ",
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey,
-                          fontSize: 12,
+                      if (product.discount != null)
+                        Text(
+                          "${product.price.toStringAsFixed(2)}đ",
+                          style:
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
                         ),
-                      ),
                     ],
                   ),
                 ],

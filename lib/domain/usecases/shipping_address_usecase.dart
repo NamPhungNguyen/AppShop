@@ -1,7 +1,9 @@
 import 'package:front_shop/domain/models/shipping_address.dart';
 
 abstract class ShippingAddressUsecase {
-  Future<ShippingAddresses> fetchAllShippingAdress();
+  Future<ShippingAddresses> fetchAllShippingAddress();
+
+  Future<ShippingAddressDefault> getAddressDefault();
 
   Future<void> addShippingAddress(
     String fullName,

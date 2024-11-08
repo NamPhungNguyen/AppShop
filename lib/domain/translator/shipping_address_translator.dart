@@ -21,4 +21,9 @@ class ShippingAddressTranslator {
       result: entity.result.map((e) => translate(e)).toList(),
     );
   }
+
+  static ShippingAddressDefault translateDefault(
+      final ShippingAddressDefaultEntity entity) {
+    return ShippingAddressDefault(result: translate(entity.result));
+  }
 }

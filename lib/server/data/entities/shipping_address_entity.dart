@@ -29,3 +29,12 @@ class ShippingAddressesEntity with _$ShippingAddressesEntity {
   factory ShippingAddressesEntity.fromJson(Map<String, dynamic> json) =>
       _$ShippingAddressesEntityFromJson(json);
 }
+
+@freezed
+class ShippingAddressDefaultEntity with _$ShippingAddressDefaultEntity {
+  const factory ShippingAddressDefaultEntity(
+      {required ShippingAddressEntity result}) = _ShippingAddressDefaultEntity;
+
+  factory ShippingAddressDefaultEntity.fromJson(Map<String, dynamic> json) =>
+      _$ShippingAddressDefaultEntityFromJson(json);
+}

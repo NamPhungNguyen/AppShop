@@ -122,6 +122,11 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @GET('/shipping-address/default')
+  Future<HttpResponse<ShippingAddressDefaultEntity>> getAddressDefault(
+    @Header("Authorization") authorization,
+  );
+
   @POST('/shipping-address/add')
   Future<HttpResponse<void>> addShippingAddress(
     @Header("Authorization") authorization,
