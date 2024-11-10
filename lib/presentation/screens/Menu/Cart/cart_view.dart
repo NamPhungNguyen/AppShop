@@ -39,7 +39,7 @@ class _CartViewState extends ConsumerState<CartView> {
         data: (cartProducts) {
           if (selectedItems.length != cartProducts.result.length) {
             selectedItems =
-            List<bool>.filled(cartProducts.result.length, selectAll);
+                List<bool>.filled(cartProducts.result.length, selectAll);
           }
 
           if (cartProducts.result.isEmpty) {
@@ -103,36 +103,36 @@ class _CartViewState extends ConsumerState<CartView> {
                           try {
                             if (!mounted) return;
                             bool shouldDelete = await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Confirm Deletion'),
-                                  content: const Text(
-                                      'Are you sure you want to remove this item from the cart?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(true);
-                                      },
-                                      child: const Text('Delete'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ) ??
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Deletion'),
+                                      content: const Text(
+                                          'Are you sure you want to remove this item from the cart?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ) ??
                                 false;
 
                             if (shouldDelete) {
                               await ref
                                   .read(cartStateProvider.notifier)
                                   .deleteProductFromCart(
-                                  product.cartItemId.toString());
+                                      product.cartItemId.toString());
 
                               if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -158,7 +158,8 @@ class _CartViewState extends ConsumerState<CartView> {
                                 setState(() {
                                   selectedItems[index] = !selectedItems[index];
                                 });
-                                final cartUsecase = ref.read(cartUsecaseProvider);
+                                final cartUsecase =
+                                    ref.read(cartUsecaseProvider);
                                 await cartUsecase.updateCheckoutStatus(
                                   [product.cartItemId],
                                   selectedItems[index],
@@ -199,18 +200,18 @@ class _CartViewState extends ConsumerState<CartView> {
                                   await ref
                                       .read(cartStateProvider.notifier)
                                       .updateItemQuantity(
-                                    product.cartItemId.toString(),
-                                    product.quantity + 1,
-                                  );
+                                        product.cartItemId.toString(),
+                                        product.quantity + 1,
+                                      );
                                 },
                                 onDecrement: () async {
                                   if (product.quantity > 1) {
                                     await ref
                                         .read(cartStateProvider.notifier)
                                         .updateItemQuantity(
-                                      product.cartItemId.toString(),
-                                      product.quantity - 1,
-                                    );
+                                          product.cartItemId.toString(),
+                                          product.quantity - 1,
+                                        );
                                   }
                                 },
                                 priceDiscount: product.discountPrice.toString(),
@@ -246,6 +247,7 @@ class _CartViewState extends ConsumerState<CartView> {
         child: ElevatedButton(
           onPressed: () {
             Navigator.pushNamed(context, CheckoutView.routeName);
+            ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
           },
           child: const Text('Checkout'),
         ),
@@ -253,4 +255,3 @@ class _CartViewState extends ConsumerState<CartView> {
     );
   }
 }
-

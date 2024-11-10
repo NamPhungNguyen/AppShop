@@ -18,8 +18,7 @@ class CheckoutView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartState = ref.watch(cartStateProvider);
-
+    final checkoutState = ref.watch(checkoutStateProvider);
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
@@ -28,8 +27,8 @@ class CheckoutView extends ConsumerWidget {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      body: cartState.when(
-        data: (cartProducts) {
+      body: checkoutState.when(
+        data: (cartCheckoutProducts) {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(AppSizes.defaultSpace),
@@ -40,7 +39,7 @@ class CheckoutView extends ConsumerWidget {
 
                   /// items in cart
                   TCartItems(
-                    cartProducts: cartProducts.result,
+                    cartProducts: cartCheckoutProducts.selectedItems,
                     showAddRemoveButtons: false,
                   ),
                   const SizedBox(height: AppSizes.spaceBtwSections),
@@ -50,22 +49,22 @@ class CheckoutView extends ConsumerWidget {
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
                   /// -- billing section
-                  const TRoundedContainer(
+                  TRoundedContainer(
                     showBorder: true,
                     backgroundColor: Colors.white,
-                    padding: EdgeInsets.all(AppSizes.md),
+                    padding: const EdgeInsets.all(AppSizes.md),
                     child: Column(
                       children: [
-                        TBillingAmountSection(),
-                        SizedBox(height: AppSizes.spaceBtwItems),
+                        const TBillingAmountSection(),
+                        const SizedBox(height: AppSizes.spaceBtwItems),
 
                         /// divider
-                        Divider(),
-                        SizedBox(height: AppSizes.spaceBtwItems / 2),
+                        const Divider(),
+                        const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
                         /// payment methods
-                        TBillingPaymentSection(),
-                        SizedBox(height: AppSizes.spaceBtwItems),
+                        TBillingPaymentSection(cartCheckoutProducts: cartCheckoutProducts,),
+                        const SizedBox(height: AppSizes.spaceBtwItems),
                       ],
                     ),
                   ),
@@ -85,9 +84,7 @@ class CheckoutView extends ConsumerWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, CheckoutView.routeName);
-          },
+          onPressed: () {},
           child: const Text('Place order'),
         ),
       ),

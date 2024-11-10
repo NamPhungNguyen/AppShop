@@ -7,6 +7,7 @@ import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
+import 'package:front_shop/domain/states/checkout_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
@@ -81,6 +82,11 @@ final favoriteStateProvider =
 final cartStateProvider =
     StateNotifierProvider<CartState, AsyncValue<CartProducts>>(
   (ref) => CartState(ref),
+);
+
+final checkoutStateProvider =
+    StateNotifierProvider<CheckoutState, AsyncValue<CartCheckoutProducts>>(
+  (ref) => CheckoutState(ref),
 );
 
 final shippingAddressStateProvider =

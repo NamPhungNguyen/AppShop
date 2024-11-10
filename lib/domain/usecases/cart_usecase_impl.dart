@@ -43,4 +43,10 @@ class CartUsecaseImpl implements CartUsecase {
       List<int> cartItemIds, bool isSelect) async {
     return await _cartRepository.updateCheckoutStatus(cartItemIds, isSelect);
   }
+
+  @override
+  Future<CartCheckoutProducts> fetchProductCheckout() async {
+    final entity = await _cartRepository.fetchProductCheckout();
+    return CartProductTranslator.translateCheckout(entity);
+  }
 }

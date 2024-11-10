@@ -13,4 +13,6 @@ abstract class CartRepository {
   Future<void> deleteProductFromCart(String cartId);
 
   Future<void> updateItemQuantityFromCart(String cartItemId, int quantity);
+
+  Future<CartCheckoutProductsEntity> fetchProductCheckout();
 }

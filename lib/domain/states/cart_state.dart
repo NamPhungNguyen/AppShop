@@ -4,7 +4,6 @@ import 'package:front_shop/domain/models/cart_product.dart';
 
 class CartState extends StateNotifier<AsyncValue<CartProducts>> {
   final StateNotifierProviderRef _ref;
-  AsyncValue<CartCheckoutProducts>? checkoutState;
 
   CartState(this._ref) : super(const AsyncData(CartProducts(result: []))) {
     _init();

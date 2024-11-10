@@ -34,14 +34,16 @@ class TCartItems extends ConsumerWidget {
               color: product.color,
               size: product.size,
               quantity: product.quantity,
-              onIncrement: () {
-                ref.read(cartStateProvider.notifier).updateItemQuantity(
+              onIncrement: () async {
+                await ref.read(cartStateProvider.notifier).updateItemQuantity(
                     product.cartItemId.toString(), product.quantity + 1);
+                await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
               },
-              onDecrement: () {
+              onDecrement: () async {
                 if (product.quantity > 1) {
-                  ref.read(cartStateProvider.notifier).updateItemQuantity(
+                  await ref.read(cartStateProvider.notifier).updateItemQuantity(
                       product.cartItemId.toString(), product.quantity - 1);
+                  await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
                 }
               },
               priceDiscount: product.discountPrice.toString(),

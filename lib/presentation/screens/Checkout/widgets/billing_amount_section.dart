@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/domain/models/cart_product.dart';
 import 'package:front_shop/presentation/commom/widgets/texts/product_price_text.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
 class TBillingPaymentSection extends StatelessWidget {
-  const TBillingPaymentSection({super.key});
+  const TBillingPaymentSection({super.key, required this.cartCheckoutProducts});
+
+  final CartCheckoutProducts cartCheckoutProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,7 @@ class TBillingPaymentSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Total', style: Theme.of(context).textTheme.bodyMedium),
-            const ProductPriceText(price: '6.0'),
+             ProductPriceText(price: cartCheckoutProducts.totalCheckoutPrice.toString()),
           ],
         ),
       ],

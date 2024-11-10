@@ -118,6 +118,11 @@ abstract class ClientApi {
     @Query('isSelect') bool isSelect,
   );
 
+  @GET('/cart/product-checkout')
+  Future<HttpResponse<CartCheckoutProductsEntity>> fetchProductCheckout(
+    @Header("Authorization") String authorization,
+  );
+
   @DELETE('/cart/items/{cartId}')
   Future<HttpResponse<void>> deleteProductFromCart(
     @Header("Authorization") authorization,

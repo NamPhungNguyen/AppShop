@@ -616,7 +616,7 @@ class _ClientApi implements ClientApi {
 
   @override
   Future<HttpResponse<void>> updateCheckoutStatus(
-    dynamic authorization,
+    String authorization,
     Map<String, dynamic> body,
     bool isSelect,
   ) async {
@@ -644,6 +644,43 @@ class _ClientApi implements ClientApi {
         )));
     final _result = await _dio.fetch<void>(_options);
     final httpResponse = HttpResponse(null, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<CartCheckoutProductsEntity>> fetchProductCheckout(
+      String authorization) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<HttpResponse<CartCheckoutProductsEntity>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/cart/product-checkout',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CartCheckoutProductsEntity _value;
+    try {
+      _value = CartCheckoutProductsEntity.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 

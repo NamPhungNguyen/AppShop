@@ -13,4 +13,6 @@ abstract class CartUsecase {
   Future<void> updateCheckoutStatus(List<int> cartItemIds, bool isSelect);
 
   Future<void> updateItemQuantityFromCart(String cartItemId, int quantity);
+
+  Future<CartCheckoutProducts> fetchProductCheckout();
 }
