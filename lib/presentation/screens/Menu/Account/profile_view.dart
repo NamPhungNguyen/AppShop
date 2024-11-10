@@ -100,27 +100,36 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   padding: const EdgeInsets.all(AppSizes.defaultSpace),
                   child: Column(
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            Image.network(
-                              user.result.profileImg ??
-                                  AssetsPathUtil.user("profile.png"),
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                    'assets/images/default_profile.png',
-                                    width: 80,
-                                    height: 80);
-                              },
+                      Column(
+                        children: [
+                          ClipOval(
+                            child: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.network(
+                                  user.result.profileImg ??
+                                      AssetsPathUtil.user("profile.png"),
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      AssetsPathUtil.user("profile.png"),
+                                      width: 80,
+                                      height: 80,
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
-                            TextButton(
-                                onPressed: () {
-                                  _uploadProfileImage(context, ref);
-                                },
-                                child: const Text("Change Profile Picture"))
-                          ],
-                        ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _uploadProfileImage(context, ref);
+                            },
+                            child: const Text("Change Profile Picture"),
+                          )
+                        ],
                       ),
 
                       /// details
@@ -221,10 +230,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             },
             loading: () => const Center(child: CircularProgressIndicator()),
           ),
-          if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
+          if (isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

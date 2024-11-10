@@ -501,3 +501,164 @@ abstract class _CartProducts implements CartProducts {
   _$$CartProductsImplCopyWith<_$CartProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$CartCheckoutProducts {
+  List<CartProduct> get selectedItems => throw _privateConstructorUsedError;
+  double get totalCheckoutPrice => throw _privateConstructorUsedError;
+
+  /// Create a copy of CartCheckoutProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $CartCheckoutProductsCopyWith<CartCheckoutProducts> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CartCheckoutProductsCopyWith<$Res> {
+  factory $CartCheckoutProductsCopyWith(CartCheckoutProducts value,
+          $Res Function(CartCheckoutProducts) then) =
+      _$CartCheckoutProductsCopyWithImpl<$Res, CartCheckoutProducts>;
+  @useResult
+  $Res call({List<CartProduct> selectedItems, double totalCheckoutPrice});
+}
+
+/// @nodoc
+class _$CartCheckoutProductsCopyWithImpl<$Res,
+        $Val extends CartCheckoutProducts>
+    implements $CartCheckoutProductsCopyWith<$Res> {
+  _$CartCheckoutProductsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CartCheckoutProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedItems = null,
+    Object? totalCheckoutPrice = null,
+  }) {
+    return _then(_value.copyWith(
+      selectedItems: null == selectedItems
+          ? _value.selectedItems
+          : selectedItems // ignore: cast_nullable_to_non_nullable
+              as List<CartProduct>,
+      totalCheckoutPrice: null == totalCheckoutPrice
+          ? _value.totalCheckoutPrice
+          : totalCheckoutPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$CartCheckoutProductsImplCopyWith<$Res>
+    implements $CartCheckoutProductsCopyWith<$Res> {
+  factory _$$CartCheckoutProductsImplCopyWith(_$CartCheckoutProductsImpl value,
+          $Res Function(_$CartCheckoutProductsImpl) then) =
+      __$$CartCheckoutProductsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<CartProduct> selectedItems, double totalCheckoutPrice});
+}
+
+/// @nodoc
+class __$$CartCheckoutProductsImplCopyWithImpl<$Res>
+    extends _$CartCheckoutProductsCopyWithImpl<$Res, _$CartCheckoutProductsImpl>
+    implements _$$CartCheckoutProductsImplCopyWith<$Res> {
+  __$$CartCheckoutProductsImplCopyWithImpl(_$CartCheckoutProductsImpl _value,
+      $Res Function(_$CartCheckoutProductsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartCheckoutProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedItems = null,
+    Object? totalCheckoutPrice = null,
+  }) {
+    return _then(_$CartCheckoutProductsImpl(
+      selectedItems: null == selectedItems
+          ? _value._selectedItems
+          : selectedItems // ignore: cast_nullable_to_non_nullable
+              as List<CartProduct>,
+      totalCheckoutPrice: null == totalCheckoutPrice
+          ? _value.totalCheckoutPrice
+          : totalCheckoutPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CartCheckoutProductsImpl implements _CartCheckoutProducts {
+  const _$CartCheckoutProductsImpl(
+      {required final List<CartProduct> selectedItems,
+      required this.totalCheckoutPrice})
+      : _selectedItems = selectedItems;
+
+  final List<CartProduct> _selectedItems;
+  @override
+  List<CartProduct> get selectedItems {
+    if (_selectedItems is EqualUnmodifiableListView) return _selectedItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedItems);
+  }
+
+  @override
+  final double totalCheckoutPrice;
+
+  @override
+  String toString() {
+    return 'CartCheckoutProducts(selectedItems: $selectedItems, totalCheckoutPrice: $totalCheckoutPrice)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CartCheckoutProductsImpl &&
+            const DeepCollectionEquality()
+                .equals(other._selectedItems, _selectedItems) &&
+            (identical(other.totalCheckoutPrice, totalCheckoutPrice) ||
+                other.totalCheckoutPrice == totalCheckoutPrice));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_selectedItems), totalCheckoutPrice);
+
+  /// Create a copy of CartCheckoutProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CartCheckoutProductsImplCopyWith<_$CartCheckoutProductsImpl>
+      get copyWith =>
+          __$$CartCheckoutProductsImplCopyWithImpl<_$CartCheckoutProductsImpl>(
+              this, _$identity);
+}
+
+abstract class _CartCheckoutProducts implements CartCheckoutProducts {
+  const factory _CartCheckoutProducts(
+      {required final List<CartProduct> selectedItems,
+      required final double totalCheckoutPrice}) = _$CartCheckoutProductsImpl;
+
+  @override
+  List<CartProduct> get selectedItems;
+  @override
+  double get totalCheckoutPrice;
+
+  /// Create a copy of CartCheckoutProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CartCheckoutProductsImplCopyWith<_$CartCheckoutProductsImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

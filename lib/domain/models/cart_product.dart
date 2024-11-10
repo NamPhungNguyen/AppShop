@@ -21,5 +21,14 @@ class CartProduct with _$CartProduct {
 
 @freezed
 class CartProducts with _$CartProducts {
-  const factory CartProducts({required List<CartProduct> result}) = _CartProducts;
+  const factory CartProducts({required List<CartProduct> result}) =
+      _CartProducts;
+}
+
+@freezed
+class CartCheckoutProducts with _$CartCheckoutProducts {
+  const factory CartCheckoutProducts({
+    required List<CartProduct> selectedItems,
+    required double totalCheckoutPrice,
+  }) = _CartCheckoutProducts;
 }

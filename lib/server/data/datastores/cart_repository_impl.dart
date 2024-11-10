@@ -36,4 +36,10 @@ class CartRepositoryImpl implements CartRepository {
     return await _clientService.updateItemQuantityFromCart(
         cartItemId, quantity);
   }
+
+  @override
+  Future<void> updateCheckoutStatus(
+      List<int> cartItemIds, bool isSelect) async {
+    return await _clientService.updateCheckoutStatus(cartItemIds, isSelect);
+  }
 }

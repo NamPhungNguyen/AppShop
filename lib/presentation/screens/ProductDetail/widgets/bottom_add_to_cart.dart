@@ -38,7 +38,7 @@ class TBottomAddToCart extends ConsumerWidget {
           backgroundColor: AppColors.primaryColor,
           side: const BorderSide(color: AppColors.primaryColor),
         ),
-        child: Text("Add to Cart"),
+        child: const Text("Add to Cart"),
       ),
     );
   }

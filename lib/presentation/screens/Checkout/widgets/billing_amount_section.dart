@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/presentation/commom/widgets/texts/product_price_text.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
 class TBillingPaymentSection extends StatelessWidget {
@@ -7,12 +8,15 @@ class TBillingPaymentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text("Order summary", style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: AppSizes.spaceBtwItems),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Subtotal', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$256.0', style: Theme.of(context).textTheme.bodyMedium),
+            const ProductPriceText(price: '25.000'),
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems / 2),
@@ -21,8 +25,9 @@ class TBillingPaymentSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Shipping Fee', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$6.0', style: Theme.of(context).textTheme.labelLarge),
+            Text('Shop discount',
+                style: Theme.of(context).textTheme.bodyMedium),
+            const ProductPriceText(price: '6.000'),
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems / 2),
@@ -31,8 +36,17 @@ class TBillingPaymentSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Tax Fee', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$6.0', style: Theme.of(context).textTheme.labelLarge),
+            Text('Shipping', style: Theme.of(context).textTheme.bodyMedium),
+            const ProductPriceText(price: '6.000'),
+          ],
+        ),
+        const SizedBox(height: AppSizes.spaceBtwItems / 2),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Shipping discount',
+                style: Theme.of(context).textTheme.bodyMedium),
+            const ProductPriceText(price: '6.000'),
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems / 2),
@@ -41,8 +55,8 @@ class TBillingPaymentSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Order total', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$6.0', style: Theme.of(context).textTheme.labelLarge),
+            Text('Total', style: Theme.of(context).textTheme.bodyMedium),
+            const ProductPriceText(price: '6.0'),
           ],
         ),
       ],

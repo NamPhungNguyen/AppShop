@@ -22,4 +22,12 @@ class CartProductTranslator {
     return CartProducts(
         result: entity.result.map((e) => translate(e)).toList());
   }
+
+  static CartCheckoutProducts translateCheckout(CartCheckoutProductsEntity entity) {
+    return CartCheckoutProducts(
+      selectedItems: entity.selectedItems.map((e) => translate(e)).toList(),
+      totalCheckoutPrice: entity.totalCheckoutPrice,
+    );
+  }
+
 }

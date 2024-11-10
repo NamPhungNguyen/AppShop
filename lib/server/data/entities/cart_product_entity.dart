@@ -31,3 +31,14 @@ class CartProductsEntity with _$CartProductsEntity {
 
   factory CartProductsEntity.fromJson(Map<String, dynamic> json) => _$CartProductsEntityFromJson(json);
 }
+
+@freezed
+class CartCheckoutProductsEntity with _$CartCheckoutProductsEntity {
+  const factory CartCheckoutProductsEntity({
+    required List<CartProductEntity> selectedItems,
+    required double totalCheckoutPrice,
+  }) = _CartCheckoutProductsEntity;
+
+  factory CartCheckoutProductsEntity.fromJson(Map<String, dynamic> json) =>
+      _$CartCheckoutProductsEntityFromJson(json);
+}

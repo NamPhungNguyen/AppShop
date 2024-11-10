@@ -6,6 +6,7 @@ import 'package:front_shop/presentation/screens/Order/order_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
+
 import '../../../commom/widgets/Appbar/appbar.dart';
 import '../../../commom/widgets/custom_shapes/containers/primary_header_container.dart';
 import '../../../commom/widgets/custom_shapes/containers/section_heading.dart';
@@ -20,114 +21,120 @@ class AccountView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationState = ref.watch(locationStateProvider);
+
+    Future<void> _refreshUserState() async {
+      ref.refresh(userStateProvider);
+    }
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TPrimaryHeaderContainer(
-              child: Column(
-                children: [
-                  // App bar
-                  TAppbar(
-                    title: Text("Account",
+      body: RefreshIndicator(
+        onRefresh: _refreshUserState,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              TPrimaryHeaderContainer(
+                child: Column(
+                  children: [
+                    TAppbar(
+                      title: Text(
+                        "Account",
                         style: Theme.of(context)
                             .textTheme
                             .headlineMedium!
-                            .apply(color: AppColors.textWhite)),
-                  ),
-
-                  // User profile card
-                  const UserProfileTile(),
-                  const SizedBox(height: AppSizes.spaceBtwSections)
-                ],
+                            .apply(color: AppColors.textWhite),
+                      ),
+                    ),
+                    const UserProfileTile(),
+                    const SizedBox(height: AppSizes.spaceBtwSections),
+                  ],
+                ),
               ),
-            ),
-
-            // Body
-            Padding(
-              padding: const EdgeInsets.all(AppSizes.defaultSpace),
-              child: Column(
-                children: [
-                  const SectionHeading(title: 'Account Settings', showActionButton: false),
-                  const SizedBox(height: AppSizes.spaceBtwItems),
-
-                  SettingsMenuTile(
-                    icon: Iconsax.safe_home,
-                    title: "My address",
-                    subTitle: 'Set shopping delivery address',
-                    opTap: () {
-                      Navigator.pushNamed(context, AddressView.routeName);
-                    },
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.bag_tick,
-                    title: "My orders",
-                    subTitle: 'In process and Completed Orders',
-                    opTap: () {
-                      Navigator.pushNamed(context, OrderView.routeName);
-                    },
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.notification,
-                    title: "Notifications",
-                    subTitle: 'Set any kind of notification message',
-                    opTap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.security_card,
-                    title: "Account Privacy",
-                    subTitle: 'Manage data usage and connected accounts',
-                    opTap: () {},
-                  ),
-
-                  // App settings
-                  const SizedBox(height: AppSizes.spaceBtwSections),
-                  const SectionHeading(title: 'App Settings', showActionButton: false),
-                  const SizedBox(height: AppSizes.spaceBtwItems),
-
-                  // Geolocation Switch
-                  SettingsMenuTile(
-                    icon: Iconsax.location,
-                    title: "Geolocation",
-                    subTitle: 'Set recommendation based on location',
-                    trailing: locationState.when(
-                      data: (isLocationEnabled) {
-                        return Switch(
-                          value: isLocationEnabled ?? false,
-                          activeColor: AppColors.primaryColor,
-                          onChanged: (value) {
-                            ref.read(locationStateProvider.notifier).updateLocation(value);
-                          },
-                        );
-                      },
-                      loading: () => SizedBox.shrink(),
-                      error: (error, stack) {
-                        return IconButton(
-                          icon: const Icon(Icons.error),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error loading location: $error")),
-                            );
-                          },
-                        );
+              Padding(
+                padding: const EdgeInsets.all(AppSizes.defaultSpace),
+                child: Column(
+                  children: [
+                    const SectionHeading(
+                        title: 'Account Settings', showActionButton: false),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    SettingsMenuTile(
+                      icon: Iconsax.safe_home,
+                      title: "My address",
+                      subTitle: 'Set shopping delivery address',
+                      opTap: () {
+                        Navigator.pushNamed(context, AddressView.routeName);
                       },
                     ),
-                  ),
-
-                  SettingsMenuTile(
-                    icon: Iconsax.security_user,
-                    title: "Safe Mode",
-                    subTitle: 'Search result is safe for all ages',
-                    trailing: Switch(
-                      value: false,
-                      activeColor: AppColors.primaryColor,
-                      onChanged: (value) {},
+                    SettingsMenuTile(
+                      icon: Iconsax.bag_tick,
+                      title: "My orders",
+                      subTitle: 'In process and Completed Orders',
+                      opTap: () {
+                        Navigator.pushNamed(context, OrderView.routeName);
+                      },
                     ),
-                  ),
-                ],
+                    SettingsMenuTile(
+                      icon: Iconsax.notification,
+                      title: "Notifications",
+                      subTitle: 'Set any kind of notification message',
+                      opTap: () {},
+                    ),
+                    SettingsMenuTile(
+                      icon: Iconsax.security_card,
+                      title: "Account Privacy",
+                      subTitle: 'Manage data usage and connected accounts',
+                      opTap: () {},
+                    ),
+                    const SizedBox(height: AppSizes.spaceBtwSections),
+                    const SectionHeading(
+                        title: 'App Settings', showActionButton: false),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    SettingsMenuTile(
+                      icon: Iconsax.location,
+                      title: "Geolocation",
+                      subTitle: 'Set recommendation based on location',
+                      trailing: locationState.when(
+                        data: (isLocationEnabled) {
+                          return Switch(
+                            value: isLocationEnabled ?? false,
+                            activeColor: AppColors.primaryColor,
+                            onChanged: (value) {
+                              ref
+                                  .read(locationStateProvider.notifier)
+                                  .updateLocation(value);
+                            },
+                          );
+                        },
+                        loading: () => SizedBox.shrink(),
+                        error: (error, stack) {
+                          return IconButton(
+                            icon: const Icon(Icons.error),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                    Text("Error loading location: $error")),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    SettingsMenuTile(
+                      icon: Iconsax.security_user,
+                      title: "Safe Mode",
+                      subTitle: 'Search result is safe for all ages',
+                      trailing: Switch(
+                        value: false,
+                        activeColor: AppColors.primaryColor,
+                        onChanged: (value) {},
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

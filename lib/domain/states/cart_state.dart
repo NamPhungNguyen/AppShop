@@ -3,7 +3,8 @@ import 'package:front_shop/domain/domain_modules.dart';
 import 'package:front_shop/domain/models/cart_product.dart';
 
 class CartState extends StateNotifier<AsyncValue<CartProducts>> {
-  final Ref _ref;
+  final StateNotifierProviderRef _ref;
+  AsyncValue<CartCheckoutProducts>? checkoutState;
 
   CartState(this._ref) : super(const AsyncData(CartProducts(result: []))) {
     _init();
@@ -67,7 +68,18 @@ class CartState extends StateNotifier<AsyncValue<CartProducts>> {
       await fetchCartUser();
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
-      print('Error updating cart item quantity: $error');
+    }
+  }
+
+  Future<void> updateCheckoutStatus(
+      List<int> cartItemIds, bool isSelect) async {
+    state = const AsyncLoading();
+    try {
+      final cartUsecase = _ref.read(cartUsecaseProvider);
+      await cartUsecase.updateCheckoutStatus(cartItemIds, isSelect);
+      await fetchCartUser();
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
     }
   }
 }

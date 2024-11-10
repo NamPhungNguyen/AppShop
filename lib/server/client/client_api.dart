@@ -111,6 +111,13 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @PUT('/cart/update-checkout-status')
+  Future<HttpResponse<void>> updateCheckoutStatus(
+    @Header("Authorization") String authorization,
+    @Body() Map<String, dynamic> body,
+    @Query('isSelect') bool isSelect,
+  );
+
   @DELETE('/cart/items/{cartId}')
   Future<HttpResponse<void>> deleteProductFromCart(
     @Header("Authorization") authorization,

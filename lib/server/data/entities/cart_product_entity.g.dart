@@ -51,3 +51,19 @@ Map<String, dynamic> _$$CartProductsEntityImplToJson(
     <String, dynamic>{
       'result': instance.result,
     };
+
+_$CartCheckoutProductsEntityImpl _$$CartCheckoutProductsEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$CartCheckoutProductsEntityImpl(
+      selectedItems: (json['selectedItems'] as List<dynamic>)
+          .map((e) => CartProductEntity.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      totalCheckoutPrice: (json['totalCheckoutPrice'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$CartCheckoutProductsEntityImplToJson(
+        _$CartCheckoutProductsEntityImpl instance) =>
+    <String, dynamic>{
+      'selectedItems': instance.selectedItems,
+      'totalCheckoutPrice': instance.totalCheckoutPrice,
+    };

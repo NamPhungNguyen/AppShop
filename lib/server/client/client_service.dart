@@ -204,6 +204,19 @@ class ClientService {
     return res.data;
   }
 
+  Future<void> updateCheckoutStatus(List<int> cartItemIds, bool isSelect) async {
+    Map<String, dynamic> body = {
+      'cartItemIds': cartItemIds,
+    };
+    final res = await clientApi.updateCheckoutStatus(
+      await Util.createAuthorization(),
+      body,
+      isSelect,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+  }
+
+
   Future<void> deleteProductFromCart(String cartId) async {
     final res = await clientApi.deleteProductFromCart(
       await Util.createAuthorization(),

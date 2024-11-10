@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/cart_product.dart';
+import 'package:front_shop/main.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../commom/widgets/products/cart/cart_item.dart';
 
-class TCartItems extends StatelessWidget {
+class TCartItems extends ConsumerWidget {
   const TCartItems({
     super.key,
     required this.cartProducts,
@@ -15,12 +17,11 @@ class TCartItems extends StatelessWidget {
   final bool showAddRemoveButtons;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.separated(
       shrinkWrap: true,
-      separatorBuilder: (_, __) => const SizedBox(
-        height: AppSizes.spaceBtwSections,
-      ),
+      separatorBuilder: (_, __) =>
+          const SizedBox(height: AppSizes.spaceBtwSections),
       itemCount: cartProducts.length,
       itemBuilder: (_, index) {
         final product = cartProducts[index];
@@ -33,8 +34,18 @@ class TCartItems extends StatelessWidget {
               color: product.color,
               size: product.size,
               quantity: product.quantity,
-              onIncrement: () {},
-              onDecrement: () {},
+              onIncrement: () {
+                ref.read(cartStateProvider.notifier).updateItemQuantity(
+                    product.cartItemId.toString(), product.quantity + 1);
+              },
+              onDecrement: () {
+                if (product.quantity > 1) {
+                  ref.read(cartStateProvider.notifier).updateItemQuantity(
+                      product.cartItemId.toString(), product.quantity - 1);
+                }
+              },
+              priceDiscount: product.discountPrice.toString(),
+              totalPrice: product.totalPrice.toString(),
             ),
           ],
         );

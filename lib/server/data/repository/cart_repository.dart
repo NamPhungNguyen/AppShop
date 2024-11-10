@@ -8,6 +8,8 @@ abstract class CartRepository {
 
   Future<CartProductsEntity> fetchCartUser();
 
+  Future<void> updateCheckoutStatus(List<int> cartItemIds, bool isSelect);
+
   Future<void> deleteProductFromCart(String cartId);
 
   Future<void> updateItemQuantityFromCart(String cartItemId, int quantity);

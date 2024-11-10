@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/presentation/commom/widgets/texts/product_price_text.dart';
 
 import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -16,6 +17,8 @@ class TCartItem extends ConsumerWidget {
     required this.quantity,
     required this.onIncrement,
     required this.onDecrement,
+    required this.priceDiscount,
+    required this.totalPrice,
   });
 
   final String imageUrl;
@@ -25,6 +28,8 @@ class TCartItem extends ConsumerWidget {
   final int quantity;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
+  final String priceDiscount;
+  final String totalPrice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,6 +45,7 @@ class TCartItem extends ConsumerWidget {
         ),
         const SizedBox(width: AppSizes.spaceBtwItems),
 
+        /// size and color
         Expanded(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -76,11 +82,12 @@ class TCartItem extends ConsumerWidget {
         Row(
           children: [
             IconButton(
-              icon: Icon(Icons.remove),
+              icon: const Icon(Icons.remove),
               onPressed: onDecrement,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(4.0),
@@ -91,9 +98,17 @@ class TCartItem extends ConsumerWidget {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: onIncrement,
             ),
+          ],
+        ),
+
+        /// price discount
+        Column(
+          children: [
+            ProductPriceText(price: priceDiscount),
+            Text("Total: $totalPrice")
           ],
         ),
       ],

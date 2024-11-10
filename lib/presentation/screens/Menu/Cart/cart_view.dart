@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
+import '../../../../domain/domain_modules.dart';
 import '../../../../main.dart';
 import '../../../commom/widgets/products/cart/cart_item.dart';
 import '../../../commom/widgets/texts/product_price_text.dart';
@@ -29,7 +30,6 @@ class _CartViewState extends ConsumerState<CartView> {
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartStateProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Cart", style: Theme.of(context).textTheme.headlineMedium),
@@ -39,7 +39,7 @@ class _CartViewState extends ConsumerState<CartView> {
         data: (cartProducts) {
           if (selectedItems.length != cartProducts.result.length) {
             selectedItems =
-                List<bool>.filled(cartProducts.result.length, selectAll);
+            List<bool>.filled(cartProducts.result.length, selectAll);
           }
 
           if (cartProducts.result.isEmpty) {
@@ -64,13 +64,20 @@ class _CartViewState extends ConsumerState<CartView> {
                   children: [
                     Checkbox(
                       value: selectAll,
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         setState(() {
                           selectAll = value ?? false;
                           for (int i = 0; i < selectedItems.length; i++) {
                             selectedItems[i] = selectAll;
                           }
                         });
+                        final cartUsecase = ref.read(cartUsecaseProvider);
+                        await cartUsecase.updateCheckoutStatus(
+                          cartProducts.result
+                              .map((product) => product.cartItemId)
+                              .toList(),
+                          selectAll,
+                        );
                       },
                     ),
                     const Text("Select All"),
@@ -81,9 +88,6 @@ class _CartViewState extends ConsumerState<CartView> {
                     itemCount: cartProducts.result.length,
                     itemBuilder: (context, index) {
                       final product = cartProducts.result[index];
-                      double discountedPrice =
-                          product.price * (1 - product.discount / 100);
-
                       return Dismissible(
                         key: Key(product.productId.toString()),
                         background: Container(
@@ -99,36 +103,36 @@ class _CartViewState extends ConsumerState<CartView> {
                           try {
                             if (!mounted) return;
                             bool shouldDelete = await showDialog<bool>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Confirm Deletion'),
-                                      content: const Text(
-                                          'Are you sure you want to remove this item from the cart?'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(true);
-                                          },
-                                          child: const Text('Delete'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ) ??
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Confirm Deletion'),
+                                  content: const Text(
+                                      'Are you sure you want to remove this item from the cart?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(true);
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
                                 false;
 
                             if (shouldDelete) {
                               await ref
                                   .read(cartStateProvider.notifier)
                                   .deleteProductFromCart(
-                                      product.cartItemId.toString());
+                                  product.cartItemId.toString());
 
                               if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -150,10 +154,15 @@ class _CartViewState extends ConsumerState<CartView> {
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 setState(() {
                                   selectedItems[index] = !selectedItems[index];
                                 });
+                                final cartUsecase = ref.read(cartUsecaseProvider);
+                                await cartUsecase.updateCheckoutStatus(
+                                  [product.cartItemId],
+                                  selectedItems[index],
+                                );
                               },
                               child: Container(
                                 width: 24.0,
@@ -190,26 +199,24 @@ class _CartViewState extends ConsumerState<CartView> {
                                   await ref
                                       .read(cartStateProvider.notifier)
                                       .updateItemQuantity(
-                                        product.cartItemId.toString(),
-                                        product.quantity + 1,
-                                      );
+                                    product.cartItemId.toString(),
+                                    product.quantity + 1,
+                                  );
                                 },
                                 onDecrement: () async {
                                   if (product.quantity > 1) {
                                     await ref
                                         .read(cartStateProvider.notifier)
                                         .updateItemQuantity(
-                                          product.cartItemId.toString(),
-                                          product.quantity - 1,
-                                        );
+                                      product.cartItemId.toString(),
+                                      product.quantity - 1,
+                                    );
                                   }
                                 },
+                                priceDiscount: product.discountPrice.toString(),
+                                totalPrice: product.totalPrice.toString(),
                               ),
                             ),
-
-                            /// Display the discounted price
-                            ProductPriceText(
-                                price: discountedPrice.toStringAsFixed(2)),
                           ],
                         ),
                       );
@@ -246,3 +253,4 @@ class _CartViewState extends ConsumerState<CartView> {
     );
   }
 }
+

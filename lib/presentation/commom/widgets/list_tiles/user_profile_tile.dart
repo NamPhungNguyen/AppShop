@@ -15,11 +15,36 @@ class UserProfileTile extends ConsumerWidget {
 
     return userState.when(
       data: (userInfo) => ListTile(
-        leading: CircleAvatar(
-          child: Image.network(
-              userInfo.result.profileImg ?? AssetsPathUtil.user("profile.png"),
-            width: 50,
-            height: 50,
+        leading: ClipOval(
+          child: SizedBox(
+            width: 45,
+            height: 45,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Image.network(
+                userInfo.result.profileImg ??
+                    AssetsPathUtil.user("profile.png"),
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                          (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    AssetsPathUtil.user("profile.png"),
+                    width: 80,
+                    height: 80,
+                  );
+                },
+              ),
+            ),
           ),
         ),
         title: Text(
@@ -43,7 +68,7 @@ class UserProfileTile extends ConsumerWidget {
           icon: const Icon(Iconsax.edit, color: Colors.white),
         ),
       ),
-      loading: () => const SizedBox.shrink(),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) {
         return Center(
           child: Column(
@@ -53,7 +78,7 @@ class UserProfileTile extends ConsumerWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  ref.refresh(userStateProvider); // This line will trigger a refresh of the state provider
+                  ref.refresh(userStateProvider);
                 },
                 child: const Text("Reload"),
               ),
