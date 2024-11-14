@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/presentation/commom/widgets/custom_shapes/containers/rounded_container.dart';
+import 'package:front_shop/domain/models/comment.dart';
 import 'package:front_shop/presentation/commom/widgets/products/rating_indicator.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
+import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 
 class UserReviewCard extends StatelessWidget {
-  const UserReviewCard({super.key});
+  const UserReviewCard({super.key, required this.comment});
+
+  final Comment comment;
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate(String createdAt) {
+      try {
+        DateTime dateTime = DateTime.parse(createdAt);
+        return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+      } catch (e) {
+        return createdAt;
+      }
+    }
+
     return Column(
       children: [
         Row(
@@ -18,78 +30,93 @@ class UserReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  backgroundImage:
-                      AssetImage(AssetsPathUtil.user("profile.png")),
-                ),
-                SizedBox(width: AppSizes.spaceBtwItems),
-                Text("John Doe", style: Theme.of(context).textTheme.titleLarge),
+                CircleAvatar(backgroundImage:  comment.imageUrls.isNotEmpty
+                    ? NetworkImage(comment.profileImgUrl)  // Use the first image from the list
+                    : const AssetImage('assets/profile.png') as ImageProvider),
+                const SizedBox(width: AppSizes.spaceBtwItems),
+                Text(comment.fullName, style: Theme.of(context).textTheme.titleLarge),
               ],
             ),
-            IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
+            PopupMenuButton<String>(
+              onSelected: (String value) {
+                if (value == 'edit') {
+                  print("Edit clicked");
+                } else if (value == 'delete') {
+                  print("Delete clicked");
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  const PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        Icon(Icons.edit),
+                        SizedBox(width: 8),
+                        Text("Edit"),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete),
+                        SizedBox(width: 8),
+                        Text("Delete"),
+                      ],
+                    ),
+                  ),
+                ];
+              },
+              icon: const Icon(Icons.more_vert),
+            ),
           ],
         ),
         const SizedBox(width: AppSizes.spaceBtwItems),
-
         /// Review
         Row(
           children: [
-            const TRatingBarIndicator(rating: 4),
+            TRatingBarIndicator(rating: comment.rating.toDouble()),
             const SizedBox(width: AppSizes.spaceBtwItems),
-            Text("01 Nov 2023", style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              formattedDate(comment.createdAt),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems),
-        ReadMoreText(
-          'The user interface of the app is quite intuitive. I was able to navigate and make purchases seamlessly. Great job!',
-          trimLines: 2,
-          trimMode: TrimMode.Line,
-          trimExpandedText: ' show less',
-          trimCollapsedText: ' show more',
-          moreStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor),
-          lessStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor),
-        ),
-        const SizedBox(height: AppSizes.spaceBtwItems),
-        TRoundedContainer(
-          backgroundColor: AppColors.borderPrimary,
-          child: Padding(
-            padding: EdgeInsets.all(AppSizes.md),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("T's Store", style: Theme.of(context).textTheme.bodyLarge),
-                    Text('02 Nov, 2024', style: Theme.of(context).textTheme.bodyMedium),
-                  ],
-                ),
-                const SizedBox(height: AppSizes.spaceBtwItems),
-                ReadMoreText(
-                  'The user interface of the app is quite intuitive. I was able to navigate and make purchases seamlessly. Great job!',
-                  trimLines: 2,
-                  trimMode: TrimMode.Line,
-                  trimExpandedText: ' show less',
-                  trimCollapsedText: ' show more',
-                  moreStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor),
-                  lessStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor),
-                ),
-              ],
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.spaceBtwItems / 2),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            // Ensures the text is aligned to the left
+            child: ReadMoreText(
+              comment.content,
+              trimLines: 2,
+              trimMode: TrimMode.Line,
+              trimExpandedText: ' show less',
+              trimCollapsedText: ' show more',
+              moreStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor,
+              ),
+              lessStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor,
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                color: Colors.black, // Set your text color
+              ),
             ),
           ),
         ),
-        const SizedBox(height: AppSizes.spaceBtwSections),
+        const SizedBox(height: AppSizes.spaceBtwItems),
       ],
     );
   }

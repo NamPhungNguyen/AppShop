@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api.dart';
 import 'package:front_shop/server/data/entities/categories_entity.dart';
+import 'package:front_shop/server/data/entities/comment_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
@@ -341,6 +342,15 @@ class ClientService {
       await Util.createAuthorization(),
       cartItemId,
       body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<CommentsEntity> fetchAllComment(String productId) async {
+    final res = await clientApi.fetchAllComment(
+      await Util.createAuthorization(),
+      productId,
     );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;

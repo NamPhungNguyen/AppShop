@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/commom/widgets/Appbar/appbar.dart';
-import 'package:front_shop/presentation/screens/ProductReviews/widgets/rating_progress_indicator.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
-import '../../commom/widgets/products/rating_indicator.dart';
+
+import '../../../domain/models/product.dart';
 import '../../commom/widgets/products/user_review_card.dart';
 
-class ProductReviewsView extends StatelessWidget {
+class ProductReviewsView extends ConsumerWidget {
   static const String routeName = "/product_reviews";
 
-  const ProductReviewsView({super.key});
+  const ProductReviewsView({super.key, required this.product});
+
+  final Product product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final commentState =
+        ref.watch(commentStateProvider(product.productId.toString()));
+
     return Scaffold(
       appBar: TAppbar(
         title: const Text("Reviews & Rating"),
@@ -26,19 +33,21 @@ class ProductReviewsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                  "Ratings and reviews are verified and are from people who use the same type of device that you use."),
-              const SizedBox(height: AppSizes.spaceBtwItems),
-
-              /// overall product ratings
-              const TOverallProductRating(),
-              const TRatingBarIndicator(rating: 3.5),
-              Text('12.611', style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: AppSizes.spaceBtwSections),
 
-              /// user reviews list
-              UserReviewCard(),
-              UserReviewCard(),
+              /// User reviews list based on commentState
+              commentState.when(
+                data: (comments) {
+                  return Column(
+                    children: comments.result.map((comment) {
+                      return UserReviewCard(comment: comment);
+                    }).toList(),
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) =>
+                    Center(child: Text('Error: $error')),
+              ),
             ],
           ),
         ),
@@ -46,5 +55,3 @@ class ProductReviewsView extends StatelessWidget {
     );
   }
 }
-
-

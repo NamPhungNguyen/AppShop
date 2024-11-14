@@ -14,6 +14,7 @@ class ProductTranslator {
       color: entity.color,
       rating: entity.rating,
       ratingCount: entity.ratingCount,
+      commentCount: entity.commentCount,
       brand: entity.brand,
       imgProduct: entity.imgProduct,
       categoryId: entity.categoryId,

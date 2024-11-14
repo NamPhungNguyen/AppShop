@@ -161,6 +161,7 @@ mixin _$Product {
   List<String> get color => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
   int get ratingCount => throw _privateConstructorUsedError;
+  int get commentCount => throw _privateConstructorUsedError;
   String get brand => throw _privateConstructorUsedError;
   String? get productCode => throw _privateConstructorUsedError;
   List<String> get imgProduct => throw _privateConstructorUsedError;
@@ -192,6 +193,7 @@ abstract class $ProductCopyWith<$Res> {
       List<String> color,
       double rating,
       int ratingCount,
+      int commentCount,
       String brand,
       String? productCode,
       List<String> imgProduct,
@@ -227,6 +229,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? color = null,
     Object? rating = null,
     Object? ratingCount = null,
+    Object? commentCount = null,
     Object? brand = null,
     Object? productCode = freezed,
     Object? imgProduct = null,
@@ -276,6 +279,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       ratingCount: null == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentCount: null == commentCount
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
               as int,
       brand: null == brand
           ? _value.brand
@@ -331,6 +338,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       List<String> color,
       double rating,
       int ratingCount,
+      int commentCount,
       String brand,
       String? productCode,
       List<String> imgProduct,
@@ -364,6 +372,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? color = null,
     Object? rating = null,
     Object? ratingCount = null,
+    Object? commentCount = null,
     Object? brand = null,
     Object? productCode = freezed,
     Object? imgProduct = null,
@@ -413,6 +422,10 @@ class __$$ProductImplCopyWithImpl<$Res>
       ratingCount: null == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentCount: null == commentCount
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
               as int,
       brand: null == brand
           ? _value.brand
@@ -464,6 +477,7 @@ class _$ProductImpl implements _Product {
       required final List<String> color,
       required this.rating,
       required this.ratingCount,
+      required this.commentCount,
       required this.brand,
       this.productCode,
       required final List<String> imgProduct,
@@ -509,6 +523,8 @@ class _$ProductImpl implements _Product {
   @override
   final int ratingCount;
   @override
+  final int commentCount;
+  @override
   final String brand;
   @override
   final String? productCode;
@@ -533,7 +549,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(productId: $productId, name: $name, description: $description, price: $price, discount: $discount, stock: $stock, size: $size, color: $color, rating: $rating, ratingCount: $ratingCount, brand: $brand, productCode: $productCode, imgProduct: $imgProduct, categoryId: $categoryId, categoryName: $categoryName, createdAt: $createdAt, updatedAt: $updatedAt, available: $available)';
+    return 'Product(productId: $productId, name: $name, description: $description, price: $price, discount: $discount, stock: $stock, size: $size, color: $color, rating: $rating, ratingCount: $ratingCount, commentCount: $commentCount, brand: $brand, productCode: $productCode, imgProduct: $imgProduct, categoryId: $categoryId, categoryName: $categoryName, createdAt: $createdAt, updatedAt: $updatedAt, available: $available)';
   }
 
   @override
@@ -555,6 +571,8 @@ class _$ProductImpl implements _Product {
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.ratingCount, ratingCount) ||
                 other.ratingCount == ratingCount) &&
+            (identical(other.commentCount, commentCount) ||
+                other.commentCount == commentCount) &&
             (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.productCode, productCode) ||
                 other.productCode == productCode) &&
@@ -573,26 +591,28 @@ class _$ProductImpl implements _Product {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      productId,
-      name,
-      description,
-      price,
-      discount,
-      stock,
-      const DeepCollectionEquality().hash(_size),
-      const DeepCollectionEquality().hash(_color),
-      rating,
-      ratingCount,
-      brand,
-      productCode,
-      const DeepCollectionEquality().hash(_imgProduct),
-      categoryId,
-      categoryName,
-      createdAt,
-      updatedAt,
-      available);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        productId,
+        name,
+        description,
+        price,
+        discount,
+        stock,
+        const DeepCollectionEquality().hash(_size),
+        const DeepCollectionEquality().hash(_color),
+        rating,
+        ratingCount,
+        commentCount,
+        brand,
+        productCode,
+        const DeepCollectionEquality().hash(_imgProduct),
+        categoryId,
+        categoryName,
+        createdAt,
+        updatedAt,
+        available
+      ]);
 
   /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
@@ -615,6 +635,7 @@ abstract class _Product implements Product {
       required final List<String> color,
       required final double rating,
       required final int ratingCount,
+      required final int commentCount,
       required final String brand,
       final String? productCode,
       required final List<String> imgProduct,
@@ -644,6 +665,8 @@ abstract class _Product implements Product {
   double get rating;
   @override
   int get ratingCount;
+  @override
+  int get commentCount;
   @override
   String get brand;
   @override

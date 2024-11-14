@@ -53,10 +53,10 @@ class ProductDetailView extends ConsumerWidget {
                     trimMode: TrimMode.Line,
                     trimCollapsedText: "Show more",
                     trimExpandedText: "Less",
-                    moreStyle:
-                        const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                    lessStyle:
-                        const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                    moreStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w800),
+                    lessStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
@@ -64,10 +64,13 @@ class ProductDetailView extends ConsumerWidget {
                   const Divider(),
                   const SizedBox(height: AppSizes.spaceBtwItems),
                   TSectionHeading(
-                    title: 'Reviews(199)',
+                    title: 'Reviews(${product.commentCount})',
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, ProductReviewsView.routeName);
+                        context,
+                        ProductReviewsView.routeName,
+                        arguments: product,
+                      );
                     },
                     showActionButton: true,
                   ),

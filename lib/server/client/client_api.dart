@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api_endpoint.dart';
 import 'package:front_shop/server/data/entities/categories_entity.dart';
+import 'package:front_shop/server/data/entities/comment_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
@@ -162,6 +163,12 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
     @Path("addressId") String addressId,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/comment/list/{productId}')
+  Future<HttpResponse<CommentsEntity>> fetchAllComment(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
   );
 }
 

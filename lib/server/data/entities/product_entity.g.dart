@@ -31,6 +31,7 @@ _$ProductEntityImpl _$$ProductEntityImplFromJson(Map<String, dynamic> json) =>
       color: (json['color'] as List<dynamic>).map((e) => e as String).toList(),
       rating: (json['rating'] as num).toDouble(),
       ratingCount: (json['ratingCount'] as num).toInt(),
+      commentCount: (json['commentCount'] as num).toInt(),
       brand: json['brand'] as String,
       productCode: json['productCode'] as String?,
       imgProduct: (json['imgProduct'] as List<dynamic>)
@@ -55,6 +56,7 @@ Map<String, dynamic> _$$ProductEntityImplToJson(_$ProductEntityImpl instance) =>
       'color': instance.color,
       'rating': instance.rating,
       'ratingCount': instance.ratingCount,
+      'commentCount': instance.commentCount,
       'brand': instance.brand,
       'productCode': instance.productCode,
       'imgProduct': instance.imgProduct,

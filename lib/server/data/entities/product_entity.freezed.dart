@@ -188,6 +188,7 @@ mixin _$ProductEntity {
   List<String> get color => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
   int get ratingCount => throw _privateConstructorUsedError;
+  int get commentCount => throw _privateConstructorUsedError;
   String get brand => throw _privateConstructorUsedError;
   String? get productCode => throw _privateConstructorUsedError;
   List<String> get imgProduct => throw _privateConstructorUsedError;
@@ -224,6 +225,7 @@ abstract class $ProductEntityCopyWith<$Res> {
       List<String> color,
       double rating,
       int ratingCount,
+      int commentCount,
       String brand,
       String? productCode,
       List<String> imgProduct,
@@ -259,6 +261,7 @@ class _$ProductEntityCopyWithImpl<$Res, $Val extends ProductEntity>
     Object? color = null,
     Object? rating = null,
     Object? ratingCount = null,
+    Object? commentCount = null,
     Object? brand = null,
     Object? productCode = freezed,
     Object? imgProduct = null,
@@ -308,6 +311,10 @@ class _$ProductEntityCopyWithImpl<$Res, $Val extends ProductEntity>
       ratingCount: null == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentCount: null == commentCount
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
               as int,
       brand: null == brand
           ? _value.brand
@@ -364,6 +371,7 @@ abstract class _$$ProductEntityImplCopyWith<$Res>
       List<String> color,
       double rating,
       int ratingCount,
+      int commentCount,
       String brand,
       String? productCode,
       List<String> imgProduct,
@@ -397,6 +405,7 @@ class __$$ProductEntityImplCopyWithImpl<$Res>
     Object? color = null,
     Object? rating = null,
     Object? ratingCount = null,
+    Object? commentCount = null,
     Object? brand = null,
     Object? productCode = freezed,
     Object? imgProduct = null,
@@ -446,6 +455,10 @@ class __$$ProductEntityImplCopyWithImpl<$Res>
       ratingCount: null == ratingCount
           ? _value.ratingCount
           : ratingCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentCount: null == commentCount
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
               as int,
       brand: null == brand
           ? _value.brand
@@ -497,6 +510,7 @@ class _$ProductEntityImpl implements _ProductEntity {
       required final List<String> color,
       required this.rating,
       required this.ratingCount,
+      required this.commentCount,
       required this.brand,
       this.productCode,
       required final List<String> imgProduct,
@@ -545,6 +559,8 @@ class _$ProductEntityImpl implements _ProductEntity {
   @override
   final int ratingCount;
   @override
+  final int commentCount;
+  @override
   final String brand;
   @override
   final String? productCode;
@@ -569,7 +585,7 @@ class _$ProductEntityImpl implements _ProductEntity {
 
   @override
   String toString() {
-    return 'ProductEntity(productId: $productId, name: $name, description: $description, price: $price, discount: $discount, stock: $stock, size: $size, color: $color, rating: $rating, ratingCount: $ratingCount, brand: $brand, productCode: $productCode, imgProduct: $imgProduct, categoryId: $categoryId, categoryName: $categoryName, createdAt: $createdAt, updatedAt: $updatedAt, available: $available)';
+    return 'ProductEntity(productId: $productId, name: $name, description: $description, price: $price, discount: $discount, stock: $stock, size: $size, color: $color, rating: $rating, ratingCount: $ratingCount, commentCount: $commentCount, brand: $brand, productCode: $productCode, imgProduct: $imgProduct, categoryId: $categoryId, categoryName: $categoryName, createdAt: $createdAt, updatedAt: $updatedAt, available: $available)';
   }
 
   @override
@@ -591,6 +607,8 @@ class _$ProductEntityImpl implements _ProductEntity {
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.ratingCount, ratingCount) ||
                 other.ratingCount == ratingCount) &&
+            (identical(other.commentCount, commentCount) ||
+                other.commentCount == commentCount) &&
             (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.productCode, productCode) ||
                 other.productCode == productCode) &&
@@ -610,26 +628,28 @@ class _$ProductEntityImpl implements _ProductEntity {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      productId,
-      name,
-      description,
-      price,
-      discount,
-      stock,
-      const DeepCollectionEquality().hash(_size),
-      const DeepCollectionEquality().hash(_color),
-      rating,
-      ratingCount,
-      brand,
-      productCode,
-      const DeepCollectionEquality().hash(_imgProduct),
-      categoryId,
-      categoryName,
-      createdAt,
-      updatedAt,
-      available);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        productId,
+        name,
+        description,
+        price,
+        discount,
+        stock,
+        const DeepCollectionEquality().hash(_size),
+        const DeepCollectionEquality().hash(_color),
+        rating,
+        ratingCount,
+        commentCount,
+        brand,
+        productCode,
+        const DeepCollectionEquality().hash(_imgProduct),
+        categoryId,
+        categoryName,
+        createdAt,
+        updatedAt,
+        available
+      ]);
 
   /// Create a copy of ProductEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -659,6 +679,7 @@ abstract class _ProductEntity implements ProductEntity {
       required final List<String> color,
       required final double rating,
       required final int ratingCount,
+      required final int commentCount,
       required final String brand,
       final String? productCode,
       required final List<String> imgProduct,
@@ -691,6 +712,8 @@ abstract class _ProductEntity implements ProductEntity {
   double get rating;
   @override
   int get ratingCount;
+  @override
+  int get commentCount;
   @override
   String get brand;
   @override

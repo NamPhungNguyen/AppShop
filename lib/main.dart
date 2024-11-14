@@ -2,12 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/category.dart';
+import 'package:front_shop/domain/models/comment.dart';
 import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
 import 'package:front_shop/domain/states/checkout_state.dart';
+import 'package:front_shop/domain/states/comment_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
@@ -98,6 +100,12 @@ final shippingAddressDefaultStateProvider = StateNotifierProvider<
     ShippingAddressDefaultState, AsyncValue<ShippingAddressDefault>>(
   (ref) => ShippingAddressDefaultState(ref),
 );
+
+// Assuming the provider is defined like this:
+final commentStateProvider = StateNotifierProvider.family<CommentState, AsyncValue<Comments>, String>(
+      (ref, productId) => CommentState(ref, productId),
+);
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

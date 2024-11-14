@@ -22,6 +22,7 @@ class Product with _$Product {
     required List<String> color,
     required double rating,
     required int ratingCount,
+    required int commentCount,
     required String brand,
     String? productCode,
     required List<String> imgProduct,

@@ -73,8 +73,6 @@ class MainView {
         return MaterialPageRoute(
           builder: (_) => ProductDetailView(product: product),
         );
-      case ProductReviewsView.routeName:
-        return MaterialPageRoute(builder: (_) => const ProductReviewsView());
       case AddressView.routeName:
         return MaterialPageRoute(builder: (_) => const AddressView());
       case AddNewAddress.routeName:
@@ -85,6 +83,11 @@ class MainView {
           builder: (_) => UpdateAddress(
             address: shippingAddress,
           ),
+        );
+      case ProductReviewsView.routeName:
+        final product = settings.arguments as Product;
+        return MaterialPageRoute(
+          builder: (_) => ProductReviewsView(product: product),
         );
       case OrderView.routeName:
         return MaterialPageRoute(builder: (_) => const OrderView());

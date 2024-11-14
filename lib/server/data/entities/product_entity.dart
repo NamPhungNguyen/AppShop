@@ -25,6 +25,7 @@ class ProductEntity with _$ProductEntity {
     required List<String> color,
     required double rating,
     required int ratingCount,
+    required int commentCount,
     required String brand,
     String? productCode,
     required List<String> imgProduct,

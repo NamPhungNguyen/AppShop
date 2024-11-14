@@ -6,17 +6,20 @@ import '../../../../utils/constants/app_colors.dart';
 
 class TRatingBarIndicator extends StatelessWidget {
   const TRatingBarIndicator({
-    super.key, required this.rating,
+    super.key,
+    required this.rating,
   });
+
   final double rating;
+
   @override
   Widget build(BuildContext context) {
     return RatingBarIndicator(
-      rating: 4.5,
+      rating: rating,
       itemSize: 20,
       unratedColor: Colors.grey,
       itemBuilder: (_, __) =>
-          Icon(Iconsax.star1, color: AppColors.primaryColor),
+          const Icon(Iconsax.star1, color: AppColors.primaryColor),
     );
   }
 }
