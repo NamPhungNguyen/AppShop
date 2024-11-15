@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/comment.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/commom/widgets/products/rating_indicator.dart';
-import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 
-class UserReviewCard extends StatelessWidget {
+class UserReviewCard extends ConsumerWidget {
   const UserReviewCard({super.key, required this.comment});
 
   final Comment comment;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String formattedDate(String createdAt) {
       try {
         DateTime dateTime = DateTime.parse(createdAt);
@@ -23,6 +24,8 @@ class UserReviewCard extends StatelessWidget {
       }
     }
 
+    final commentState = ref.watch(commentStateProvider(comment.productId.toString()).notifier);
+
     return Column(
       children: [
         Row(
@@ -30,33 +33,24 @@ class UserReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(backgroundImage:  comment.imageUrls.isNotEmpty
-                    ? NetworkImage(comment.profileImgUrl)  // Use the first image from the list
-                    : const AssetImage('assets/profile.png') as ImageProvider),
+                CircleAvatar(
+                    backgroundImage: NetworkImage(comment.profileImgUrl)),
                 const SizedBox(width: AppSizes.spaceBtwItems),
-                Text(comment.fullName, style: Theme.of(context).textTheme.titleLarge),
+                Text(comment.fullName,
+                    style: Theme.of(context).textTheme.titleLarge),
               ],
             ),
             PopupMenuButton<String>(
-              onSelected: (String value) {
+              onSelected: (String value) async {
                 if (value == 'edit') {
                   print("Edit clicked");
                 } else if (value == 'delete') {
-                  print("Delete clicked");
+                  // Call deleteComment when 'Delete' is clicked
+                  await commentState.deleteComment(comment.commentId.toString());
                 }
               },
               itemBuilder: (BuildContext context) {
                 return [
-                  const PopupMenuItem<String>(
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit),
-                        SizedBox(width: 8),
-                        Text("Edit"),
-                      ],
-                    ),
-                  ),
                   const PopupMenuItem<String>(
                     value: 'delete',
                     child: Row(
@@ -74,7 +68,8 @@ class UserReviewCard extends StatelessWidget {
           ],
         ),
         const SizedBox(width: AppSizes.spaceBtwItems),
-        /// Review
+
+        /// Review Rating and Date
         Row(
           children: [
             TRatingBarIndicator(rating: comment.rating.toDouble()),
@@ -86,12 +81,13 @@ class UserReviewCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems),
+
+        /// Review Content
         Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.spaceBtwItems / 2),
           child: Container(
             alignment: Alignment.centerLeft,
-            // Ensures the text is aligned to the left
             child: ReadMoreText(
               comment.content,
               trimLines: 2,
@@ -116,6 +112,34 @@ class UserReviewCard extends StatelessWidget {
             ),
           ),
         ),
+
+        // Display images only if available, with shrink behavior
+        if (comment.imageUrls != null && comment.imageUrls!.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceBtwItems),
+            child: Column(
+              children: [
+                Row(
+                  children: comment.imageUrls!.map((imageUrl) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: AppSizes.spaceBtwItems),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          imageUrl,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          )
+        else
+          const SizedBox.shrink(),
         const SizedBox(height: AppSizes.spaceBtwItems),
       ],
     );

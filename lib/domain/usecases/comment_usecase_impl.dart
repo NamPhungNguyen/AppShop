@@ -13,4 +13,15 @@ class CommentUsecaseImpl implements CommentUsecase {
     final entity = await _commentRepository.fetchAllComment(productId);
     return CommentTranslator.translateAll(entity);
   }
+
+  @override
+  Future<void> addComment(String productId, String content, int rating,
+      List<String> imageUrls) async {
+    return _commentRepository.addComment(productId, content, rating, imageUrls);
+  }
+
+  @override
+  Future<void> deleteComment(String commentId) async {
+    return _commentRepository.deleteComment(commentId);
+  }
 }

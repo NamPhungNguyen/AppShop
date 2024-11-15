@@ -170,6 +170,19 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
     @Path("productId") String productId,
   );
+
+  @POST('/comment/{productId}')
+  Future<HttpResponse<void>> addComment(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE('/comment/{commentId}')
+  Future<HttpResponse<void>> deleteComment(
+    @Header("Authorization") authorization,
+    @Path("commentId") String commentId,
+  );
 }
 
 final clientApi = ClientApi(

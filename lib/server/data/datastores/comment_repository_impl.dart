@@ -11,4 +11,16 @@ class CommentRepositoryImpl implements CommentRepository {
   Future<CommentsEntity> fetchAllComment(String productId) async {
     return await _clientService.fetchAllComment(productId);
   }
+
+  @override
+  Future<void> addComment(String productId, String content, int rating,
+      List<String> imageUrls) async {
+    return await _clientService.addComment(
+        productId, content, rating, imageUrls);
+  }
+
+  @override
+  Future<void> deleteComment(String commentId) async {
+    return await _clientService.deleteComment(commentId);
+  }
 }

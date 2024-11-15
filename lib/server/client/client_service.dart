@@ -355,4 +355,27 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> addComment(String productId, String content, int rating,
+      List<String> imageUrls) async {
+    Map<String, dynamic> body = {
+      "content": content,
+      "rating": rating,
+      "imageUrls": imageUrls,
+    };
+    final res = await clientApi.addComment(
+      await Util.createAuthorization(),
+      productId,
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> deleteComment(String commentId) async {
+    final res = await clientApi.deleteComment(
+        await Util.createAuthorization(), commentId);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }
