@@ -1,40 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/product.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../../main.dart';
 import '../../styles/shadows.dart';
 import '../custom_shapes/containers/rounded_container.dart';
 import '../icons/circular_icon.dart';
 import '../images/round_image.dart';
 import '../texts/product_title_text.dart';
 
-class ProductCardVertical extends ConsumerWidget {
+class ProductCardVertical extends ConsumerStatefulWidget {
   final Product product;
 
   const ProductCardVertical({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final favoriteProductsAsync = ref.watch(favoriteStateProvider);
+  ConsumerState<ProductCardVertical> createState() =>
+      _ProductCardVerticalState();
+}
 
-    final isFavorite = favoriteProductsAsync.when(
-      data: (favoriteProducts) => favoriteProducts.contains(product),
-      loading: () => false,
-      error: (error, stack) => false,
+class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
+  late bool isFavorite;
+  bool isProcessing = false; // Trạng thái đang xử lý (chặn double click)
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Lấy trạng thái ban đầu từ provider
+    final favoriteState = ref.read(favoriteStateProvider);
+    isFavorite = favoriteState.maybeWhen(
+      data: (favorites) => favorites.any(
+          (favProduct) => favProduct.productId == widget.product.productId),
+      orElse: () => false,
     );
+  }
 
+  Future<void> _toggleFavorite() async {
+    if (isProcessing) return;
+
+    setState(() {
+      isProcessing = true;
+      isFavorite = !isFavorite; // Thay đổi trạng thái ngay lập tức
+    });
+
+    try {
+      final favoriteNotifier = ref.read(favoriteStateProvider.notifier);
+
+      if (isFavorite) {
+        // Thêm vào danh sách yêu thích
+        await favoriteNotifier.addProductToFavorites(widget.product);
+      } else {
+        // Xóa khỏi danh sách yêu thích
+        await favoriteNotifier
+            .removeProductFromFavorites(widget.product.productId.toString());
+      }
+
+      await ref.read(favoriteStateProvider.notifier).fetchFavoriteProducts();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+      }
+      rethrow;
+    } finally {
+      if (mounted) {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
           ProductDetailView.routeName,
-          arguments: product,
+          arguments: widget.product,
         );
       },
       child: Container(
@@ -55,14 +106,14 @@ class ProductCardVertical extends ConsumerWidget {
                   Align(
                     alignment: Alignment.center,
                     child: TRoundedImage(
-                      imageUrl: product.imgProduct.isNotEmpty
-                          ? product.imgProduct[0]
+                      imageUrl: widget.product.imgProduct.isNotEmpty
+                          ? widget.product.imgProduct[0]
                           : AssetsPathUtil.categories("placeholder.png"),
                       fit: BoxFit.cover,
                       applyImageRadius: true,
                     ),
                   ),
-                  if (product.discount != null)
+                  if (widget.product.discount != null)
                     Positioned(
                       top: 8,
                       left: 8,
@@ -73,7 +124,7 @@ class ProductCardVertical extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSizes.sm, vertical: AppSizes.xs),
                         child: Text(
-                          '-${product.discount}%',
+                          '-${widget.product.discount}%',
                           style: Theme.of(context)
                               .textTheme
                               .labelLarge!
@@ -87,22 +138,9 @@ class ProductCardVertical extends ConsumerWidget {
                     top: 0,
                     right: 0,
                     child: TCircularIcon(
-                      icon: isFavorite
-                          ? Iconsax.heart5
-                          : Iconsax.heart, // Update based on favorite status
+                      icon: isFavorite ? Iconsax.heart5 : Iconsax.heart,
                       color: isFavorite ? Colors.red : Colors.grey,
-                      onPressed: () {
-                        if (isFavorite) {
-                          ref
-                              .read(favoriteStateProvider.notifier)
-                              .removeProductFromFavorites(
-                                  product.productId.toString());
-                        } else {
-                          ref
-                              .read(favoriteStateProvider.notifier)
-                              .addProductToFavorites(product);
-                        }
-                      },
+                      onPressed: isProcessing ? null : _toggleFavorite,
                     ),
                   ),
                 ],
@@ -116,11 +154,12 @@ class ProductCardVertical extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductTitleText(title: product.name, smallLines: true),
+                  ProductTitleText(
+                      title: widget.product.name, smallLines: true),
                   Row(
                     children: [
                       Text(
-                        product.brand,
+                        widget.product.brand,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: Theme.of(context)
@@ -137,16 +176,16 @@ class ProductCardVertical extends ConsumerWidget {
                     ],
                   ),
 
-                  // Single star with rating number
+                  /// rating star number
                   Row(
                     children: [
-                      if (product.rating != 0)
+                      if (widget.product.rating != 0)
                         const Icon(Icons.star,
                             color: Colors.amber, size: AppSizes.iconSm),
                       const SizedBox(width: 4),
-                      if (product.rating != 0)
+                      if (widget.product.rating != 0)
                         Text(
-                          product.rating.toStringAsFixed(1),
+                          widget.product.rating.toStringAsFixed(1),
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -155,10 +194,11 @@ class ProductCardVertical extends ConsumerWidget {
                     ],
                   ),
 
+                  ///
                   Row(
                     children: [
                       Text(
-                        "${product.discount != null ? (product.price - (product.price * (product.discount! / 100))).toStringAsFixed(2) : product.price.toStringAsFixed(2)}đ",
+                        "${widget.product.discount != null ? (widget.product.price - (widget.product.price * (widget.product.discount! / 100))).toStringAsFixed(2) : widget.product.price.toStringAsFixed(2)}đ",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
@@ -170,9 +210,9 @@ class ProductCardVertical extends ConsumerWidget {
                             ),
                       ),
                       const SizedBox(width: AppSizes.xs),
-                      if (product.discount != null)
+                      if (widget.product.discount != null)
                         Text(
-                          "${product.price.toStringAsFixed(2)}đ",
+                          "${widget.product.price.toStringAsFixed(2)}đ",
                           style:
                               Theme.of(context).textTheme.labelSmall!.copyWith(
                                     decoration: TextDecoration.lineThrough,

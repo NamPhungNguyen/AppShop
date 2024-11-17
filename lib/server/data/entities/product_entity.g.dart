@@ -39,8 +39,12 @@ _$ProductEntityImpl _$$ProductEntityImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       categoryId: (json['categoryId'] as num).toInt(),
       categoryName: json['categoryName'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
       available: json['available'] as bool,
     );
 
@@ -62,7 +66,7 @@ Map<String, dynamic> _$$ProductEntityImplToJson(_$ProductEntityImpl instance) =>
       'imgProduct': instance.imgProduct,
       'categoryId': instance.categoryId,
       'categoryName': instance.categoryName,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
       'available': instance.available,
     };

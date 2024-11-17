@@ -91,10 +91,7 @@ class _TProductImageSliderState extends State<TProductImageSlider> {
             ),
 
             /// Appbar Icon
-            const TAppbar(
-              showBackArrow: true,
-              actions: [TCircularIcon(icon: Iconsax.heart5, color: Colors.red)],
-            ),
+            const TAppbar(showBackArrow: true),
           ],
         ),
       ),

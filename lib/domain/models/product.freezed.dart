@@ -167,8 +167,8 @@ mixin _$Product {
   List<String> get imgProduct => throw _privateConstructorUsedError;
   int get categoryId => throw _privateConstructorUsedError;
   String get categoryName => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   bool get available => throw _privateConstructorUsedError;
 
   /// Create a copy of Product
@@ -199,8 +199,8 @@ abstract class $ProductCopyWith<$Res> {
       List<String> imgProduct,
       int categoryId,
       String categoryName,
-      DateTime createdAt,
-      DateTime updatedAt,
+      DateTime? createdAt,
+      DateTime? updatedAt,
       bool available});
 }
 
@@ -235,8 +235,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? imgProduct = null,
     Object? categoryId = null,
     Object? categoryName = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
     Object? available = null,
   }) {
     return _then(_value.copyWith(
@@ -304,14 +304,14 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.categoryName
           : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
+              as DateTime?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       available: null == available
           ? _value.available
           : available // ignore: cast_nullable_to_non_nullable
@@ -344,8 +344,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       List<String> imgProduct,
       int categoryId,
       String categoryName,
-      DateTime createdAt,
-      DateTime updatedAt,
+      DateTime? createdAt,
+      DateTime? updatedAt,
       bool available});
 }
 
@@ -378,8 +378,8 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? imgProduct = null,
     Object? categoryId = null,
     Object? categoryName = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
     Object? available = null,
   }) {
     return _then(_$ProductImpl(
@@ -447,14 +447,14 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.categoryName
           : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
+              as DateTime?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       available: null == available
           ? _value.available
           : available // ignore: cast_nullable_to_non_nullable
@@ -483,8 +483,8 @@ class _$ProductImpl implements _Product {
       required final List<String> imgProduct,
       required this.categoryId,
       required this.categoryName,
-      required this.createdAt,
-      required this.updatedAt,
+      this.createdAt,
+      this.updatedAt,
       required this.available})
       : _size = size,
         _color = color,
@@ -541,9 +541,9 @@ class _$ProductImpl implements _Product {
   @override
   final String categoryName;
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
   @override
   final bool available;
 
@@ -641,8 +641,8 @@ abstract class _Product implements Product {
       required final List<String> imgProduct,
       required final int categoryId,
       required final String categoryName,
-      required final DateTime createdAt,
-      required final DateTime updatedAt,
+      final DateTime? createdAt,
+      final DateTime? updatedAt,
       required final bool available}) = _$ProductImpl;
 
   @override
@@ -678,9 +678,9 @@ abstract class _Product implements Product {
   @override
   String get categoryName;
   @override
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
   @override
   bool get available;
 

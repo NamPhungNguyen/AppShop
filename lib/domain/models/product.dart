@@ -4,9 +4,7 @@ part 'product.freezed.dart';
 
 @freezed
 class Products with _$Products {
-  const factory Products({
-    required List<Product> result
-  }) = _Products;
+  const factory Products({required List<Product> result}) = _Products;
 }
 
 @freezed
@@ -28,9 +26,8 @@ class Product with _$Product {
     required List<String> imgProduct,
     required int categoryId,
     required String categoryName,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     required bool available,
   }) = _Product;
 }
-

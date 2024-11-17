@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/presentation/screens/Checkout/checkout_view.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
@@ -246,8 +247,16 @@ class _CartViewState extends ConsumerState<CartView> {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, CheckoutView.routeName);
-            ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
+            if (!selectedItems.contains(true)) {
+              Fluttertoast.showToast(
+                msg: "Please choose at least one product",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+              );
+            } else {
+              Navigator.pushNamed(context, CheckoutView.routeName);
+              ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
+            }
           },
           child: const Text('Checkout'),
         ),

@@ -13,7 +13,8 @@ class FavoriteState extends StateNotifier<AsyncValue<List<Product>>> {
     state = const AsyncValue.loading();
     try {
       final favoriteUsecase = _ref.read(favoriteUsecaseProvider);
-      final favoriteProducts = await favoriteUsecase.fetchAllProductToFavorites();
+      final favoriteProducts =
+          await favoriteUsecase.fetchAllProductToFavorites();
       state = AsyncValue.data(favoriteProducts);
     } catch (error, stack) {
       state = AsyncValue.error(error, stack);
@@ -25,9 +26,8 @@ class FavoriteState extends StateNotifier<AsyncValue<List<Product>>> {
       final favoriteUsecase = _ref.read(favoriteUsecaseProvider);
       await favoriteUsecase.addProductToFavorites(product.productId.toString());
 
-      // Create a new list of favorites including the new product
       final currentFavorites = state.value ?? [];
-      state = AsyncValue.data([...currentFavorites, product]); // Immutable state update
+      state = AsyncValue.data([...currentFavorites, product]);
     } catch (error, stack) {
       state = AsyncValue.error(error, stack);
     }
@@ -39,9 +39,11 @@ class FavoriteState extends StateNotifier<AsyncValue<List<Product>>> {
       await favoriteUsecase.removeProductToFavorites(productId);
 
       final currentFavorites = state.value ?? [];
-      state = AsyncValue.data(
-          currentFavorites.where((product) => product.productId != productId).toList()
-      ); // Immutable state update
+      final updatedFavorites = currentFavorites
+          .where((product) => product.productId != productId)
+          .toList();
+
+      state = AsyncValue.data(updatedFavorites);
     } catch (error, stack) {
       state = AsyncValue.error(error, stack);
     }

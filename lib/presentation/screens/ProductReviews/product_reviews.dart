@@ -18,7 +18,7 @@ class ProductReviewsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commentState =
-    ref.watch(commentStateProvider(product.productId.toString()));
+        ref.watch(commentStateProvider(product.productId.toString()));
 
     return Scaffold(
       appBar: TAppbar(
@@ -35,7 +35,7 @@ class ProductReviewsView extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
+                const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,10 +44,11 @@ class ProductReviewsView extends ConsumerWidget {
                   productId: product.productId.toString(),
                   onCommentAdded: () {
                     // Invalidate the comment state provider to trigger a refresh
-                    ref.invalidate(commentStateProvider(product.productId.toString()));
+                    ref.invalidate(
+                        commentStateProvider(product.productId.toString()));
                   },
                 ),
-        
+
                 /// User reviews list based on commentState
                 commentState.when(
                   data: (comments) {
@@ -57,7 +58,8 @@ class ProductReviewsView extends ConsumerWidget {
                       }).toList(),
                     );
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (error, stackTrace) =>
                       Center(child: Text('Error: $error')),
                 ),
@@ -69,4 +71,3 @@ class ProductReviewsView extends ConsumerWidget {
     );
   }
 }
-

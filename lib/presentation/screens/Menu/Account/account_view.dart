@@ -21,7 +21,7 @@ class AccountView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationState = ref.watch(locationStateProvider);
-
+    final userState = ref.watch(userStateProvider);
     Future<void> _refreshUserState() async {
       ref.refresh(userStateProvider);
     }
@@ -45,7 +45,11 @@ class AccountView extends ConsumerWidget {
                             .apply(color: AppColors.textWhite),
                       ),
                     ),
-                    const UserProfileTile(),
+                    userState.when(
+                      data: (user) => UserProfileTile(user: user),
+                      loading: () => const CircularProgressIndicator(),
+                      error: (error, stack) => Text("Error: $error"),
+                    ),
                     const SizedBox(height: AppSizes.spaceBtwSections),
                   ],
                 ),

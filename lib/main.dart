@@ -5,6 +5,7 @@ import 'package:front_shop/domain/models/category.dart';
 import 'package:front_shop/domain/models/comment.dart';
 import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
+import 'package:front_shop/domain/models/product_page.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/states/category_state.dart';
@@ -13,6 +14,7 @@ import 'package:front_shop/domain/states/comment_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
+import 'package:front_shop/domain/states/product_page_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
 import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
@@ -101,11 +103,15 @@ final shippingAddressDefaultStateProvider = StateNotifierProvider<
   (ref) => ShippingAddressDefaultState(ref),
 );
 
-// Assuming the provider is defined like this:
-final commentStateProvider = StateNotifierProvider.family<CommentState, AsyncValue<Comments>, String>(
-      (ref, productId) => CommentState(ref, productId),
+final commentStateProvider =
+    StateNotifierProvider.family<CommentState, AsyncValue<Comments>, String>(
+  (ref, productId) => CommentState(ref, productId),
 );
 
+final productPageStateProvider =
+    StateNotifierProvider<ProductPageState, AsyncValue<ProductPage>>(
+  (ref) => ProductPageState(ref),
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

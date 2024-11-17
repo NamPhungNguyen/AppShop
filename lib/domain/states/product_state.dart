@@ -19,4 +19,16 @@ class ProductState extends StateNotifier<AsyncValue<Products>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  Future<void> fetchAllProductByCategory(String categoryId) async {
+    state = const AsyncValue.loading();
+    try {
+      final productUsecase = await _ref.read(productUsecaseProvider);
+      final products =
+          await productUsecase.fetchAllProductByCategory(categoryId);
+      state = AsyncValue.data(products);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
 }

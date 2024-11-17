@@ -7,6 +7,7 @@ import 'package:front_shop/server/data/entities/comment_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
+import 'package:front_shop/server/data/entities/product_page_entity.dart';
 import 'package:front_shop/server/data/entities/shipping_address_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:front_shop/utils/header_token.dart';
@@ -43,6 +44,15 @@ class ClientService {
       throw Exception(
           'Login failed: ${e.response?.data ?? "Unknown error occurred"}');
     }
+  }
+
+  Future<void> logout(String token) async {
+    Map<String, dynamic> body = {
+      'token': token,
+    };
+    final res = await clientApi.logout(body);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
   }
 
   Future<SignUpEntity> signUp(String username, String password, String email,
@@ -152,6 +162,25 @@ class ClientService {
   Future<ProductsEntity> fetchAllProduct() async {
     final res =
         await clientApi.fetchAllProduct(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<ProductsEntity> fetchAllProductByCategory(String categoryId) async {
+    final res = await clientApi.fetchAllProductByCategory(
+      await Util.createAuthorization(),
+      categoryId,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<ProductPageEntity> getProductsPage(int page, int size) async {
+    final res = await clientApi.getProductsPage(
+      await Util.createAuthorization(),
+      page,
+      size,
+    );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

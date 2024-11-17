@@ -9,6 +9,7 @@ import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../data/entities/cart_product_entity.dart';
+import '../data/entities/product_page_entity.dart';
 import '../data/entities/shipping_address_entity.dart';
 
 part 'client_api.g.dart';
@@ -19,6 +20,11 @@ abstract class ClientApi {
 
   @POST('/auth/log-in')
   Future<HttpResponse<LoginEntity>> login(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/auth/log-out')
+  Future<HttpResponse<void>> logout(
     @Body() Map<String, dynamic> body,
   );
 
@@ -70,6 +76,19 @@ abstract class ClientApi {
   @GET('/product/list')
   Future<HttpResponse<ProductsEntity>> fetchAllProduct(
     @Header("Authorization") authorization,
+  );
+
+  @GET('/product/list-product-category/{categoryId}')
+  Future<HttpResponse<ProductsEntity>> fetchAllProductByCategory(
+    @Header("Authorization") authorization,
+    @Path("categoryId") String categoryId,
+  );
+
+  @GET('/product/products')
+  Future<HttpResponse<ProductPageEntity>> getProductsPage(
+    @Header("Authorization") authorization,
+    @Query('page') int page,
+    @Query('size') int size,
   );
 
   @POST('/favorites/add/{productId}')

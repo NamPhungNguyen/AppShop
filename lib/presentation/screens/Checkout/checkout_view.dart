@@ -63,7 +63,9 @@ class CheckoutView extends ConsumerWidget {
                         const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
                         /// payment methods
-                        TBillingPaymentSection(cartCheckoutProducts: cartCheckoutProducts,),
+                        TBillingPaymentSection(
+                          cartCheckoutProducts: cartCheckoutProducts,
+                        ),
                         const SizedBox(height: AppSizes.spaceBtwItems),
                       ],
                     ),

@@ -1,4 +1,5 @@
 import 'package:front_shop/domain/models/product.dart';
+import 'package:front_shop/domain/models/product_page.dart';
 import 'package:front_shop/domain/translator/product_translator.dart';
 import 'package:front_shop/domain/usecases/product_usecase.dart';
 import 'package:front_shop/server/data/repository/product_repository.dart';
@@ -12,6 +13,19 @@ class ProductUsecaseImpl implements ProductUsecase {
   Future<Products> fetchAllProduct() async {
     final entity = await _productRepository.fetchAllProduct();
     return ProductTranslator.translateAll(entity);
+  }
+
+  @override
+  Future<Products> fetchAllProductByCategory(String categoryId) async {
+    final entity =
+        await _productRepository.fetchAllProductByCategory(categoryId);
+    return ProductTranslator.translateAll(entity);
+  }
+
+  @override
+  Future<ProductPage> getProductsPage(int page, int size) async {
+    final entity = await _productRepository.getProductsPage(page, size);
+    return ProductTranslator.translateProductPage(entity);
   }
 
   @override

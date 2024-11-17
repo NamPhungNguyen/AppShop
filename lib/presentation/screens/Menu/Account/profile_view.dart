@@ -84,6 +84,14 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     }
   }
 
+  void resetAllProviders(WidgetRef ref) {
+    ref.invalidate(userStateProvider);
+    ref.invalidate(cartStateProvider); // Nếu có
+    ref.invalidate(favoriteStateProvider); // Nếu có
+    // Thêm các provider cần reset
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userStateProvider);
@@ -189,8 +197,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                 .read(loginStateProvider.notifier)
                                 .logout();
                             await PreferenceUtil.clearUserData();
-
-                            Navigator.pushNamed(context, LoginView.routeName);
+                            resetAllProviders(ref);
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, LoginView.routeName, (route) => false);
                             Fluttertoast.showToast(
                               msg: 'Logged out successfully!',
                               toastLength: Toast.LENGTH_SHORT,

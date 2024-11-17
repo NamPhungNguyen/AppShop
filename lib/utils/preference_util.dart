@@ -7,9 +7,7 @@ class PreferenceUtil {
   static const String _tokenExpiry = 'TokenExpiry';
   static const String _isFirstTime = 'isFirstTime';
   static const String _isFirstAllowLocation = 'isFirstAllowLocation';
-  static const String _favorites = 'favorites';
 
-  // Store the authentication token and its expiration
   static Future<bool> setAuthToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final decodedToken = json.decode(
@@ -17,12 +15,10 @@ class PreferenceUtil {
     final exp = decodedToken['exp']; // Get the expiration timestamp
     final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
 
-    // Store token and its expiry date
     await prefs.setString(_authToken, token);
     return await prefs.setString(_tokenExpiry, expiryDate.toIso8601String());
   }
 
-  // Retrieve the authentication token
   static Future<String?> getAuthToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_authToken);
@@ -71,32 +67,6 @@ class PreferenceUtil {
   static Future<bool> setIsFirstAllowLocation(bool isFirstAllowLocation) async {
     final pref = await SharedPreferences.getInstance();
     return pref.setBool(_isFirstAllowLocation, isFirstAllowLocation);
-  }
-
-  // Methods to manage favorite products
-  static Future<bool> addFavorite(String productId) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> favorites = prefs.getStringList(_favorites) ?? [];
-    if (!favorites.contains(productId)) {
-      favorites.add(productId);
-      return await prefs.setStringList(_favorites, favorites);
-    }
-    return false; // Already exists
-  }
-
-  static Future<bool> removeFavorite(String productId) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> favorites = prefs.getStringList(_favorites) ?? [];
-    if (favorites.contains(productId)) {
-      favorites.remove(productId);
-      return await prefs.setStringList(_favorites, favorites);
-    }
-    return false; // Not found
-  }
-
-  static Future<List<String>> getFavorites() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(_favorites) ?? [];
   }
 
   static Future<void> clearUserData() async {

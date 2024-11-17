@@ -1,91 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:front_shop/main.dart';
-import 'package:front_shop/presentation/screens/Menu/Account/profile_view.dart';
 import 'package:iconsax/iconsax.dart';
-
 import '../../../../utils/assets_path_util.dart';
+import 'package:front_shop/domain/models/my_info.dart';
 
-class UserProfileTile extends ConsumerWidget {
-  const UserProfileTile({super.key});
+import '../../../screens/Menu/Account/profile_view.dart';
+
+class UserProfileTile extends StatelessWidget {
+  final MyInfo user;
+
+  const UserProfileTile({super.key, required this.user});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userState = ref.watch(userStateProvider);
+  Widget build(BuildContext context) {
+    final result = user.result;
 
-    return userState.when(
-      data: (userInfo) => ListTile(
-        leading: ClipOval(
-          child: SizedBox(
-            width: 45,
-            height: 45,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Image.network(
-                userInfo.result.profileImg ??
-                    AssetsPathUtil.user("profile.png"),
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      leading: ClipOval(
+        child: SizedBox(
+          width: 55,
+          height: 55,
+          child: Image.network(
+            result.profileImg ?? AssetsPathUtil.user("profile.png"),
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                      (loadingProgress.expectedTotalBytes ?? 1)
+                      : null,
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                AssetsPathUtil.user("profile.png"),
+                width: 55,
+                height: 55,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                          (loadingProgress.expectedTotalBytes ?? 1)
-                          : null,
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    AssetsPathUtil.user("profile.png"),
-                    width: 80,
-                    height: 80,
-                  );
-                },
-              ),
-            ),
+              );
+            },
           ),
-        ),
-        title: Text(
-          userInfo.result.fullName ?? 'No Name',
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall!
-              .apply(color: Colors.white),
-        ),
-        subtitle: Text(
-          userInfo.result.email ?? 'No Email',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium!
-              .apply(color: Colors.white),
-        ),
-        trailing: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, ProfileView.routeName);
-          },
-          icon: const Icon(Iconsax.edit, color: Colors.white),
         ),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Error: $error"),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  ref.refresh(userStateProvider);
-                },
-                child: const Text("Reload"),
-              ),
-            ],
-          ),
-        );
-      },
+      title: Text(
+        result.fullName ?? 'No Name',
+        style: Theme.of(context)
+            .textTheme
+            .headlineSmall!
+            .apply(color: Colors.white),
+      ),
+      subtitle: Text(
+        result.email ?? 'No Email',
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .apply(color: Colors.white70),
+      ),
+      trailing: IconButton(
+        onPressed: () {
+          Navigator.pushNamed(context, ProfileView.routeName);
+        },
+        icon: const Icon(Iconsax.edit, color: Colors.white),
+      ),
     );
   }
 }

@@ -31,8 +31,8 @@ class ProductEntity with _$ProductEntity {
     required List<String> imgProduct,
     required int categoryId,
     required String categoryName,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     required bool available,
   }) = _ProductEntity;
 

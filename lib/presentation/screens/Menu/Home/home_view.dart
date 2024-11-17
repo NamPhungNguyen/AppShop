@@ -10,9 +10,9 @@ import '../../../../utils/assets_path_util.dart';
 import '../../../commom/widgets/banner.dart';
 import '../../../commom/widgets/custom_shapes/containers/search_container.dart';
 import '../../../commom/widgets/image_text_widgets/vertical_image_text.dart';
-import '../../../commom/widgets/layouts/grid_layout.dart';
 import '../../../commom/widgets/products/product_card_vertical.dart';
 import '../../../commom/widgets/texts/section_heading.dart';
+import '../../CategoryProductsView/category_products_view.dart';
 import '../../Notification/notification_view.dart';
 
 class HomeView extends ConsumerWidget {
@@ -86,7 +86,15 @@ class HomeView extends ConsumerWidget {
                                   image:
                                       AssetsPathUtil.categories("jacket.png"),
                                   title: category.name,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryProductsView(
+                                            category: category),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),
@@ -98,9 +106,18 @@ class HomeView extends ConsumerWidget {
                       // Banner
                       const BannerItem(),
 
-                      // Popular products
+                      // Popular products (GridView)
                       const SizedBox(height: AppSizes.spaceBtwSections),
-                      TGridLayout(
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: AppSizes.gridViewSpacing,
+                          mainAxisSpacing: AppSizes.gridViewSpacing,
+                          childAspectRatio: 0.65,
+                        ),
                         itemCount: products.result.length,
                         itemBuilder: (_, index) {
                           final product = products.result[index];
