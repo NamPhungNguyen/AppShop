@@ -185,6 +185,21 @@ class ClientService {
     return res.data;
   }
 
+  Future<List<ProductEntity>> searchAndFilter(
+      String? name,
+      double? priceMin,
+      double? priceMax,
+      ) async {
+    final res = await clientApi.searchAndFilter(
+      await Util.createAuthorization(),
+      name ?? '',
+      priceMin ?? 0.0,
+      priceMin ?? 0.0,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
   Future<void> addProductToFavorites(String productId) async {
     final res = await clientApi.addProductToFavorites(
         await Util.createAuthorization(), productId);

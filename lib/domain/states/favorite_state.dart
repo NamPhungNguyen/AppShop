@@ -20,6 +20,18 @@ class FavoriteState extends StateNotifier<AsyncValue<List<Product>>> {
       state = AsyncValue.error(error, stack);
     }
   }
+  
+  Future<void> searchAndFilter(String? name, double? priceMin, double? priceMax) async {
+    state = const AsyncValue.loading();
+    try {
+      final favoriteUsecase = _ref.read(favoriteUsecaseProvider);
+      final favoriteProducts =
+          await favoriteUsecase.searchAndFilter(name, priceMin, priceMax);
+      state = AsyncValue.data(favoriteProducts);
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
+  }
 
   Future<void> addProductToFavorites(Product product) async {
     try {

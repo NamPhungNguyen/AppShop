@@ -17,6 +17,7 @@ import 'package:front_shop/presentation/screens/ProductReviews/product_reviews.d
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 
 import '../../../domain/models/product.dart';
+import '../../commom/widgets/Search/search_and_filter.dart';
 import '../Address/address_view.dart';
 import '../Address/update_address.dart';
 import '../Login/log_in_view.dart';
@@ -98,6 +99,9 @@ class MainView {
       case UpdateProfileEmailView.routeName:
         return MaterialPageRoute(
             builder: (_) => const UpdateProfileEmailView());
+      case SearchAndFilterScreen.routeName:
+        return MaterialPageRoute(
+            builder: (_) => const SearchAndFilterScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

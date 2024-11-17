@@ -37,4 +37,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<ProductPageEntity> getProductsPage(int page, int size) async {
     return await _clientService.getProductsPage(page, size);
   }
+
+  @override
+  Future<List<ProductEntity>> searchAndFilter(String? name, double? priceMin, double? priceMax) async {
+    return await _clientService.searchAndFilter(name, priceMin, priceMax);
+  }
 }

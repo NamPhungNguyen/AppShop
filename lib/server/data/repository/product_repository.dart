@@ -13,4 +13,7 @@ abstract class ProductRepository {
   Future<void> removeProductToFavorites(String productId);
 
   Future<List<ProductEntity>> fetchAllProductToFavorites();
+
+  Future<List<ProductEntity>> searchAndFilter(
+      String? name, double? priceMin, double? priceMax);
 }
