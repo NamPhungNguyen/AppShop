@@ -24,9 +24,12 @@ import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
 
+import 'domain/domain_modules.dart';
 import 'domain/models/cart_product.dart';
+import 'domain/models/coupon.dart';
 import 'domain/models/login.dart';
 import 'domain/states/cart_state.dart';
+import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
 import 'domain/states/shipping_address_default_state.dart';
 
@@ -112,6 +115,10 @@ final productPageStateProvider =
     StateNotifierProvider<ProductPageState, AsyncValue<ProductPage>>(
   (ref) => ProductPageState(ref),
 );
+
+final couponStateProvider = StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
+  return CouponState(ref.read(couponUsecaseProvider));
+});
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
