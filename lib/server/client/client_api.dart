@@ -9,6 +9,7 @@ import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../data/entities/cart_product_entity.dart';
+import '../data/entities/coupon_entity.dart';
 import '../data/entities/product_page_entity.dart';
 import '../data/entities/shipping_address_entity.dart';
 
@@ -209,6 +210,17 @@ abstract class ClientApi {
     @Query("name") String? name,
     @Query("priceMin") double? priceMin,
     @Query("priceMax") double? priceMax,
+  );
+
+  @GET('/coupon/active')
+  Future<HttpResponse<List<CouponEntity>>> getCoupons(
+    @Header("Authorization") authorization,
+  );
+
+  @POST('/coupon/apply-coupon')
+  Future<HttpResponse<void>> applyCoupon(
+    @Header("Authorization") authorization,
+    @Query("poolCode") String poolCode,
   );
 }
 

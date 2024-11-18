@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:front_shop/server/client/client_api.dart';
 import 'package:front_shop/server/data/entities/categories_entity.dart';
 import 'package:front_shop/server/data/entities/comment_entity.dart';
+import 'package:front_shop/server/data/entities/coupon_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
@@ -419,6 +420,21 @@ class ClientService {
   Future<void> deleteComment(String commentId) async {
     final res = await clientApi.deleteComment(
         await Util.createAuthorization(), commentId);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<List<CouponEntity>> getCoupons() async {
+    final res = await clientApi.getCoupons(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> applyCoupon(String poolCode) async {
+    final res = await clientApi.applyCoupon(
+      await Util.createAuthorization(),
+      poolCode,
+    );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
