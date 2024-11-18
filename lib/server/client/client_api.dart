@@ -204,6 +204,14 @@ abstract class ClientApi {
     @Path("commentId") String commentId,
   );
 
+  @GET('/product/search')
+  Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
+    @Header("Authorization") authorization,
+    @Query("name") String? name,
+    @Query("priceMin") double? priceMin,
+    @Query("priceMax") double? priceMax,
+  );
+
   @GET('/coupon/active')
   Future<HttpResponse<List<CouponEntity>>> getCoupons(
     @Header("Authorization") authorization,

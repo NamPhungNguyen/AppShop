@@ -16,6 +16,7 @@ import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
 import 'package:front_shop/domain/states/product_page_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
+import 'package:front_shop/domain/states/search_state.dart';
 import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
 import 'package:front_shop/domain/states/token_state.dart';
@@ -84,6 +85,11 @@ final homeStateProvider =
 final favoriteStateProvider =
     StateNotifierProvider<FavoriteState, AsyncValue<List<Product>>>(
   (ref) => FavoriteState(ref),
+);
+
+final productSearchStateProvider =
+    StateNotifierProvider<SearchState, AsyncValue<List<Product>>>(
+  (ref) => SearchState(ref),
 );
 
 final cartStateProvider =
