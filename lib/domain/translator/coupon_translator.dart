@@ -1,5 +1,7 @@
+import '../../server/data/entities/coupon_apply_entity.dart';
 import '../../server/data/entities/coupon_entity.dart';
 import '../models/coupon.dart';
+import '../models/coupon_apply.dart';
 
 class CouponTranslator {
   static List<Coupon> translate(final List<CouponEntity> entities) {
@@ -29,5 +31,15 @@ class CouponTranslator {
         used: entity.used,
       );
     }).toList();
+  }
+
+  static CouponApply translateCoupon(final CouponApplyEntity entity) {
+    return CouponApply(
+      result: CouponResult(
+        totalAfterDiscount: entity.result.totalAfterDiscount,
+        discountAmount: entity.result.discountAmount,
+        totalBeforeDiscount: entity.result.totalBeforeDiscount,
+      ),
+    );
   }
 }

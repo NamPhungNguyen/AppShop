@@ -1212,16 +1212,17 @@ class _ClientApi implements ClientApi {
   }
 
   @override
-  Future<HttpResponse<void>> applyCoupon(
+  Future<HttpResponse<CouponApplyEntity>> applyCoupon(
     dynamic authorization,
-    String poolCode,
+    Map<String, dynamic> body,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'poolCode': poolCode};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': authorization};
     _headers.removeWhere((k, v) => v == null);
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<void>>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<HttpResponse<CouponApplyEntity>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -1229,6 +1230,45 @@ class _ClientApi implements ClientApi {
         .compose(
           _dio.options,
           '/coupon/apply-coupon',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CouponApplyEntity _value;
+    try {
+      _value = CouponApplyEntity.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<void>> createOrder(
+    dynamic authorization,
+    Map<String, dynamic> body,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<HttpResponse<void>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/order/create',
           queryParameters: queryParameters,
           data: _data,
         )

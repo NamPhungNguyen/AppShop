@@ -8,6 +8,7 @@ import 'package:front_shop/presentation/screens/Checkout/widgets/billing_payment
 import 'package:front_shop/presentation/screens/Checkout/widgets/shipping_address_default_view.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
+import '../../../domain/domain_modules.dart';
 import '../../commom/widgets/products/cart/coupon_widget.dart';
 import '../Menu/Cart/widgets/cart_items.dart';
 
@@ -19,6 +20,8 @@ class CheckoutView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final checkoutState = ref.watch(checkoutStateProvider);
+    final addressState = ref.watch(shippingAddressDefaultStateProvider);
+    final couponState = ref.watch(couponStateProvider);
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
@@ -86,7 +89,31 @@ class CheckoutView extends ConsumerWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            final addressId = addressState.value?.result.addressId;
+            print('addressId, $addressId');
+            ref.watch(couponStateProvider).when(
+              data: (coupons) {
+                if (addressId != null && coupons.isNotEmpty) {
+                  final couponCode = coupons.first.code;
+                  print(couponCode);
+                  ref
+                      .read(orderUsecaseProvider)
+                      .createOrder(null, couponCode, addressId);
+                }
+              },
+              loading: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Loading coupons...')),
+                );
+              },
+              error: (error, stackTrace) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error loading coupons: $error')),
+                );
+              },
+            );
+          },
           child: const Text('Place order'),
         ),
       ),

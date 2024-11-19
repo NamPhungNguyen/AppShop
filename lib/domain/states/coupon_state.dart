@@ -22,7 +22,11 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
   Future<void> applyCoupon(String poolCode) async {
     try {
       state = const AsyncValue.loading();
-      await _couponUsecase.applyCoupon(poolCode);
+      final result = await _couponUsecase.applyCoupon(poolCode);
+      print("Code: $result");
+
+      final updatedCoupons = await _couponUsecase.getCoupons();
+      state = AsyncValue.data(updatedCoupons);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

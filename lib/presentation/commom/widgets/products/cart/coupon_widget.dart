@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
 import '../../../../../main.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../custom_shapes/containers/rounded_container.dart';
+
+final selectedCouponCodeProvider = StateProvider<String?>((ref) => null);
 
 class TCouponCode extends ConsumerWidget {
   const TCouponCode({super.key});
@@ -12,7 +15,8 @@ class TCouponCode extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final couponState = ref.watch(couponStateProvider);
-    String? selectedCouponCode;
+    final selectedCouponCode =
+        ref.watch(selectedCouponCodeProvider); // Watch the coupon code state
 
     void _showCouponModal(BuildContext context) {
       showModalBottomSheet(
@@ -31,7 +35,6 @@ class TCouponCode extends ConsumerWidget {
             builder: (_, controller) {
               return couponState.when(
                 data: (coupons) {
-
                   return ListView.builder(
                     controller: controller,
                     itemCount: coupons.length,
@@ -48,11 +51,18 @@ class TCouponCode extends ConsumerWidget {
                           coupon.code,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text('Discount: \$${coupon.discountAmount}'),
+                        subtitle: Text('Discount: ${coupon.discountAmount}đ'),
                         trailing: ElevatedButton(
                           onPressed: () {
-                            selectedCouponCode = coupon.code;
+                            // Update the selected coupon code in state
+                            ref
+                                .read(selectedCouponCodeProvider.notifier)
+                                .state = coupon.code;
+                            print('Applying coupon: ${coupon.code}');
                             Navigator.pop(context);
+                            ref
+                                .read(couponStateProvider.notifier)
+                                .applyCoupon(coupon.code);
                           },
                           child: const Text('Apply'),
                         ),

@@ -14,6 +14,7 @@ import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:front_shop/utils/header_token.dart';
 
 import '../data/entities/cart_product_entity.dart';
+import '../data/entities/coupon_apply_entity.dart';
 
 class ClientService {
   factory ClientService() => _instance;
@@ -187,10 +188,10 @@ class ClientService {
   }
 
   Future<List<ProductEntity>> searchAndFilter(
-      String? name,
-      double? priceMin,
-      double? priceMax,
-      ) async {
+    String? name,
+    double? priceMin,
+    double? priceMax,
+  ) async {
     final res = await clientApi.searchAndFilter(
       await Util.createAuthorization(),
       name ?? '',
@@ -430,10 +431,28 @@ class ClientService {
     return res.data;
   }
 
-  Future<void> applyCoupon(String poolCode) async {
+  Future<CouponApplyEntity> applyCoupon(String poolCode) async {
+    Map<String, dynamic> body = {
+      'poolCode': poolCode,
+    };
     final res = await clientApi.applyCoupon(
       await Util.createAuthorization(),
-      poolCode,
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> createOrder(
+      String? paymentMethod, String? couponCode, int addressId) async {
+    Map<String, dynamic> body = {
+      'paymentMethod': paymentMethod,
+      'couponCode': couponCode,
+      'addressId': addressId,
+    };
+    final res = await clientApi.createOrder(
+      await Util.createAuthorization(),
+      body,
     );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;

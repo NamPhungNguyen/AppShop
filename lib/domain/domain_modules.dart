@@ -11,6 +11,8 @@ import 'package:front_shop/domain/usecases/location_usecase.dart';
 import 'package:front_shop/domain/usecases/location_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/login_usecase.dart';
 import 'package:front_shop/domain/usecases/login_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/order_usecase.dart';
+import 'package:front_shop/domain/usecases/order_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/product_usecase.dart';
 import 'package:front_shop/domain/usecases/product_usecase_impl.dart';
 import 'package:front_shop/domain/usecases/shipping_address_usecase.dart';
@@ -26,6 +28,7 @@ import 'package:front_shop/server/data/providers/coupon_repository_provider.dart
 import 'package:front_shop/server/data/providers/favorite_repository_provider.dart';
 import 'package:front_shop/server/data/providers/location_repository_provider.dart';
 import 'package:front_shop/server/data/providers/login_repository_provider.dart';
+import 'package:front_shop/server/data/providers/order_repository_provider.dart';
 import 'package:front_shop/server/data/providers/product_repository_provider.dart';
 import 'package:front_shop/server/data/providers/shipping_address_repository_provider.dart';
 import 'package:front_shop/server/data/providers/user_repository_provider.dart';
@@ -76,3 +79,9 @@ final commentUsecaseProvider = Provider<CommentUsecase>(
 final couponUsecaseProvider = Provider<CouponUsecase>((ref) {
   return CouponUsecaseImpl(ref.read(couponRepositoryProvider));
 });
+
+final orderUsecaseProvider = Provider<OrderUsecase>((ref) {
+  final orderRepository = ref.read(orderRepositoryProvider); // Assuming you have an orderRepositoryProvider
+  return OrderUsecaseImpl(orderRepository);
+});
+

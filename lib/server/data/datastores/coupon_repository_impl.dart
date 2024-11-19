@@ -2,6 +2,8 @@ import 'package:front_shop/server/client/client_service.dart';
 import 'package:front_shop/server/data/entities/coupon_entity.dart';
 import 'package:front_shop/server/data/repository/coupon_repository_impl.dart';
 
+import '../entities/coupon_apply_entity.dart';
+
 class CouponRepositoryImpl implements CouponRepository {
   final ClientService _clientService;
 
@@ -13,7 +15,7 @@ class CouponRepositoryImpl implements CouponRepository {
   }
 
   @override
-  Future<void> applyCoupon(String poolCode) async {
+  Future<CouponApplyEntity> applyCoupon(String poolCode) async {
     return await _clientService.applyCoupon(poolCode);
   }
 }

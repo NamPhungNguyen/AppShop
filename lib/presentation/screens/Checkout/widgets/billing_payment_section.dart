@@ -49,33 +49,6 @@ class _TBillingAmountSectionState extends State<TBillingAmountSection> {
                 ),
               ],
             ),
-            const SizedBox(height: AppSizes.spaceBtwItems / 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image(
-                      image: AssetImage(AssetsPathUtil.payments('paypal.png')),
-                      width: 25,
-                      height: 25,
-                    ),
-                    const SizedBox(width: AppSizes.spaceBtwItems / 2),
-                    const Text("Paypal"),
-                  ],
-                ),
-                Radio<int>(
-                  value: 2,
-                  groupValue: _selectedMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedMethod = value;
-                    });
-                  },
-                  activeColor: AppColors.primaryColor,
-                ),
-              ],
-            ),
           ],
         )
       ],
