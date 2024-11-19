@@ -4,6 +4,7 @@ import 'package:front_shop/domain/usecases/coupon_usecase.dart';
 
 class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
   final CouponUsecase _couponUsecase;
+  double discountAmount = 0.0;
 
   CouponState(this._couponUsecase) : super(const AsyncValue.loading()) {
     _fetchCoupons();
@@ -24,6 +25,8 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
       state = const AsyncValue.loading();
       final result = await _couponUsecase.applyCoupon(poolCode);
       print("Code: $result");
+      discountAmount = result.result.discountAmount;
+      print("Coupon applied with discount: $discountAmount");
 
       final updatedCoupons = await _couponUsecase.getCoupons();
       state = AsyncValue.data(updatedCoupons);
@@ -31,4 +34,7 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  double get getDiscountAmount => discountAmount;
 }
+

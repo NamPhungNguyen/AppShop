@@ -6,6 +6,7 @@ import 'package:front_shop/presentation/commom/widgets/custom_shapes/containers/
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_amount_section.dart';
 import 'package:front_shop/presentation/screens/Checkout/widgets/billing_payment_section.dart';
 import 'package:front_shop/presentation/screens/Checkout/widgets/shipping_address_default_view.dart';
+import 'package:front_shop/presentation/screens/Checkout/widgets/success_order_view.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
 import '../../../domain/domain_modules.dart';
@@ -22,6 +23,18 @@ class CheckoutView extends ConsumerWidget {
     final checkoutState = ref.watch(checkoutStateProvider);
     final addressState = ref.watch(shippingAddressDefaultStateProvider);
     final couponState = ref.watch(couponStateProvider);
+
+    final discountAmount = couponState.when(
+      data: (coupons) {
+        // Assuming you want to get the discountAmount from the first coupon or an applied coupon
+        // You need to have a way to fetch the correct coupon
+        // If you're using `applyCoupon`, discountAmount should already be updated in CouponState
+        return ref.watch(couponStateProvider.notifier).discountAmount;
+      },
+      loading: () => 0.0,
+      error: (error, stackTrace) => 0.0,
+    );  // Get discount amount from CouponState
+
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
@@ -32,6 +45,7 @@ class CheckoutView extends ConsumerWidget {
       ),
       body: checkoutState.when(
         data: (cartCheckoutProducts) {
+          double totalAfterDiscount = cartCheckoutProducts.totalCheckoutPrice - discountAmount;
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(AppSizes.defaultSpace),
@@ -68,6 +82,8 @@ class CheckoutView extends ConsumerWidget {
                         /// payment methods
                         TBillingPaymentSection(
                           cartCheckoutProducts: cartCheckoutProducts,
+                          discountAmount: discountAmount,
+                          totalAfterDiscount: totalAfterDiscount,// Pass updated discount amount here
                         ),
                         const SizedBox(height: AppSizes.spaceBtwItems),
                       ],
@@ -89,34 +105,59 @@ class CheckoutView extends ConsumerWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            // Access the selected coupon code
+            final selectedCouponCode = ref.read(selectedCouponCodeProvider);
+            print("couponCode: $selectedCouponCode");
+
+            // Access the addressId
             final addressId = addressState.value?.result.addressId;
-            print('addressId, $addressId');
-            ref.watch(couponStateProvider).when(
-              data: (coupons) {
-                if (addressId != null && coupons.isNotEmpty) {
-                  final couponCode = coupons.first.code;
-                  print(couponCode);
-                  ref
-                      .read(orderUsecaseProvider)
-                      .createOrder(null, couponCode, addressId);
+            print('addressId: $addressId');
+
+            if (addressId != null) {
+              try {
+                if (selectedCouponCode != null && selectedCouponCode.isNotEmpty) {
+                  // Coupon code is provided, proceed with the order creation
+                  print('Selected coupon code: $selectedCouponCode');
+                  await ref.read(orderUsecaseProvider).createOrder(
+                    null, // Pass the cart ID or other required data
+                    selectedCouponCode, // Apply the coupon code if available
+                    addressId,
+                  );
+                } else {
+                  // Handle case when no coupon code is selected
+                  print('No coupon code selected');
+                  await ref.read(orderUsecaseProvider).createOrder(
+                    null, // Pass the cart ID or other required data
+                    null, // No coupon code applied
+                    addressId,
+                  );
                 }
-              },
-              loading: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Loading coupons...')),
+
+                // Navigate to the success screen after placing the order
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OrderSuccessView()),
                 );
-              },
-              error: (error, stackTrace) {
+              } catch (e) {
+                // Show an error message if order creation fails
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error loading coupons: $error')),
+                  SnackBar(content: Text('Failed to place order: $e')),
                 );
-              },
-            );
+              }
+            } else {
+              // Show error if no address is selected
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please select an address!')),
+              );
+            }
           },
           child: const Text('Place order'),
         ),
       ),
+
+
     );
   }
 }
+

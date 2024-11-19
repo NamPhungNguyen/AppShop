@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front_shop/domain/models/cart_product.dart';
-import 'package:front_shop/domain/models/coupon_apply.dart';
 import 'package:front_shop/presentation/commom/widgets/texts/product_price_text.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
@@ -8,9 +7,13 @@ class TBillingPaymentSection extends StatelessWidget {
   const TBillingPaymentSection({
     super.key,
     required this.cartCheckoutProducts,
+    this.discountAmount = 0.0,
+    this.totalAfterDiscount = 0.0,
   });
 
   final CartCheckoutProducts cartCheckoutProducts;
+  final double discountAmount;
+  final double totalAfterDiscount;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,7 @@ class TBillingPaymentSection extends StatelessWidget {
           children: [
             Text('Shop discount',
                 style: Theme.of(context).textTheme.bodyMedium),
-            ProductPriceText(
-                price: '6.000'),
+            ProductPriceText(price: '-${discountAmount.toStringAsFixed(2)}'),
           ],
         ),
         const SizedBox(height: AppSizes.spaceBtwItems / 2),
@@ -47,7 +49,10 @@ class TBillingPaymentSection extends StatelessWidget {
           children: [
             Text('Total', style: Theme.of(context).textTheme.bodyMedium),
             ProductPriceText(
-                price: cartCheckoutProducts.totalCheckoutPrice.toString()),
+              price: discountAmount > 0
+                  ? totalAfterDiscount.toStringAsFixed(2)
+                  : cartCheckoutProducts.totalCheckoutPrice.toString(),
+            ),
           ],
         ),
       ],
