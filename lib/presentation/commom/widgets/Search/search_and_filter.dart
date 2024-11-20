@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../main.dart';
 
-// Providers for min and max price
 final minPriceProvider = StateProvider<String?>((ref) => null);
 final maxPriceProvider = StateProvider<String?>((ref) => null);
 
@@ -54,7 +54,8 @@ class SearchAndFilterScreen extends ConsumerWidget {
                       ref.read(minPriceProvider.notifier).state = value;
                     },
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, // Only digits allowed
+                      FilteringTextInputFormatter.digitsOnly,
+                      // Only digits allowed
                     ],
                   ),
                 ),
@@ -71,7 +72,8 @@ class SearchAndFilterScreen extends ConsumerWidget {
                       ref.read(maxPriceProvider.notifier).state = value;
                     },
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, // Only digits allowed
+                      FilteringTextInputFormatter.digitsOnly,
+                      // Only digits allowed
                     ],
                   ),
                 ),
@@ -85,12 +87,13 @@ class SearchAndFilterScreen extends ConsumerWidget {
             child: ElevatedButton(
               onPressed: () {
                 final min = minPrice != null && minPrice.isNotEmpty
-                    ? double.tryParse(minPrice.replaceAll(',', '')) // Handle number format with commas if needed
+                    ? double.tryParse(minPrice.replaceAll(',', ''))
                     : null;
                 final max = maxPrice != null && maxPrice.isNotEmpty
-                    ? double.tryParse(maxPrice.replaceAll(',', '')) // Same for max price
+                    ? double.tryParse(maxPrice.replaceAll(',', ''))
                     : null;
 
+                print('Search Query: $searchQuery, Min Price: $min, Max Price: $max');
                 // If no search query, set it to null
                 if (searchQuery == null || searchQuery.isEmpty) {
                   ref.read(searchQueryProvider.notifier).state = null;
@@ -98,10 +101,10 @@ class SearchAndFilterScreen extends ConsumerWidget {
 
                 // Call searchAndFilter with the provided query and price filters
                 ref.read(productSearchStateProvider.notifier).searchAndFilter(
-                  searchQuery,  // Search query can be null
-                  min,           // Min price filter
-                  max,           // Max price filter
-                );
+                      searchQuery, // Search query can be null
+                      min, // Min price filter
+                      max, // Max price filter
+                    );
               },
               child: const Text('Search'),
             ),
@@ -117,10 +120,16 @@ class SearchAndFilterScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final product = products[index];
                     return ListTile(
-                      leading: const Icon(Icons.shopping_bag),
+                      leading: Image.network(product.imgProduct[0]),
                       title: Text(product.name),
-                      subtitle: Text('Category: ${product.categoryName}'),
-                      trailing: Text('\$${product.price}'),
+                      subtitle: Text('${product.price.toStringAsFixed(0)} đ'),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          ProductDetailView.routeName,
+                          arguments: product,
+                        );
+                      },
                     );
                   },
                 );
@@ -142,7 +151,8 @@ class SearchAndFilterScreen extends ConsumerWidget {
 }
 
 class SearchBar extends ConsumerWidget {
-  final Function(String) onSearch; // Ensuring onSearch is a function that takes a string
+  final Function(String)
+      onSearch; // Ensuring onSearch is a function that takes a string
 
   const SearchBar({Key? key, required this.onSearch}) : super(key: key);
 

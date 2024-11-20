@@ -194,9 +194,9 @@ class ClientService {
   ) async {
     final res = await clientApi.searchAndFilter(
       await Util.createAuthorization(),
-      name ?? '',
+      name?.isEmpty ?? true ? null : name,
       priceMin ?? 0.0,
-      priceMin ?? 0.0,
+      priceMax ?? 0.0,
     );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
