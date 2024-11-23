@@ -4,57 +4,64 @@ import 'package:front_shop/domain/models/product_page.dart';
 import '../domain_modules.dart';
 
 class ProductPageState extends StateNotifier<AsyncValue<ProductPage>> {
-  final StateNotifierProviderRef _ref;
-  int _currentPage = 0;
-  bool _hasMore = true;
+  final Ref _ref;
+  bool _isLoadingMore = false; // Trạng thái tải thêm
+  int _currentPage = 0; // Trang hiện tại
 
   ProductPageState(this._ref) : super(const AsyncValue.loading());
 
-  Future<void> loadInitialProducts(int pageSize) async {
-    _currentPage = 0;
-    _hasMore = true;
-    state = const AsyncValue.loading();
+  bool get isLoadingMore => _isLoadingMore;
+
+  // Hàm load sản phẩm
+  Future<void> loadProducts(int page, int size, {bool isLoadMore = false}) async {
     try {
-      final productUsecase = _ref.read(productUsecaseProvider);
-      final productsPage =
-          await productUsecase.getProductsPage(_currentPage, pageSize);
-      _currentPage++;
-      _hasMore = !productsPage.last;
-      state = AsyncValue.data(productsPage);
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      // Tránh gọi lại nếu đang tải thêm
+      if (_isLoadingMore && isLoadMore) return;
+
+      // Cập nhật trạng thái khi bắt đầu tải
+      if (isLoadMore) {
+        _isLoadingMore = true;
+      } else {
+        state = const AsyncValue.loading();
+      }
+
+      // Gọi use case để lấy dữ liệu sản phẩm
+      final productPageUsecase = _ref.read(productUsecaseProvider);
+      final productPage = await productPageUsecase.getProductsPage(page, size);
+
+      // Nếu đang tải thêm (load more), nối thêm sản phẩm vào danh sách hiện tại
+      if (isLoadMore && state is AsyncData<ProductPage>) {
+        final previousProducts = (state as AsyncData<ProductPage>).value.content;
+        final updatedProductPage = (state as AsyncData<ProductPage>).value.copyWith(
+          content: [...previousProducts, ...productPage.content],
+        );
+        state = AsyncValue.data(updatedProductPage);
+      } else {
+        // Nếu không phải load more, đặt lại toàn bộ dữ liệu
+        state = AsyncValue.data(productPage);
+      }
+
+      // Cập nhật trang hiện tại
+      if (isLoadMore) {
+        _currentPage++;
+      }
+    } catch (e, stackTrace) {
+      print('Error while loading products: $e');
+      print(stackTrace);
+      state = AsyncValue.error(e, stackTrace);
+    } finally {
+      _isLoadingMore = false;
     }
   }
 
-  Future<void> loadMoreProducts(int pageSize) async {
-    if (!_hasMore || state.isLoading) return;
+  // Hàm tải sản phẩm ban đầu
+  Future<void> fetchInitialProducts(int size) async {
+    _currentPage = 0; // Đặt lại trang về 0
+    await loadProducts(_currentPage, size);
+  }
 
-    final currentData = state.valueOrNull;
-    state = const AsyncValue.loading();
-
-    try {
-      final productUsecase = _ref.read(productUsecaseProvider);
-      final nextPage =
-          await productUsecase.getProductsPage(_currentPage, pageSize);
-
-      _currentPage++;
-      _hasMore = !nextPage.last;
-
-      state = AsyncValue.data(ProductPage(
-        content: [...(currentData?.content ?? []), ...nextPage.content],
-        pageable: nextPage.pageable,
-        last: nextPage.last,
-        totalElements: nextPage.totalElements,
-        totalPages: nextPage.totalPages,
-        size: nextPage.size,
-        number: nextPage.number,
-        sort: nextPage.sort,
-        first: nextPage.first,
-        numberOfElements: nextPage.numberOfElements,
-        empty: nextPage.empty,
-      ));
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
-    }
+  // Hàm tải thêm sản phẩm
+  Future<void> loadMoreProducts(int size) async {
+    await loadProducts(_currentPage + 1, size, isLoadMore: true);
   }
 }

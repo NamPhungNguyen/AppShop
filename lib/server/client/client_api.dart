@@ -4,6 +4,7 @@ import 'package:front_shop/server/data/entities/categories_entity.dart';
 import 'package:front_shop/server/data/entities/comment_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
+import 'package:front_shop/server/data/entities/order_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
 import 'package:retrofit/retrofit.dart';
@@ -229,6 +230,11 @@ abstract class ClientApi {
   Future<HttpResponse<void>> createOrder(
     @Header("Authorization") authorization,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/order/list-all')
+  Future<HttpResponse<List<OrderEntity>>> fetchAllOrder(
+    @Header("Authorization") authorization,
   );
 }
 

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/Menu/Home/home_view.dart';
 
-class OrderSuccessView extends StatelessWidget {
+import '../../BottomBar/bottom_bar.dart';
+
+class OrderSuccessView extends ConsumerWidget {
   const OrderSuccessView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Success'),
@@ -22,8 +26,9 @@ class OrderSuccessView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, HomeView.routeName); // Quay lại màn hình trước đó
+              onPressed: () async {
+                Navigator.pushNamed(context, BottomBar.routeName);
+                await ref.watch(cartStateProvider.notifier).fetchCartUser();
               },
               child: const Text('Back to Home'),
             ),

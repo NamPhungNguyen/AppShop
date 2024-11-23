@@ -14,6 +14,7 @@ import 'package:front_shop/domain/states/comment_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
+import 'package:front_shop/domain/states/order_state.dart';
 import 'package:front_shop/domain/states/product_page_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
 import 'package:front_shop/domain/states/search_state.dart';
@@ -21,6 +22,7 @@ import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
 import 'package:front_shop/domain/states/token_state.dart';
 import 'package:front_shop/domain/states/user_state.dart';
+import 'package:front_shop/domain/usecases/order_usecase.dart';
 import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
@@ -122,7 +124,8 @@ final productPageStateProvider =
   (ref) => ProductPageState(ref),
 );
 
-final couponStateProvider = StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
+final couponStateProvider =
+    StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
   return CouponState(ref.read(couponUsecaseProvider));
 });
 

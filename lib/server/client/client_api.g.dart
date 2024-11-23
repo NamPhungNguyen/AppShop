@@ -1284,6 +1284,44 @@ class _ClientApi implements ClientApi {
     return httpResponse;
   }
 
+  @override
+  Future<HttpResponse<List<OrderEntity>>> fetchAllOrder(
+      dynamic authorization) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<List<OrderEntity>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/order/list-all',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<OrderEntity> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => OrderEntity.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

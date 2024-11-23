@@ -18,7 +18,7 @@ import '../../Notification/notification_view.dart';
 class HomeView extends ConsumerStatefulWidget {
   static const String routeName = '/home_view';
 
-  const HomeView({super.key});
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -26,45 +26,47 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   final ScrollController _scrollController = ScrollController();
-  bool _isLoadingMore = false; // Trạng thái để kiểm tra đang tải thêm sản phẩm
+
+  int currentPage = 0;
+  int totalPages = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(productPageStateProvider.notifier).loadInitialProducts(6);
-    });
+  void _scrollListener() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
-          !_isLoadingMore) {
-        setState(() {
-          _isLoadingMore = true;
-        });
-        ref
-            .read(productPageStateProvider.notifier)
-            .loadMoreProducts(6)
-            .then((_) {
+    if (currentScroll == maxScroll && !isLoading && currentPage < totalPages - 1) {
+      setState(() {
+        isLoading = true;
+      });
+      Future.delayed(const Duration(seconds: 2), () {
+        ref.read(productPageStateProvider.notifier).loadMoreProducts(4).then((_) {
           setState(() {
-            _isLoadingMore = false;
+            isLoading = false;
+            currentPage++;
           });
         });
-      }
-    });
+      });
+    }
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final homeState = ref.watch(homeStateProvider); // Access the HomeState
+    final homeState = ref.watch(homeStateProvider);
     final productPageState = ref.watch(productPageStateProvider);
+
+    if (productPageState is AsyncLoading) {
+      Future.delayed(Duration.zero, () {
+        ref.read(productPageStateProvider.notifier).fetchInitialProducts(4);
+      });
+    }
 
     return Scaffold(
       backgroundColor: AppColors.textWhite,
@@ -77,50 +79,58 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, NotificationView.routeName);
-            },
+            onPressed: () =>
+                Navigator.pushNamed(context, NotificationView.routeName),
             icon: const Icon(Icons.notifications_outlined, size: 28),
           ),
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () =>
-            ref.read(productPageStateProvider.notifier).loadInitialProducts(6),
+        onRefresh: () async {
+          // Reset the page and fetch products again
+          setState(() {
+            currentPage = 0;
+            totalPages = 0;
+            isLoading = false;
+          });
+          await ref.read(productPageStateProvider.notifier).fetchInitialProducts(4);
+        },
         child: homeState.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(child: Text('Error: $error')),
           data: (data) {
             final categories = data['categories'] as Categories;
-            final products = productPageState.when(
-              loading: () => [],
-              error: (error, stack) => [],
-              data: (productPage) => productPage.content,
+            final products = productPageState.maybeWhen(
+              data: (productPage) {
+                totalPages = productPage.totalPages;
+                return productPage.content;
+              },
+              orElse: () => [],
             );
 
             return CustomScrollView(
-              controller: _scrollController, // Đảm bảo dùng ScrollController
+              controller: _scrollController,
               slivers: [
-                /// Search Container
+                // Search Box
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: AppSizes.spaceBtwItems / 2),
                     child: TSearchContainer(
                       text: 'Search your product',
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, SearchAndFilterScreen.routeName);
-                      },
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        SearchAndFilterScreen.routeName,
+                      ),
                     ),
                   ),
                 ),
-
-                /// Categories from homeState
+                // Categories Section
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const TSectionHeading(
                           title: "Categories",
@@ -155,30 +165,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 ),
 
-                // Banner
+                /// Banner Section
                 const SliverToBoxAdapter(child: BannerItem()),
 
-                // Popular products (GridView)
+
+                /// Products Grid
                 SliverGrid(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      if (index < products.length) {
-                        final product = products[index];
-                        return ProductCardVertical(product: product);
-                      }
-                      // Hiển thị loading khi trạng thái là AsyncLoading
-                      else if (productPageState is AsyncLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      // Không hiển thị gì nếu không tải thêm
-                      else {
-                        return const SizedBox.shrink();
-                      }
+                        (context, index) {
+                      final product = products[index];
+                      return ProductCardVertical(product: product);
                     },
-                    childCount: products.length +
-                        (productPageState is AsyncLoading
-                            ? 1
-                            : 0), // Thêm loading nếu cần
+                    childCount: products.length,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -187,11 +185,23 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     childAspectRatio: 0.65,
                   ),
                 ),
+
+                /// Loading More Indicator
+                if (isLoading)
+                  const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
               ],
             );
           },
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

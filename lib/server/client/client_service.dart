@@ -7,6 +7,7 @@ import 'package:front_shop/server/data/entities/comment_entity.dart';
 import 'package:front_shop/server/data/entities/coupon_entity.dart';
 import 'package:front_shop/server/data/entities/login_entity.dart';
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
+import 'package:front_shop/server/data/entities/order_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/product_page_entity.dart';
 import 'package:front_shop/server/data/entities/shipping_address_entity.dart';
@@ -452,6 +453,12 @@ class ClientService {
       await Util.createAuthorization(),
       body,
     );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<List<OrderEntity>> fetchAllOrder() async {
+    final res = await clientApi.fetchAllOrder(await Util.createAuthorization());
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

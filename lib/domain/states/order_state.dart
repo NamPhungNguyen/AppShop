@@ -16,4 +16,14 @@ class OrderState extends StateNotifier<AsyncValue<void>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  Future<void> fetchAllOrder() async {
+    try {
+      state = const AsyncValue.loading();
+      final orders = await _orderUsecase.fetchAllOrder();
+      state = AsyncValue.data(orders);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
 }
