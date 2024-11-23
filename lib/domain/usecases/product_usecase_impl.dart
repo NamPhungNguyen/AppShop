@@ -45,10 +45,14 @@ class ProductUsecaseImpl implements ProductUsecase {
   }
 
   @override
-  Future<List<Product>> searchAndFilter(
-      String? name, double? priceMin, double? priceMax) async {
-    final entity =
-        await _productRepository.searchAndFilter(name, priceMin, priceMax);
+  Future<List<Product>> searchAndFilter(String? name, double? priceMin,
+      double? priceMax, bool sortByPriceAsc) async {
+    final entity = await _productRepository.searchAndFilter(
+      name,
+      priceMin,
+      priceMax,
+      sortByPriceAsc,
+    );
     return ProductTranslator.translateListAll(entity);
   }
 }

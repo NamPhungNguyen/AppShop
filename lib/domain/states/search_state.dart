@@ -8,25 +8,20 @@ class SearchState extends StateNotifier<AsyncValue<List<Product>>> {
 
   SearchState(this._ref) : super(const AsyncValue.data([]));
 
-  Future<void> searchAndFilter(
-      String? name,
-      double? priceMin,
-      double? priceMax,
-      ) async {
-    print('Debugging: name=$name, priceMin=$priceMin, priceMax=$priceMax');
-    if (name == null || name.isEmpty) {
-      state = AsyncValue.data([]);  // Trả về danh sách rỗng nếu không có từ khóa tìm kiếm
-      return;
-    }
-
-    state = const AsyncValue.loading();  // Đặt trạng thái loading trước khi gọi API
+  Future<void> searchAndFilter(String? name, double? priceMin, double? priceMax,
+      bool sortByPriceAsc) async {
+    state = const AsyncValue.loading();
     try {
       final productUsecase = _ref.read(productUsecaseProvider);
-      final products = await productUsecase.searchAndFilter(name, priceMin, priceMax);
-      state = AsyncValue.data(products);  // Đặt dữ liệu khi gọi API thành công
+      final products = await productUsecase.searchAndFilter(
+        name,
+        priceMin,
+        priceMax,
+        sortByPriceAsc,
+      );
+      state = AsyncValue.data(products);
     } catch (error, stack) {
-      state = AsyncValue.error(error, stack);  // Đặt trạng thái lỗi nếu thất bại
+      state = AsyncValue.error(error, stack);
     }
   }
 }
-

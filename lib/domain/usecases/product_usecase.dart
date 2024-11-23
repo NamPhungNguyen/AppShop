@@ -16,5 +16,5 @@ abstract class ProductUsecase {
   Future<List<Product>> fetchAllProductToFavorites();
 
   Future<List<Product>> searchAndFilter(
-      String? name, double? priceMin, double? priceMax);
+      String? name, double? priceMin, double? priceMax, bool sortByPriceAsc);
 }

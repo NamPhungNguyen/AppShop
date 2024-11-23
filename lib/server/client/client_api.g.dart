@@ -1128,16 +1128,18 @@ class _ClientApi implements ClientApi {
 
   @override
   Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
-    dynamic authorization,
+    String authorization,
     String? name,
     double? priceMin,
     double? priceMax,
+    bool sortByPriceAsc,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'name': name,
       r'priceMin': priceMin,
       r'priceMax': priceMax,
+      r'sortByPriceAsc': sortByPriceAsc,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'Authorization': authorization};

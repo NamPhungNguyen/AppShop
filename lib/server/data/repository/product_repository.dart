@@ -15,5 +15,5 @@ abstract class ProductRepository {
   Future<List<ProductEntity>> fetchAllProductToFavorites();
 
   Future<List<ProductEntity>> searchAndFilter(
-      String? name, double? priceMin, double? priceMax);
+      String? name, double? priceMin, double? priceMax, bool sortByPriceAsc);
 }

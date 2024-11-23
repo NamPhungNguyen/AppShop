@@ -187,16 +187,14 @@ class ClientService {
     return res.data;
   }
 
-  Future<List<ProductEntity>> searchAndFilter(
-    String? name,
-    double? priceMin,
-    double? priceMax,
-  ) async {
+  Future<List<ProductEntity>> searchAndFilter(String? name, double? priceMin,
+      double? priceMax, bool sortByPriceAsc) async {
     final res = await clientApi.searchAndFilter(
       await Util.createAuthorization(),
-      name?.isEmpty ?? true ? null : name,
-      priceMin ?? 0.0,
-      priceMax ?? 0.0,
+      name,
+      priceMin,
+      priceMax,
+      sortByPriceAsc,
     );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;

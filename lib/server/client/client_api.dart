@@ -207,10 +207,11 @@ abstract class ClientApi {
 
   @GET('/product/search')
   Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
-    @Header("Authorization") authorization,
-    @Query("name", encoded: true) String? name,
+    @Header("Authorization") String authorization,
+    @Query("name") String? name,
     @Query("priceMin") double? priceMin,
     @Query("priceMax") double? priceMax,
+    @Query("sortByPriceAsc") bool sortByPriceAsc,
   );
 
   @GET('/coupon/active')

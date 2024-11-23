@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../main.dart';
 
-final minPriceProvider = StateProvider<String?>((ref) => null);
-final maxPriceProvider = StateProvider<String?>((ref) => null);
-
+final selectedPriceRangeProvider = StateProvider<String?>((ref) => null);
 final searchQueryProvider = StateProvider<String?>((ref) => null);
+final priceMinProvider = StateProvider<String?>((ref) => null);
+final priceMaxProvider = StateProvider<String?>((ref) => null);
+final sortOrderProvider = StateProvider<String>((ref) => 'Low to High');
+final hasSearchedProvider = StateProvider<bool>((ref) => false);
 
 class SearchAndFilterScreen extends ConsumerWidget {
   static const String routeName = '/search_and_filter_screen';
@@ -20,8 +21,11 @@ class SearchAndFilterScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productSearchStateProvider);
     final searchQuery = ref.watch(searchQueryProvider);
-    final minPrice = ref.watch(minPriceProvider);
-    final maxPrice = ref.watch(maxPriceProvider);
+    final selectedPriceRange = ref.watch(selectedPriceRangeProvider);
+    final priceMin = double.tryParse(ref.watch(priceMinProvider) ?? '');
+    final priceMax = double.tryParse(ref.watch(priceMaxProvider) ?? '');
+    final sortOrder = ref.watch(sortOrderProvider);
+    final hasSearched = ref.watch(hasSearchedProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Search & Filter')),
@@ -37,74 +41,105 @@ class SearchAndFilterScreen extends ConsumerWidget {
             ),
           ),
 
-          // Price Filter Inputs
+          // Filter Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Min Price Input
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Min Price',
-                      hintText: 'Enter min price',
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      ref.read(minPriceProvider.notifier).state = value;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      // Only digits allowed
-                    ],
-                  ),
+                const Text(
+                  'Filter by Price Range',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(width: 8),
-                // Max Price Input
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Max Price',
-                      hintText: 'Enter max price',
+                const SizedBox(height: 8),
+
+                // Price Range Inputs (Min and Max Price)
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Min Price',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          ref.read(priceMinProvider.notifier).state = value;
+                        },
+                      ),
                     ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      ref.read(maxPriceProvider.notifier).state = value;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      // Only digits allowed
-                    ],
-                  ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Max Price',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          ref.read(priceMaxProvider.notifier).state = value;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Sorting Dropdown (Low to High, High to Low)
+                const Text(
+                  'Sort by Price',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                DropdownButton<String>(
+                  borderRadius: BorderRadius.circular(10),
+                  value: sortOrder,
+                  style: const TextStyle(color: Colors.black),
+                  items: ['Low to High', 'High to Low']
+                      .map((String sortOrderOption) {
+                    return DropdownMenuItem<String>(
+                      value: sortOrderOption,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          sortOrderOption,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      ref.read(sortOrderProvider.notifier).state = newValue;
+                    }
+                  },
+                  dropdownColor: Colors.white,
+                  iconEnabledColor: Colors.black,
+                  iconDisabledColor: Colors.grey,
+                  icon: const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
           ),
 
-          // Button to trigger search and call the API
+          // Button to trigger search
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () {
-                final min = minPrice != null && minPrice.isNotEmpty
-                    ? double.tryParse(minPrice.replaceAll(',', ''))
-                    : null;
-                final max = maxPrice != null && maxPrice.isNotEmpty
-                    ? double.tryParse(maxPrice.replaceAll(',', ''))
-                    : null;
-
-                print('Search Query: $searchQuery, Min Price: $min, Max Price: $max');
-                // If no search query, set it to null
-                if (searchQuery == null || searchQuery.isEmpty) {
-                  ref.read(searchQueryProvider.notifier).state = null;
-                }
-
-                // Call searchAndFilter with the provided query and price filters
+                ref.read(hasSearchedProvider.notifier).state = true;
+                final sortByPriceAsc = sortOrder == 'Low to High';
                 ref.read(productSearchStateProvider.notifier).searchAndFilter(
-                      searchQuery, // Search query can be null
-                      min, // Min price filter
-                      max, // Max price filter
-                    );
+                  searchQuery,
+                  priceMin,
+                  priceMax,
+                  sortByPriceAsc,
+                );
               },
               child: const Text('Search'),
             ),
@@ -114,7 +149,9 @@ class SearchAndFilterScreen extends ConsumerWidget {
           Expanded(
             child: productState.when(
               data: (products) {
-                // Display product list when data is available
+                if (hasSearched && products.isEmpty) {
+                  return const Center(child: Text("No products found"));
+                }
                 return ListView.builder(
                   itemCount: products.length,
                   itemBuilder: (context, index) {
@@ -135,11 +172,9 @@ class SearchAndFilterScreen extends ConsumerWidget {
                 );
               },
               loading: () {
-                // Show a loading spinner if products are being fetched
                 return const Center(child: CircularProgressIndicator());
               },
               error: (error, stack) {
-                // Show an error message if there was an error fetching products
                 return Center(child: Text('Error: $error'));
               },
             ),
@@ -150,9 +185,9 @@ class SearchAndFilterScreen extends ConsumerWidget {
   }
 }
 
+
 class SearchBar extends ConsumerWidget {
-  final Function(String)
-      onSearch; // Ensuring onSearch is a function that takes a string
+  final Function(String) onSearch;
 
   const SearchBar({Key? key, required this.onSearch}) : super(key: key);
 
@@ -160,7 +195,7 @@ class SearchBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -174,7 +209,7 @@ class SearchBar extends ConsumerWidget {
                 border: InputBorder.none,
                 hintText: 'Search...',
               ),
-              onChanged: onSearch, // Calls the onSearch callback
+              onChanged: onSearch,
             ),
           ),
         ],
