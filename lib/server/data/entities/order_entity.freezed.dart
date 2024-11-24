@@ -22,7 +22,7 @@ OrderEntity _$OrderEntityFromJson(Map<String, dynamic> json) {
 mixin _$OrderEntity {
   int get orderId => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
-  String get paymentMethod => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   List<ProductOrderEntity> get products => throw _privateConstructorUsedError;
   int get addressId => throw _privateConstructorUsedError;
 
@@ -45,7 +45,7 @@ abstract class $OrderEntityCopyWith<$Res> {
   $Res call(
       {int orderId,
       double totalAmount,
-      String paymentMethod,
+      String status,
       List<ProductOrderEntity> products,
       int addressId});
 }
@@ -67,7 +67,7 @@ class _$OrderEntityCopyWithImpl<$Res, $Val extends OrderEntity>
   $Res call({
     Object? orderId = null,
     Object? totalAmount = null,
-    Object? paymentMethod = null,
+    Object? status = null,
     Object? products = null,
     Object? addressId = null,
   }) {
@@ -80,9 +80,9 @@ class _$OrderEntityCopyWithImpl<$Res, $Val extends OrderEntity>
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       products: null == products
           ? _value.products
@@ -107,7 +107,7 @@ abstract class _$$OrderEntityImplCopyWith<$Res>
   $Res call(
       {int orderId,
       double totalAmount,
-      String paymentMethod,
+      String status,
       List<ProductOrderEntity> products,
       int addressId});
 }
@@ -127,7 +127,7 @@ class __$$OrderEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? orderId = null,
     Object? totalAmount = null,
-    Object? paymentMethod = null,
+    Object? status = null,
     Object? products = null,
     Object? addressId = null,
   }) {
@@ -140,9 +140,9 @@ class __$$OrderEntityImplCopyWithImpl<$Res>
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       products: null == products
           ? _value._products
@@ -162,7 +162,7 @@ class _$OrderEntityImpl implements _OrderEntity {
   _$OrderEntityImpl(
       {required this.orderId,
       required this.totalAmount,
-      required this.paymentMethod,
+      required this.status,
       required final List<ProductOrderEntity> products,
       required this.addressId})
       : _products = products;
@@ -175,7 +175,7 @@ class _$OrderEntityImpl implements _OrderEntity {
   @override
   final double totalAmount;
   @override
-  final String paymentMethod;
+  final String status;
   final List<ProductOrderEntity> _products;
   @override
   List<ProductOrderEntity> get products {
@@ -189,7 +189,7 @@ class _$OrderEntityImpl implements _OrderEntity {
 
   @override
   String toString() {
-    return 'OrderEntity(orderId: $orderId, totalAmount: $totalAmount, paymentMethod: $paymentMethod, products: $products, addressId: $addressId)';
+    return 'OrderEntity(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId)';
   }
 
   @override
@@ -200,8 +200,7 @@ class _$OrderEntityImpl implements _OrderEntity {
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.totalAmount, totalAmount) ||
                 other.totalAmount == totalAmount) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
+            (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.addressId, addressId) ||
                 other.addressId == addressId));
@@ -209,8 +208,8 @@ class _$OrderEntityImpl implements _OrderEntity {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, orderId, totalAmount,
-      paymentMethod, const DeepCollectionEquality().hash(_products), addressId);
+  int get hashCode => Object.hash(runtimeType, orderId, totalAmount, status,
+      const DeepCollectionEquality().hash(_products), addressId);
 
   /// Create a copy of OrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -232,7 +231,7 @@ abstract class _OrderEntity implements OrderEntity {
   factory _OrderEntity(
       {required final int orderId,
       required final double totalAmount,
-      required final String paymentMethod,
+      required final String status,
       required final List<ProductOrderEntity> products,
       required final int addressId}) = _$OrderEntityImpl;
 
@@ -244,7 +243,7 @@ abstract class _OrderEntity implements OrderEntity {
   @override
   double get totalAmount;
   @override
-  String get paymentMethod;
+  String get status;
   @override
   List<ProductOrderEntity> get products;
   @override

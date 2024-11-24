@@ -8,7 +8,7 @@ class OrderEntity with _$OrderEntity {
   factory OrderEntity({
     required int orderId,
     required double totalAmount,
-    required String paymentMethod,
+    required String status,
     required List<ProductOrderEntity> products,
     required int addressId,
   }) = _OrderEntity;

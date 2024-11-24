@@ -462,4 +462,13 @@ class ClientService {
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }
+
+  Future<void> cancelOrder(String orderId) async {
+    final res = await clientApi.cancelOrder(
+      await Util.createAuthorization(),
+      orderId,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
 }

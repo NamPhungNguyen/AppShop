@@ -18,4 +18,9 @@ class OrderRepositoryImpl implements OrderRepository {
   Future<List<OrderEntity>> fetchAllOrder() async {
     return await _clientService.fetchAllOrder();
   }
+
+  @override
+  Future<void> cancelOrder(String orderId) async {
+    return await _clientService.cancelOrder(orderId);
+  }
 }

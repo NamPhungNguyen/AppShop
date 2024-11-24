@@ -236,6 +236,12 @@ abstract class ClientApi {
   Future<HttpResponse<List<OrderEntity>>> fetchAllOrder(
     @Header("Authorization") authorization,
   );
+
+  @PUT('/order/cancel/{orderId}')
+  Future<HttpResponse<void>> cancelOrder(
+    @Header("Authorization") authorization,
+    @Path("orderId") String orderId,
+  );
 }
 
 final clientApi = ClientApi(

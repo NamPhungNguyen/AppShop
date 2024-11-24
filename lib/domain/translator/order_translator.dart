@@ -6,7 +6,7 @@ class OrderTranslator {
     return entities.map((entity) => Order(
       orderId: entity.orderId,
       totalAmount: entity.totalAmount,
-      paymentMethod: entity.paymentMethod,
+      status: entity.status,
       products: entity.products.map((productEntity) => translatorProductOrder(productEntity)).toList(),
       addressId: entity.addressId,
     )).toList();

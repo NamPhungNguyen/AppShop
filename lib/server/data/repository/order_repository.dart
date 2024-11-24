@@ -5,4 +5,6 @@ abstract class OrderRepository {
       String? paymentMethod, String? couponCode, int addressId);
 
   Future<List<OrderEntity>> fetchAllOrder();
+
+  Future<void> cancelOrder(String orderId);
 }

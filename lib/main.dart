@@ -31,6 +31,7 @@ import 'domain/domain_modules.dart';
 import 'domain/models/cart_product.dart';
 import 'domain/models/coupon.dart';
 import 'domain/models/login.dart';
+import 'domain/models/order.dart';
 import 'domain/states/cart_state.dart';
 import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
@@ -128,6 +129,12 @@ final couponStateProvider =
     StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
   return CouponState(ref.read(couponUsecaseProvider));
 });
+
+final orderStateProvider = StateNotifierProvider<OrderState, AsyncValue<List<Order>>>((ref) {
+  final orderUsecase = ref.watch(orderUsecaseProvider); // Access the usecase from provider
+  return OrderState(orderUsecase);
+});
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

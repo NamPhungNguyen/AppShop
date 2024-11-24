@@ -5,4 +5,6 @@ abstract class OrderUsecase {
       String? paymentMethod, String? couponCode, int addressId);
 
   Future<List<Order>> fetchAllOrder();
+
+  Future<void> cancelOrder(String orderId);
 }

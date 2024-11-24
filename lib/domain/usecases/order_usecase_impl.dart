@@ -20,4 +20,9 @@ class OrderUsecaseImpl implements OrderUsecase {
     final entity = await _orderRepository.fetchAllOrder();
     return OrderTranslator.translate(entity);
   }
+
+  @override
+  Future<void> cancelOrder(String orderId) async {
+    return await _orderRepository.cancelOrder(orderId);
+  }
 }

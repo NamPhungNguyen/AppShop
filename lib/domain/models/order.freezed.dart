@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Order {
   int get orderId => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
-  String get paymentMethod => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   List<ProductOrder> get products => throw _privateConstructorUsedError;
   int get addressId => throw _privateConstructorUsedError;
 
@@ -36,7 +36,7 @@ abstract class $OrderCopyWith<$Res> {
   $Res call(
       {int orderId,
       double totalAmount,
-      String paymentMethod,
+      String status,
       List<ProductOrder> products,
       int addressId});
 }
@@ -58,7 +58,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
   $Res call({
     Object? orderId = null,
     Object? totalAmount = null,
-    Object? paymentMethod = null,
+    Object? status = null,
     Object? products = null,
     Object? addressId = null,
   }) {
@@ -71,9 +71,9 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       products: null == products
           ? _value.products
@@ -97,7 +97,7 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
   $Res call(
       {int orderId,
       double totalAmount,
-      String paymentMethod,
+      String status,
       List<ProductOrder> products,
       int addressId});
 }
@@ -117,7 +117,7 @@ class __$$OrderImplCopyWithImpl<$Res>
   $Res call({
     Object? orderId = null,
     Object? totalAmount = null,
-    Object? paymentMethod = null,
+    Object? status = null,
     Object? products = null,
     Object? addressId = null,
   }) {
@@ -130,9 +130,9 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       products: null == products
           ? _value._products
@@ -152,7 +152,7 @@ class _$OrderImpl implements _Order {
   _$OrderImpl(
       {required this.orderId,
       required this.totalAmount,
-      required this.paymentMethod,
+      required this.status,
       required final List<ProductOrder> products,
       required this.addressId})
       : _products = products;
@@ -162,7 +162,7 @@ class _$OrderImpl implements _Order {
   @override
   final double totalAmount;
   @override
-  final String paymentMethod;
+  final String status;
   final List<ProductOrder> _products;
   @override
   List<ProductOrder> get products {
@@ -176,7 +176,7 @@ class _$OrderImpl implements _Order {
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, totalAmount: $totalAmount, paymentMethod: $paymentMethod, products: $products, addressId: $addressId)';
+    return 'Order(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId)';
   }
 
   @override
@@ -187,16 +187,15 @@ class _$OrderImpl implements _Order {
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.totalAmount, totalAmount) ||
                 other.totalAmount == totalAmount) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
+            (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.addressId, addressId) ||
                 other.addressId == addressId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, orderId, totalAmount,
-      paymentMethod, const DeepCollectionEquality().hash(_products), addressId);
+  int get hashCode => Object.hash(runtimeType, orderId, totalAmount, status,
+      const DeepCollectionEquality().hash(_products), addressId);
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -211,7 +210,7 @@ abstract class _Order implements Order {
   factory _Order(
       {required final int orderId,
       required final double totalAmount,
-      required final String paymentMethod,
+      required final String status,
       required final List<ProductOrder> products,
       required final int addressId}) = _$OrderImpl;
 
@@ -220,7 +219,7 @@ abstract class _Order implements Order {
   @override
   double get totalAmount;
   @override
-  String get paymentMethod;
+  String get status;
   @override
   List<ProductOrder> get products;
   @override

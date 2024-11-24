@@ -7,7 +7,7 @@ class Order with _$Order {
   factory Order({
     required int orderId,
     required double totalAmount,
-    required String paymentMethod,
+    required String status,
     required List<ProductOrder> products,
     required int addressId,
   }) = _Order;
