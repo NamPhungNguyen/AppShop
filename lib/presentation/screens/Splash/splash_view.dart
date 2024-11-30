@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
+import 'package:front_shop/presentation/screens/Admin/admin_home.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
+import 'package:front_shop/utils/preference_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
-import '../../../utils/preference_util.dart';
 import '../Onboarding/onboarding.dart';
 
 class SplashView extends ConsumerWidget {
@@ -22,8 +24,17 @@ class SplashView extends ConsumerWidget {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (token != null && !isTokenExpired) {
-        // Token is valid
-        Navigator.pushReplacementNamed(context, BottomBar.routeName);
+        // Decode token and check if the user is an admin
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+        String scope = decodedToken['scope'] ?? '';
+
+        if (scope == 'ADMIN') {
+          // If the user is admin, navigate to the admin home
+          Navigator.pushReplacementNamed(context, AdminHome.routeName);
+        } else {
+          // If the user is a regular user, navigate to the bottom bar
+          Navigator.pushReplacementNamed(context, BottomBar.routeName);
+        }
       } else if (isFirstLaunch) {
         // First launch, show onboarding
         pref.setBool('isFirstLaunch', false);

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/main.dart';
@@ -26,9 +28,6 @@ class CheckoutView extends ConsumerWidget {
 
     final discountAmount = couponState.when(
       data: (coupons) {
-        // Assuming you want to get the discountAmount from the first coupon or an applied coupon
-        // You need to have a way to fetch the correct coupon
-        // If you're using `applyCoupon`, discountAmount should already be updated in CouponState
         return ref.watch(couponStateProvider.notifier).discountAmount;
       },
       loading: () => 0.0,
@@ -106,47 +105,35 @@ class CheckoutView extends ConsumerWidget {
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
           onPressed: () async {
-            // Access the selected coupon code
-            final selectedCouponCode = ref.read(selectedCouponCodeProvider);
-            print("couponCode: $selectedCouponCode");
+            final selectedMethod = ref.read(selectedPaymentMethodProvider);
+            if (selectedMethod == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please select a payment method!')),
+              );
+              return;
+            }
 
-            // Access the addressId
-            final addressId = addressState.value?.result.addressId;
-            print('addressId: $addressId');
+            // Thực hiện logic đặt hàng
+            final selectedCouponCode = ref.read(selectedCouponCodeProvider);
+            final addressId = addressState.value?.result.first.addressId;
 
             if (addressId != null) {
               try {
-                if (selectedCouponCode != null && selectedCouponCode.isNotEmpty) {
-                  // Coupon code is provided, proceed with the order creation
-                  print('Selected coupon code: $selectedCouponCode');
-                  await ref.read(orderUsecaseProvider).createOrder(
-                    null, // Pass the cart ID or other required data
-                    selectedCouponCode, // Apply the coupon code if available
-                    addressId,
-                  );
-                } else {
-                  // Handle case when no coupon code is selected
-                  print('No coupon code selected');
-                  await ref.read(orderUsecaseProvider).createOrder(
-                    null, // Pass the cart ID or other required data
-                    null, // No coupon code applied
-                    addressId,
-                  );
-                }
-
-                // Navigate to the success screen after placing the order
+                await ref.read(orderUsecaseProvider).createOrder(
+                  null, // Cart ID nếu cần
+                  selectedCouponCode,
+                  addressId,
+                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const OrderSuccessView()),
                 );
               } catch (e) {
-                // Show an error message if order creation fails
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Failed to place order: $e')),
                 );
               }
             } else {
-              // Show error if no address is selected
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Please select an address!')),
               );
@@ -155,7 +142,6 @@ class CheckoutView extends ConsumerWidget {
           child: const Text('Place order'),
         ),
       ),
-
 
     );
   }

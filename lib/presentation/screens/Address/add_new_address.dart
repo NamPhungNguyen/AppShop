@@ -53,6 +53,10 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
                 : null,
             isDefault: isDefault,
           );
+
+      final defaultAddress = await ref
+          .read(shippingAddressDefaultStateProvider.notifier)
+          .getDefaultAddress();
       Navigator.pop(context);
       Fluttertoast.showToast(
         msg: 'Add address successfully!',

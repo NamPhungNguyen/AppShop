@@ -4,6 +4,7 @@ import 'package:front_shop/main.dart';
 import 'package:front_shop/presentation/screens/Menu/Home/home_view.dart';
 
 import '../../BottomBar/bottom_bar.dart';
+import '../../Order/order_view.dart';
 
 class OrderSuccessView extends ConsumerWidget {
   const OrderSuccessView({super.key});
@@ -27,10 +28,10 @@ class OrderSuccessView extends ConsumerWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                Navigator.pushNamed(context, BottomBar.routeName);
+                Navigator.pushNamed(context, OrderView.routeName);
                 await ref.watch(cartStateProvider.notifier).fetchCartUser();
               },
-              child: const Text('Back to Home'),
+              child: const Text('Go to Order'),
             ),
           ],
         ),

@@ -16,6 +16,19 @@ class TOrderListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (orders.isEmpty) {
+      // If no orders are present, display a message
+      return Center(
+        child: Text(
+          'No orders available',
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall!
+              .copyWith(color: Colors.grey),
+        ),
+      );
+    }
+
     return ListView.separated(
       itemCount: orders.length,
       shrinkWrap: true,
@@ -70,8 +83,14 @@ class TOrderListItems extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: ElevatedButton.icon(
                     onPressed: () => _showCancelConfirmationDialog(context, order.orderId.toString()),
-                    icon: const Icon(Icons.cancel, size: 16),
-                    label: const Text('Cancel Order'),
+                    icon: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Icon(Icons.cancel, size: 16),
+                    ),
+                    label: const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: Text('Cancel Order'),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
                       foregroundColor: Colors.white,

@@ -26,6 +26,12 @@ class _AddressViewState extends ConsumerState<AddressView> {
     });
   }
 
+  Future<void> _refreshAddresses() async {
+    await ref
+        .read(shippingAddressStateProvider.notifier)
+        .fetchAllShippingAddress();
+  }
+
   @override
   Widget build(BuildContext context) {
     final shippingAddress = ref.watch(shippingAddressStateProvider);
@@ -46,24 +52,39 @@ class _AddressViewState extends ConsumerState<AddressView> {
       ),
       body: shippingAddress.when(
         data: (addresses) {
-          return ListView.builder(
-            padding: const EdgeInsets.all(AppSizes.spaceBtwItems),
-            itemCount: addresses.result.length,
-            itemBuilder: (context, index) {
-              final address = addresses.result[index];
-              return TSingleAddress(
-                selectedAddress: address.isDefault,
-                address: address,
-                onSetDefault: () async {
-                  await ref
-                      .read(shippingAddressStateProvider.notifier)
-                      .setDefaultShippingAddress(address.addressId.toString());
-                },
-                onEdit: () {
-                  Navigator.pushNamed(context, UpdateAddress.routeName, arguments: address);
-                },
-              );
-            },
+          if (addresses.result.isEmpty) {
+            return const Center(
+              child: Text("No address found, please add one or more address"),
+            );
+          }
+
+          return RefreshIndicator(
+            onRefresh: _refreshAddresses,
+            child: ListView.builder(
+              padding: const EdgeInsets.all(AppSizes.spaceBtwItems),
+              itemCount: addresses.result.length,
+              itemBuilder: (context, index) {
+                final address = addresses.result[index];
+                return TSingleAddress(
+                  selectedAddress: address.isDefault,
+                  address: address,
+                  onSetDefault: () async {
+                    await ref
+                        .read(shippingAddressStateProvider.notifier)
+                        .setDefaultShippingAddress(
+                            address.addressId.toString());
+
+                    await ref
+                        .read(shippingAddressDefaultStateProvider.notifier)
+                        .getDefaultAddress();
+                  },
+                  onEdit: () {
+                    Navigator.pushNamed(context, UpdateAddress.routeName,
+                        arguments: address);
+                  },
+                );
+              },
+            ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),

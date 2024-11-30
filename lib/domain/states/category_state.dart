@@ -12,9 +12,50 @@ class CategoryState extends StateNotifier<AsyncValue<Categories>> {
   Future<void> fetchAllCategories() async {
     state = const AsyncValue.loading();
     try {
-      final categoryUsecase = await _ref.read(categoryUsecaseProvider);
+      final categoryUsecase = _ref.read(categoryUsecaseProvider);
       final categories = await categoryUsecase.fetchAllCategories();
       state = AsyncValue.data(categories);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> createCategory(
+      String name, String description, String image) async {
+    state = const AsyncValue.loading();
+    try {
+      final categoryUsecase = _ref.read(categoryUsecaseProvider);
+      await categoryUsecase.createCategory(name, description, image);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> updateCategory(
+    String categoryId,
+    String name,
+    String description,
+    String image,
+  ) async {
+    state = const AsyncValue.loading();
+    try {
+      final categoryUsecase = _ref.read(categoryUsecaseProvider);
+      await categoryUsecase.updateCategory(
+        categoryId,
+        name,
+        description,
+        image,
+      );
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> deleteCategory(String categoryId) async {
+    state = const AsyncValue.loading();
+    try {
+      final categoryUsecase = _ref.read(categoryUsecaseProvider);
+      await categoryUsecase.deleteCategory(categoryId);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

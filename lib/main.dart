@@ -14,6 +14,7 @@ import 'package:front_shop/domain/states/comment_state.dart';
 import 'package:front_shop/domain/states/favorite_state.dart';
 import 'package:front_shop/domain/states/home_state.dart';
 import 'package:front_shop/domain/states/location_state.dart';
+import 'package:front_shop/domain/states/order_pages_state.dart';
 import 'package:front_shop/domain/states/order_state.dart';
 import 'package:front_shop/domain/states/product_page_state.dart';
 import 'package:front_shop/domain/states/product_state.dart';
@@ -22,7 +23,6 @@ import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
 import 'package:front_shop/domain/states/token_state.dart';
 import 'package:front_shop/domain/states/user_state.dart';
-import 'package:front_shop/domain/usecases/order_usecase.dart';
 import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
@@ -32,6 +32,7 @@ import 'domain/models/cart_product.dart';
 import 'domain/models/coupon.dart';
 import 'domain/models/login.dart';
 import 'domain/models/order.dart';
+import 'domain/models/order_pages.dart';
 import 'domain/states/cart_state.dart';
 import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
@@ -125,16 +126,22 @@ final productPageStateProvider =
   (ref) => ProductPageState(ref),
 );
 
+final orderPagesStateProvider =
+    StateNotifierProvider<OrderPagesState, AsyncValue<OrderPages>>(
+  (ref) => OrderPagesState(ref),
+);
+
 final couponStateProvider =
     StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
   return CouponState(ref.read(couponUsecaseProvider));
 });
 
-final orderStateProvider = StateNotifierProvider<OrderState, AsyncValue<List<Order>>>((ref) {
-  final orderUsecase = ref.watch(orderUsecaseProvider); // Access the usecase from provider
+final orderStateProvider =
+    StateNotifierProvider<OrderState, AsyncValue<List<Order>>>((ref) {
+  final orderUsecase =
+      ref.watch(orderUsecaseProvider); // Access the usecase from provider
   return OrderState(orderUsecase);
 });
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

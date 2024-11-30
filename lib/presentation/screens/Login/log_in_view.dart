@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front_shop/domain/models/login.dart';
 import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/ForgotPassword/forgot_password_view.dart';
-import 'package:front_shop/presentation/screens/Location/allow_location_view.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
@@ -14,6 +13,8 @@ import '../../../utils/preference_util.dart';
 import '../../commom/widgets/Button/button_primary.dart';
 import '../../commom/widgets/FormLoginWith/form_login_with.dart';
 import '../../commom/widgets/Input/input_field_primary.dart';
+import '../Admin/admin_home.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginView extends ConsumerWidget {
   static const String routeName = '/log_in_view';
@@ -27,19 +28,28 @@ class LoginView extends ConsumerWidget {
 
     final loginState = ref.watch(loginStateProvider);
 
+    void checkUserRole(String token) {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      String scope = decodedToken['scope'] ?? '';
+
+      if (scope == 'ADMIN') {
+        // Admin role
+        Navigator.pushNamed(context, AdminHome.routeName);
+      } else {
+        // Regular user
+        Navigator.pushNamed(context, BottomBar.routeName);
+      }
+    }
+
     ref.listen<AsyncValue<Login>>(loginStateProvider, (previous, next) {
       next.when(
         data: (updatedLogin) async {
           if (updatedLogin.result.authenticated) {
-            PreferenceUtil.setAuthToken(updatedLogin.result.token);
-
-            bool isFirstLogin = await PreferenceUtil.getIsFirstAllowLocation();
-            if (isFirstLogin) {
-              await Navigator.pushNamed(context, AllowLocationView.routeName);
-              await PreferenceUtil.setIsFirstAllowLocation(false);
-            } else {
-              Navigator.pushNamed(context, BottomBar.routeName);
-            }
+            String token = updatedLogin.result.token;
+            PreferenceUtil.setAuthToken(token); // Save the token
+            print(token);
+            // Decode the token and check the role
+            checkUserRole(token);
 
             Fluttertoast.showToast(
               msg: 'Login successful!',
@@ -68,6 +78,7 @@ class LoginView extends ConsumerWidget {
         },
       );
     });
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -106,9 +117,9 @@ class LoginView extends ConsumerWidget {
                 child: Text(
                   "Forgot password?",
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 16,
-                        color: AppColors.primaryColor,
-                      ),
+                    fontSize: 16,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
             ),
@@ -132,10 +143,26 @@ class LoginView extends ConsumerWidget {
                         );
                         return;
                       }
-                      ref.read(loginStateProvider.notifier).login(
-                            emailController.text,
-                            passwordController.text,
-                          );
+
+                      // Check for admin credentials
+                      if (emailController.text == 'admin' &&
+                          passwordController.text == 'admin') {
+                        // Directly simulate login with admin credentials
+                        ref.read(loginStateProvider.notifier).login(
+                          'admin',
+                          'admin',
+                        );
+                        Navigator.pushNamed(
+                          context,
+                          AdminHome.routeName,
+                        );
+                      } else {
+                        // Otherwise, normal login
+                        ref.read(loginStateProvider.notifier).login(
+                          emailController.text,
+                          passwordController.text,
+                        );
+                      }
                     },
                   ),
               ],

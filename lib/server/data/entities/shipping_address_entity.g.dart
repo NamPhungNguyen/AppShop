@@ -51,8 +51,9 @@ Map<String, dynamic> _$$ShippingAddressesEntityImplToJson(
 _$ShippingAddressDefaultEntityImpl _$$ShippingAddressDefaultEntityImplFromJson(
         Map<String, dynamic> json) =>
     _$ShippingAddressDefaultEntityImpl(
-      result: ShippingAddressEntity.fromJson(
-          json['result'] as Map<String, dynamic>),
+      result: (json['result'] as List<dynamic>)
+          .map((e) => ShippingAddressEntity.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$ShippingAddressDefaultEntityImplToJson(

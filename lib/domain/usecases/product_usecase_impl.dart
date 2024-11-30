@@ -55,4 +55,31 @@ class ProductUsecaseImpl implements ProductUsecase {
     );
     return ProductTranslator.translateListAll(entity);
   }
+
+  @override
+  Future<void> createProduct(
+    String name,
+    String description,
+    double price,
+    int stock,
+    List<String> size,
+    List<String> color,
+    String brand,
+    List<String> imgProduct,
+    int categoryId,
+    int discount,
+  ) async {
+    return await _productRepository.createProduct(
+      name,
+      description,
+      price,
+      stock,
+      size,
+      color,
+      brand,
+      imgProduct,
+      categoryId,
+      discount,
+    );
+  }
 }

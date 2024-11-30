@@ -11,4 +11,26 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<CategoriesResponse> fetchALlCategories() async {
     return await _clientService.fetchAllCategories();
   }
+
+  @override
+  Future<void> createCategory(
+      String name, String description, String image) async {
+    return await _clientService.createCategory(name, description, image);
+  }
+
+  @override
+  Future<void> updateCategory(
+      String categoryId, String name, String description, String image) async {
+    return await _clientService.updateCategory(
+      categoryId,
+      name,
+      description,
+      image,
+    );
+  }
+
+  @override
+  Future<void> deleteCategory(String categoryId) async {
+    return await _clientService.deleteCategory(categoryId);
+  }
 }

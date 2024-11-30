@@ -13,4 +13,26 @@ class CategoryUsecaseImpl implements CategoryUsecase {
     final entity = await _categoryRepository.fetchALlCategories();
     return CategoryTranslator.translateAll(entity);
   }
+
+  @override
+  Future<void> createCategory(
+      String name, String description, String image) async {
+    return await _categoryRepository.createCategory(name, description, image);
+  }
+
+  @override
+  Future<void> updateCategory(
+      String categoryId, String name, String description, String image) async {
+    return await _categoryRepository.updateCategory(
+      categoryId,
+      name,
+      description,
+      image,
+    );
+  }
+
+  @override
+  Future<void> deleteCategory(String categoryId) async {
+    return await _categoryRepository.deleteCategory(categoryId);
+  }
 }

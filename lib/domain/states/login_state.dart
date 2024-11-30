@@ -23,12 +23,22 @@ class LoginState extends StateNotifier<AsyncValue<Login>> {
     }
   }
 
+
   Future<void> logout() async {
-    await PreferenceUtil.removeAuthToken();
-    state = AsyncValue.data(Login(
-      code: 0,
-      message: '',
-      result: const LoginResult(token: '', authenticated: false),
-    ));
+    try {
+      state = AsyncValue.loading();
+
+      await PreferenceUtil.removeAuthToken();
+      await PreferenceUtil.clearUserData();
+
+      state = AsyncValue.data(Login(
+        code: 0,
+        message: '',
+        result: const LoginResult(token: '', authenticated: false),
+      ));
+    } catch (e, stackTrace) {
+      state = AsyncValue.error("Failed to logout: ${e.toString()}", stackTrace);
+    }
   }
+
 }

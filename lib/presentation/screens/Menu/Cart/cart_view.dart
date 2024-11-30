@@ -26,6 +26,13 @@ class _CartViewState extends ConsumerState<CartView> {
   void initState() {
     super.initState();
     selectedItems = [];
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+       await ref.read(shippingAddressDefaultStateProvider.notifier).getDefaultAddress();
+      } catch (e) {
+        debugPrint('Error fetching default address: $e');
+      }
+    });
   }
 
   @override

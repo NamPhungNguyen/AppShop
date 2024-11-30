@@ -23,8 +23,9 @@ class ShippingAddressEntity with _$ShippingAddressEntity {
 
 @freezed
 class ShippingAddressesEntity with _$ShippingAddressesEntity {
-  const factory ShippingAddressesEntity(
-      {required List<ShippingAddressEntity> result}) = _ShippingAddressesEntity;
+  const factory ShippingAddressesEntity({
+    required List<ShippingAddressEntity> result,
+  }) = _ShippingAddressesEntity;
 
   factory ShippingAddressesEntity.fromJson(Map<String, dynamic> json) =>
       _$ShippingAddressesEntityFromJson(json);
@@ -33,7 +34,7 @@ class ShippingAddressesEntity with _$ShippingAddressesEntity {
 @freezed
 class ShippingAddressDefaultEntity with _$ShippingAddressDefaultEntity {
   const factory ShippingAddressDefaultEntity(
-      {required ShippingAddressEntity result}) = _ShippingAddressDefaultEntity;
+      {required List<ShippingAddressEntity> result}) = _ShippingAddressDefaultEntity;
 
   factory ShippingAddressDefaultEntity.fromJson(Map<String, dynamic> json) =>
       _$ShippingAddressDefaultEntityFromJson(json);

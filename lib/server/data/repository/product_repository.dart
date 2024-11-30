@@ -16,4 +16,17 @@ abstract class ProductRepository {
 
   Future<List<ProductEntity>> searchAndFilter(
       String? name, double? priceMin, double? priceMax, bool sortByPriceAsc);
+
+  Future<void> createProduct(
+    String name,
+    String description,
+    double price,
+    int stock,
+    List<String> size,
+    List<String> color,
+    String brand,
+    List<String> imgProduct,
+    int categoryId,
+    int discount,
+  );
 }

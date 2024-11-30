@@ -1,4 +1,5 @@
 import 'package:front_shop/domain/models/order.dart';
+import 'package:front_shop/domain/models/order_pages.dart';
 import 'package:front_shop/domain/translator/order_translator.dart';
 import 'package:front_shop/domain/usecases/order_usecase.dart';
 import 'package:front_shop/server/data/repository/order_repository.dart';
@@ -24,5 +25,32 @@ class OrderUsecaseImpl implements OrderUsecase {
   @override
   Future<void> cancelOrder(String orderId) async {
     return await _orderRepository.cancelOrder(orderId);
+  }
+
+  @override
+  Future<OrderPages> getOrderPages(String status, int page, int size) async {
+    final entity = await _orderRepository.getOrderPages(status, page, size);
+    return OrderTranslator.translateOrderPages(entity);
+  }
+
+  @override
+  Future<OrderPages> searchOrderPages(
+    String? status,
+    String? startDate,
+    String? endDate,
+    String? fullName,
+    String? phoneNumber,
+    String? addressDetail,
+    int page,
+    int size,
+  ) async {
+    final entity = await _orderRepository.searchOrderPages(status, startDate,
+        endDate, fullName, phoneNumber, addressDetail, page, size);
+    return OrderTranslator.translateOrderPages(entity);
+  }
+
+  @override
+  Future<void> updateStatusOrder(String orderId, String status) async {
+    return await _orderRepository.updateStatusOrder(orderId, status);
   }
 }

@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/utils/assets_path_util.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
+final selectedPaymentMethodProvider = StateProvider<int?>((ref) => null);
 
-class TBillingAmountSection extends StatefulWidget {
+class TBillingAmountSection extends ConsumerWidget {
   const TBillingAmountSection({super.key});
 
   @override
-  State<TBillingAmountSection> createState() => _TBillingAmountSectionState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedMethod = ref.watch(selectedPaymentMethodProvider);
 
-class _TBillingAmountSectionState extends State<TBillingAmountSection> {
-  int? _selectedMethod;
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,11 +36,10 @@ class _TBillingAmountSectionState extends State<TBillingAmountSection> {
                 ),
                 Radio<int>(
                   value: 1,
-                  groupValue: _selectedMethod,
+                  groupValue: selectedMethod,
                   onChanged: (value) {
-                    setState(() {
-                      _selectedMethod = value;
-                    });
+                    ref.read(selectedPaymentMethodProvider.notifier).state =
+                        value;
                   },
                   activeColor: AppColors.primaryColor,
                 ),
@@ -55,3 +51,4 @@ class _TBillingAmountSectionState extends State<TBillingAmountSection> {
     );
   }
 }
+

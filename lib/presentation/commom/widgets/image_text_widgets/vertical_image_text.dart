@@ -39,8 +39,8 @@ class TVerticalImageText extends StatelessWidget {
               ),
               child: ClipOval(
                 // Use ClipOval for circular image
-                child: Image(
-                  image: AssetImage(image),
+                child: Image.network(
+                  image, // Using Image.network instead of AssetImage
                   fit: BoxFit.cover,
                 ),
               ),

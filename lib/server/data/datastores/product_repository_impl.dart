@@ -48,4 +48,31 @@ class ProductRepositoryImpl implements ProductRepository {
       sortByPriceAsc,
     );
   }
+
+  @override
+  Future<void> createProduct(
+    String name,
+    String description,
+    double price,
+    int stock,
+    List<String> size,
+    List<String> color,
+    String brand,
+    List<String> imgProduct,
+    int categoryId,
+    int discount,
+  ) async {
+    return await _clientService.createProduct(
+      name,
+      description,
+      price,
+      stock,
+      size,
+      color,
+      brand,
+      imgProduct,
+      categoryId,
+      discount,
+    );
+  }
 }

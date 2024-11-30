@@ -16,6 +16,7 @@ import 'package:front_shop/utils/header_token.dart';
 
 import '../data/entities/cart_product_entity.dart';
 import '../data/entities/coupon_apply_entity.dart';
+import '../data/entities/order_pages_entity.dart';
 
 class ClientService {
   factory ClientService() => _instance;
@@ -463,11 +464,118 @@ class ClientService {
     return res.data;
   }
 
+  Future<OrderPagesEntity> getOrderPages(
+      String status, int page, int size) async {
+    final res = await clientApi.getOrderPages(
+        await Util.createAuthorization(), status, page, size);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<OrderPagesEntity> searchOrderPages(
+    String? status,
+    String? startDate,
+    String? endDate,
+    String? fullName,
+    String? phoneNumber,
+    String? addressDetail,
+    int page,
+    int size,
+  ) async {
+    final res = await clientApi.searchOrderPages(
+      await Util.createAuthorization(),
+      status,
+      startDate,
+      endDate,
+      fullName,
+      phoneNumber,
+      addressDetail,
+      page,
+      size,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
   Future<void> cancelOrder(String orderId) async {
     final res = await clientApi.cancelOrder(
       await Util.createAuthorization(),
       orderId,
     );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> updateStatusOrder(String orderId, String status) async {
+    final res = await clientApi.updateStatusOrder(
+        await Util.createAuthorization(), orderId, status);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> createProduct(
+    String name,
+    String description,
+    double price,
+    int stock,
+    List<String> size,
+    List<String> color,
+    String brand,
+    List<String> imgProduct,
+    int categoryId,
+    int discount,
+  ) async {
+    Map<String, dynamic> body = {
+      'name': name,
+      'description': description,
+      'price': price,
+      'stock': stock,
+      'size': size,
+      'color': color,
+      'brand': brand,
+      'imgProduct': imgProduct,
+      'categoryId': categoryId,
+      'discount': discount,
+    };
+    final res = await clientApi.createProduct(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> createCategory(
+      String name, String description, String image) async {
+    Map<String, dynamic> body = {
+      'name': name,
+      'description': description,
+      'image': image,
+    };
+    final res = await clientApi.createCategory(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> updateCategory(
+      String categoryId, String name, String description, String image) async {
+    Map<String, dynamic> body = {
+      'name': name,
+      'description': description,
+      'image': image,
+    };
+    final res = await clientApi.updateCategory(
+        await Util.createAuthorization(), categoryId, body);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> deleteCategory(String categoryId) async {
+    final res = await clientApi.deleteCategory(
+        await Util.createAuthorization(), categoryId);
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

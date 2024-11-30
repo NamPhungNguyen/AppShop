@@ -145,7 +145,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             itemBuilder: (_, index) {
                               final category = categories.result[index];
                               return TVerticalImageText(
-                                image: AssetsPathUtil.categories("jacket.png"),
+                                image:category.image,
                                 title: category.name,
                                 onTap: () {
                                   Navigator.push(

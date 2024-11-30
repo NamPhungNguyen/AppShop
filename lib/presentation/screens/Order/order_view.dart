@@ -35,6 +35,18 @@ class OrderView extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stackTrace) => Center(child: Text('Error: $error')),
             data: (orders) {
+              if (orders.isEmpty) {
+                // Show message when no orders are present
+                return Center(
+                  child: Text(
+                    'No orders available',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(color: Colors.grey),
+                  ),
+                );
+              }
               return TOrderListItems(
                 orders: orders,
                 onCancelOrder: (orderId) {

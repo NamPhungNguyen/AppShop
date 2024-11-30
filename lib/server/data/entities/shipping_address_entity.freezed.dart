@@ -512,7 +512,7 @@ ShippingAddressDefaultEntity _$ShippingAddressDefaultEntityFromJson(
 
 /// @nodoc
 mixin _$ShippingAddressDefaultEntity {
-  ShippingAddressEntity get result => throw _privateConstructorUsedError;
+  List<ShippingAddressEntity> get result => throw _privateConstructorUsedError;
 
   /// Serializes this ShippingAddressDefaultEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -532,9 +532,7 @@ abstract class $ShippingAddressDefaultEntityCopyWith<$Res> {
       _$ShippingAddressDefaultEntityCopyWithImpl<$Res,
           ShippingAddressDefaultEntity>;
   @useResult
-  $Res call({ShippingAddressEntity result});
-
-  $ShippingAddressEntityCopyWith<$Res> get result;
+  $Res call({List<ShippingAddressEntity> result});
 }
 
 /// @nodoc
@@ -559,18 +557,8 @@ class _$ShippingAddressDefaultEntityCopyWithImpl<$Res,
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
-              as ShippingAddressEntity,
+              as List<ShippingAddressEntity>,
     ) as $Val);
-  }
-
-  /// Create a copy of ShippingAddressDefaultEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ShippingAddressEntityCopyWith<$Res> get result {
-    return $ShippingAddressEntityCopyWith<$Res>(_value.result, (value) {
-      return _then(_value.copyWith(result: value) as $Val);
-    });
   }
 }
 
@@ -583,10 +571,7 @@ abstract class _$$ShippingAddressDefaultEntityImplCopyWith<$Res>
       __$$ShippingAddressDefaultEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ShippingAddressEntity result});
-
-  @override
-  $ShippingAddressEntityCopyWith<$Res> get result;
+  $Res call({List<ShippingAddressEntity> result});
 }
 
 /// @nodoc
@@ -608,9 +593,9 @@ class __$$ShippingAddressDefaultEntityImplCopyWithImpl<$Res>
   }) {
     return _then(_$ShippingAddressDefaultEntityImpl(
       result: null == result
-          ? _value.result
+          ? _value._result
           : result // ignore: cast_nullable_to_non_nullable
-              as ShippingAddressEntity,
+              as List<ShippingAddressEntity>,
     ));
   }
 }
@@ -619,14 +604,21 @@ class __$$ShippingAddressDefaultEntityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ShippingAddressDefaultEntityImpl
     implements _ShippingAddressDefaultEntity {
-  const _$ShippingAddressDefaultEntityImpl({required this.result});
+  const _$ShippingAddressDefaultEntityImpl(
+      {required final List<ShippingAddressEntity> result})
+      : _result = result;
 
   factory _$ShippingAddressDefaultEntityImpl.fromJson(
           Map<String, dynamic> json) =>
       _$$ShippingAddressDefaultEntityImplFromJson(json);
 
+  final List<ShippingAddressEntity> _result;
   @override
-  final ShippingAddressEntity result;
+  List<ShippingAddressEntity> get result {
+    if (_result is EqualUnmodifiableListView) return _result;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_result);
+  }
 
   @override
   String toString() {
@@ -638,12 +630,13 @@ class _$ShippingAddressDefaultEntityImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ShippingAddressDefaultEntityImpl &&
-            (identical(other.result, result) || other.result == result));
+            const DeepCollectionEquality().equals(other._result, _result));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, result);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_result));
 
   /// Create a copy of ShippingAddressDefaultEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -666,14 +659,14 @@ class _$ShippingAddressDefaultEntityImpl
 abstract class _ShippingAddressDefaultEntity
     implements ShippingAddressDefaultEntity {
   const factory _ShippingAddressDefaultEntity(
-          {required final ShippingAddressEntity result}) =
+          {required final List<ShippingAddressEntity> result}) =
       _$ShippingAddressDefaultEntityImpl;
 
   factory _ShippingAddressDefaultEntity.fromJson(Map<String, dynamic> json) =
       _$ShippingAddressDefaultEntityImpl.fromJson;
 
   @override
-  ShippingAddressEntity get result;
+  List<ShippingAddressEntity> get result;
 
   /// Create a copy of ShippingAddressDefaultEntity
   /// with the given fields replaced by the non-null parameter values.

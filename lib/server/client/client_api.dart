@@ -12,6 +12,7 @@ import 'package:retrofit/retrofit.dart';
 import '../data/entities/cart_product_entity.dart';
 import '../data/entities/coupon_apply_entity.dart';
 import '../data/entities/coupon_entity.dart';
+import '../data/entities/order_pages_entity.dart';
 import '../data/entities/product_page_entity.dart';
 import '../data/entities/shipping_address_entity.dart';
 
@@ -237,10 +238,63 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @GET('/order/orders')
+  Future<HttpResponse<OrderPagesEntity>> getOrderPages(
+    @Header("Authorization") authorization,
+    @Query("status") String status,
+    @Query("page") int page,
+    @Query("size") int size,
+  );
+
+  @GET('/order/orders/search')
+  Future<HttpResponse<OrderPagesEntity>> searchOrderPages(
+    @Header("Authorization") authorization,
+    @Query("status") String? status,
+    @Query("startDate") String? startDate,
+    @Query("endDate") String? endDate,
+    @Query("fullName") String? fullName,
+    @Query("phoneNumber") String? phoneNumber,
+    @Query("addressDetail") String? addressDetail,
+    @Query("page") int page,
+    @Query("size") int size,
+  );
+
   @PUT('/order/cancel/{orderId}')
   Future<HttpResponse<void>> cancelOrder(
     @Header("Authorization") authorization,
     @Path("orderId") String orderId,
+  );
+
+  @PUT('/order/{orderId}/status')
+  Future<HttpResponse<void>> updateStatusOrder(
+    @Header("Authorization") authorization,
+    @Path("orderId") String orderId,
+    @Query("status") String status,
+  );
+
+  @POST('/product/create')
+  Future<HttpResponse<void>> createProduct(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/categories/create-categories')
+  Future<HttpResponse<void>> createCategory(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/categories/update-category/{categoryId}')
+  Future<HttpResponse<void>> updateCategory(
+    @Header("Authorization") authorization,
+    @Path("categoryId") String categoryId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE('/categories/delete-category/{categoryId}')
+  Future<HttpResponse<void>> deleteCategory(
+    @Header("Authorization") authorization,
+    @Path("categoryId") String categoryId,
   );
 }
 

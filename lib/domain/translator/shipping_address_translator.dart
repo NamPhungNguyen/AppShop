@@ -24,6 +24,10 @@ class ShippingAddressTranslator {
 
   static ShippingAddressDefault translateDefault(
       final ShippingAddressDefaultEntity entity) {
-    return ShippingAddressDefault(result: translate(entity.result));
+    return ShippingAddressDefault(
+      result: entity.result
+          .map((e) => translate(e)) // Gọi hàm translate cho từng phần tử
+          .toList(), // Chuyển Iterable thành List
+    );
   }
 }

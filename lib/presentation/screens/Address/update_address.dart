@@ -73,6 +73,8 @@ class _UpdateAddressState extends ConsumerState<UpdateAddress> {
                 : null,
             isDefault: isDefault,
           );
+
+      await ref.read(shippingAddressDefaultStateProvider.notifier).getDefaultAddress();
       Navigator.pop(context);
     }
 

@@ -29,15 +29,13 @@ class ProfileView extends ConsumerStatefulWidget {
 }
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
-  bool isLoading = false; // Loading state variable
+  bool isLoading = false;
 
   Future<void> _uploadProfileImage(BuildContext context, WidgetRef ref) async {
-    // Set loading to true before starting upload
     setState(() {
       isLoading = true;
     });
 
-    // Pick an image from the gallery or camera
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -51,7 +49,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     File imageFile = File(pickedFile.path);
 
     try {
-      // Generate a unique file name for the image
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageRef =
           FirebaseStorage.instance.ref().child('profile_images/$fileName');
@@ -61,11 +58,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
       // Get the download URL
       String downloadUrl = await storageRef.getDownloadURL();
-
-      // You can update your user's profile with the new URL
-      final userUsecase = await ref.read(userUsecaseProvider);
-      final updatedUser = await userUsecase.updateProfileImg(downloadUrl);
-
       ref.refresh(userStateProvider);
 
       print("Upload complete! Image URL: $downloadUrl");
@@ -86,9 +78,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
   void resetAllProviders(WidgetRef ref) {
     ref.invalidate(userStateProvider);
-    ref.invalidate(cartStateProvider); // Nếu có
-    ref.invalidate(favoriteStateProvider); // Nếu có
-    // Thêm các provider cần reset
+    ref.invalidate(cartStateProvider);
+    ref.invalidate(favoriteStateProvider);
   }
 
 

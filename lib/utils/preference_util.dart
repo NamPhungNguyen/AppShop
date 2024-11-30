@@ -12,7 +12,7 @@ class PreferenceUtil {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final decodedToken = json.decode(
         utf8.decode(base64.decode(base64.normalize(token.split('.')[1]))));
-    final exp = decodedToken['exp']; // Get the expiration timestamp
+    final exp = decodedToken['exp'];
     final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
 
     await prefs.setString(_authToken, token);

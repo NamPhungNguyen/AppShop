@@ -25,6 +25,6 @@ class ShippingAddresses with _$ShippingAddresses {
 
 @freezed
 class ShippingAddressDefault with _$ShippingAddressDefault {
-  const factory ShippingAddressDefault({required ShippingAddress result}) =
+  const factory ShippingAddressDefault({required List<ShippingAddress> result}) =
       _ShippingAddressDefault;
 }

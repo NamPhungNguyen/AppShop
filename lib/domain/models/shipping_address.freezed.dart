@@ -454,7 +454,7 @@ abstract class _ShippingAddresses implements ShippingAddresses {
 
 /// @nodoc
 mixin _$ShippingAddressDefault {
-  ShippingAddress get result => throw _privateConstructorUsedError;
+  List<ShippingAddress> get result => throw _privateConstructorUsedError;
 
   /// Create a copy of ShippingAddressDefault
   /// with the given fields replaced by the non-null parameter values.
@@ -469,9 +469,7 @@ abstract class $ShippingAddressDefaultCopyWith<$Res> {
           $Res Function(ShippingAddressDefault) then) =
       _$ShippingAddressDefaultCopyWithImpl<$Res, ShippingAddressDefault>;
   @useResult
-  $Res call({ShippingAddress result});
-
-  $ShippingAddressCopyWith<$Res> get result;
+  $Res call({List<ShippingAddress> result});
 }
 
 /// @nodoc
@@ -496,18 +494,8 @@ class _$ShippingAddressDefaultCopyWithImpl<$Res,
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
-              as ShippingAddress,
+              as List<ShippingAddress>,
     ) as $Val);
-  }
-
-  /// Create a copy of ShippingAddressDefault
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ShippingAddressCopyWith<$Res> get result {
-    return $ShippingAddressCopyWith<$Res>(_value.result, (value) {
-      return _then(_value.copyWith(result: value) as $Val);
-    });
   }
 }
 
@@ -520,10 +508,7 @@ abstract class _$$ShippingAddressDefaultImplCopyWith<$Res>
       __$$ShippingAddressDefaultImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ShippingAddress result});
-
-  @override
-  $ShippingAddressCopyWith<$Res> get result;
+  $Res call({List<ShippingAddress> result});
 }
 
 /// @nodoc
@@ -545,9 +530,9 @@ class __$$ShippingAddressDefaultImplCopyWithImpl<$Res>
   }) {
     return _then(_$ShippingAddressDefaultImpl(
       result: null == result
-          ? _value.result
+          ? _value._result
           : result // ignore: cast_nullable_to_non_nullable
-              as ShippingAddress,
+              as List<ShippingAddress>,
     ));
   }
 }
@@ -555,10 +540,17 @@ class __$$ShippingAddressDefaultImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ShippingAddressDefaultImpl implements _ShippingAddressDefault {
-  const _$ShippingAddressDefaultImpl({required this.result});
+  const _$ShippingAddressDefaultImpl(
+      {required final List<ShippingAddress> result})
+      : _result = result;
 
+  final List<ShippingAddress> _result;
   @override
-  final ShippingAddress result;
+  List<ShippingAddress> get result {
+    if (_result is EqualUnmodifiableListView) return _result;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_result);
+  }
 
   @override
   String toString() {
@@ -570,11 +562,12 @@ class _$ShippingAddressDefaultImpl implements _ShippingAddressDefault {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ShippingAddressDefaultImpl &&
-            (identical(other.result, result) || other.result == result));
+            const DeepCollectionEquality().equals(other._result, _result));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, result);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_result));
 
   /// Create a copy of ShippingAddressDefault
   /// with the given fields replaced by the non-null parameter values.
@@ -588,10 +581,11 @@ class _$ShippingAddressDefaultImpl implements _ShippingAddressDefault {
 
 abstract class _ShippingAddressDefault implements ShippingAddressDefault {
   const factory _ShippingAddressDefault(
-      {required final ShippingAddress result}) = _$ShippingAddressDefaultImpl;
+          {required final List<ShippingAddress> result}) =
+      _$ShippingAddressDefaultImpl;
 
   @override
-  ShippingAddress get result;
+  List<ShippingAddress> get result;
 
   /// Create a copy of ShippingAddressDefault
   /// with the given fields replaced by the non-null parameter values.
