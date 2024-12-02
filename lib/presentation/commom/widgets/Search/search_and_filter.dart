@@ -21,7 +21,6 @@ class SearchAndFilterScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productSearchStateProvider);
     final searchQuery = ref.watch(searchQueryProvider);
-    final selectedPriceRange = ref.watch(selectedPriceRangeProvider);
     final priceMin = double.tryParse(ref.watch(priceMinProvider) ?? '');
     final priceMax = double.tryParse(ref.watch(priceMaxProvider) ?? '');
     final sortOrder = ref.watch(sortOrderProvider);
@@ -93,18 +92,22 @@ class SearchAndFilterScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 DropdownButton<String>(
-                  borderRadius: BorderRadius.circular(10),
                   value: sortOrder,
                   style: const TextStyle(color: Colors.black),
-                  items: ['Low to High', 'High to Low']
-                      .map((String sortOrderOption) {
+                  isExpanded: true, // Ensures the button takes the full width
+                  icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+                  underline: const SizedBox(), // Removes the default underline
+
+                  // Wrap the DropdownButton with a Container for decoration
+                  itemHeight: null, // Prevents the default fixed height
+                  items: ['Low to High', 'High to Low'].map((String sortOrderOption) {
                     return DropdownMenuItem<String>(
                       value: sortOrderOption,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           sortOrderOption,
@@ -113,24 +116,29 @@ class SearchAndFilterScreen extends ConsumerWidget {
                       ),
                     );
                   }).toList(),
+
                   onChanged: (newValue) {
                     if (newValue != null) {
                       ref.read(sortOrderProvider.notifier).state = newValue;
                     }
                   },
-                  dropdownColor: Colors.white,
-                  iconEnabledColor: Colors.black,
-                  iconDisabledColor: Colors.grey,
-                  icon: const Icon(Icons.arrow_drop_down),
-                ),
+                  dropdownColor: Colors.white, // Background color of the dropdown
+                  iconEnabledColor: Colors.black, // Color of the icon
+                  iconDisabledColor: Colors.grey, // Disabled icon color
+                )
+
+
               ],
             ),
           ),
 
-          // Button to trigger search
+          /// Button to trigger search
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+              ),
               onPressed: () {
                 ref.read(hasSearchedProvider.notifier).state = true;
                 final sortByPriceAsc = sortOrder == 'Low to High';
@@ -145,7 +153,8 @@ class SearchAndFilterScreen extends ConsumerWidget {
             ),
           ),
 
-          // Handle loading, data, and error states here
+
+          ///show item after search
           Expanded(
             child: productState.when(
               data: (products) {
@@ -195,13 +204,11 @@ class SearchBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: [
-          const Icon(Iconsax.search_normal, color: Colors.grey),
           const SizedBox(width: 8),
           Expanded(
             child: TextField(

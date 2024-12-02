@@ -1,6 +1,8 @@
 import 'package:front_shop/domain/models/my_info.dart';
 
 import '../../server/data/entities/my_info_entity.dart';
+import '../../server/data/entities/user_entity.dart';
+import '../models/user.dart';
 
 class UseTranslator {
   static MyInfo translate(final MyInfoEntity entity) {
@@ -15,6 +17,27 @@ class UseTranslator {
       email: entity.email,
       phoneNumber: entity.phoneNumber,
       profileImg: entity.profileImg,
+    );
+  }
+
+  static UserResponse translateUserResponseEntityToUserResponse(
+      final UserResponseEntity entity) {
+    return UserResponse(
+      result: entity.result.map(translateUserEntityToUser).toList(),
+    );
+  }
+
+  static User translateUserEntityToUser(final UserEntity entity) {
+    return User(
+      id: entity.id,
+      username: entity.username,
+      password: entity.password,
+      email: entity.email,
+      fullName: entity.fullName,
+      phoneNumber: entity.phoneNumber,
+      profileImgUrl: entity.profileImgUrl,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     );
   }
 }

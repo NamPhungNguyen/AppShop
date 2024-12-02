@@ -6,7 +6,7 @@ import '../../../../domain/models/order_pages.dart';
 import '../../../../main.dart';
 
 final selectedStatusProvider = StateProvider<String>((ref) {
-  return 'Pending';
+  return '';
 });
 
 class OrderDetailScreen extends ConsumerWidget {
@@ -19,16 +19,15 @@ class OrderDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the selected status provider
-    String selectedStatus = ref.watch(selectedStatusProvider);
-
     final List<String> statuses = [
       'pending',
       'processing',
       'shipped',
-      'cancelled',
       'completed',
+      'cancelled'
     ];
+
+    String selectedStatus = ref.watch(selectedStatusProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -144,11 +143,11 @@ class OrderDetailScreen extends ConsumerWidget {
   }
 
   Widget _buildUpdateStatusSection(
-      BuildContext context,
-      String selectedStatus,
-      List<String> statuses,
-      WidgetRef ref,
-      ) {
+    BuildContext context,
+    String selectedStatus,
+    List<String> statuses,
+    WidgetRef ref,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -158,19 +157,16 @@ class OrderDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: selectedStatus.toLowerCase(), // Convert to lowercase
+          value: selectedStatus.isEmpty ? orderContent.status : selectedStatus,
           items: statuses.map((status) {
             return DropdownMenuItem(
               value: status,
-              child: Text(status[0].toUpperCase() + status.substring(1)), // Capitalize the first letter for display
+              child: Text(status[0].toUpperCase() + status.substring(1)),
             );
           }).toList(),
           onChanged: (newStatus) {
             if (newStatus != null) {
-              // Defer the state update until after the build phase
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                ref.read(selectedStatusProvider.notifier).state = newStatus;
-              });
+              ref.read(selectedStatusProvider.notifier).state = newStatus;
             }
           },
           decoration: const InputDecoration(
@@ -178,40 +174,37 @@ class OrderDetailScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () {
-            if (selectedStatus != orderContent.status) {
-              _updateOrderStatus(context, selectedStatus, ref);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('No changes to update')),
-              );
-            }
-          },
-          child: const Text('Update Status'),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              if (selectedStatus != orderContent.status) {
+                _updateOrderStatus(context, selectedStatus, ref);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('No changes to update')),
+                );
+              }
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text('Update Status'),
+            ),
+          ),
         ),
       ],
     );
   }
 
+  void _updateOrderStatus(
+      BuildContext context, String newStatus, WidgetRef ref) {
+    final statusToUpdate = newStatus.toLowerCase();
 
-  void _updateOrderStatus(BuildContext context, String newStatus, WidgetRef ref) {
-    // Convert to lowercase before updating
-    final statusToUpdate = newStatus.toLowerCase(); // Ensure the status is in lowercase
-
-    // Update order status using the provider
     ref.read(orderPagesStateProvider.notifier).updateStatusOrder(
-      orderContent.orderId.toString(),
-      statusToUpdate,
-    );
-
-    // Trigger a refresh of the order pages
-    ref.read(orderPagesStateProvider.notifier).searchOrderPages(status: 'All',page: 0, size: 5);
-
-    // Provide user feedback
+          orderContent.orderId.toString(),
+          statusToUpdate,
+        );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Order updated to $statusToUpdate')),
     );
   }
-
 }

@@ -20,4 +20,29 @@ class CouponUsecaseImpl implements CouponUsecase {
     final entity = await _couponRepository.applyCoupon(poolCode);
     return CouponTranslator.translateCoupon(entity);
   }
+
+  @override
+  Future<void> createCoupon(String poolCode, String code, double discountAmount,
+      String expiryDate, bool active, int totalQuantity) async {
+    return await _couponRepository.createCoupon(
+        poolCode, code, discountAmount, expiryDate, active, totalQuantity);
+  }
+
+  @override
+  Future<void> updateCoupon(
+      String couponId,
+      String poolCode,
+      String code,
+      double discountAmount,
+      String expiryDate,
+      bool active,
+      int totalQuantity) async {
+    return await _couponRepository.updateCoupon(couponId, poolCode, code,
+        discountAmount, expiryDate, active, totalQuantity);
+  }
+
+  @override
+  Future<void> deleteCoupon(String couponId) async {
+    return await _couponRepository.deleteCoupon(couponId);
+  }
 }

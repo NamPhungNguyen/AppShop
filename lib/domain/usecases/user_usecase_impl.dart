@@ -1,4 +1,5 @@
 import 'package:front_shop/domain/models/my_info.dart';
+import 'package:front_shop/domain/models/user.dart';
 import 'package:front_shop/domain/translator/user_translator.dart';
 import 'package:front_shop/domain/usecases/user_usecase.dart';
 import 'package:front_shop/server/data/repository/user_repository.dart';
@@ -36,5 +37,16 @@ class UserUsecaseImpl implements UserUsecase {
   Future<MyInfo> updateProfileEmail(String email) async {
     final entity = await _userRepository.updateProfileEmail(email);
     return UseTranslator.translate(entity);
+  }
+
+  @override
+  Future<UserResponse> getListUser() async {
+    final entity = await _userRepository.getListUser();
+    return UseTranslator.translateUserResponseEntityToUserResponse(entity);
+  }
+
+  @override
+  Future<void> deleteUser(String userId) async {
+    return await _userRepository.deleteUser(userId);
   }
 }

@@ -12,6 +12,7 @@ import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/product_page_entity.dart';
 import 'package:front_shop/server/data/entities/shipping_address_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
+import 'package:front_shop/server/data/entities/user_entity.dart';
 import 'package:front_shop/utils/header_token.dart';
 
 import '../data/entities/cart_product_entity.dart';
@@ -100,6 +101,29 @@ class ClientService {
   Future<MyInfoEntity> getMyInfo() async {
     try {
       final res = await clientApi.getMyInfo(await Util.createAuthorization());
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<UserResponseEntity> getListUser() async {
+    try {
+      final res = await clientApi.getListUser(await Util.createAuthorization());
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<void> deleteUser(String userId) async {
+    try {
+      final res =
+          await clientApi.deleteUser(await Util.createAuthorization(), userId);
       _apiErrorHandlingIfNeeded(res.response);
       return res.data;
     } on DioError catch (e) {
@@ -427,6 +451,63 @@ class ClientService {
 
   Future<List<CouponEntity>> getCoupons() async {
     final res = await clientApi.getCoupons(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> createCoupon(
+    String poolCode,
+    String code,
+    double discountAmount,
+    String expiryDate,
+    bool active,
+    int totalQuantity,
+  ) async {
+    Map<String, dynamic> body = {
+      'poolCode': poolCode,
+      'code': code,
+      'discountAmount': discountAmount,
+      'expiryDate': expiryDate,
+      'active': active,
+      'totalQuantity': totalQuantity
+    };
+    final res = await clientApi.createCoupon(
+      await Util.createAuthorization(),
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> updateCoupon(
+    String couponId,
+    String poolCode,
+    String code,
+    double discountAmount,
+    String expiryDate,
+    bool active,
+    int totalQuantity,
+  ) async {
+    Map<String, dynamic> body = {
+      'poolCode': poolCode,
+      'code': code,
+      'discountAmount': discountAmount,
+      'expiryDate': expiryDate,
+      'active': active,
+      'totalQuantity': totalQuantity
+    };
+    final res = await clientApi.updateCoupon(
+      await Util.createAuthorization(),
+      couponId,
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> deleteCoupon(String couponId) async {
+    final res = await clientApi.deleteCoupon(
+        await Util.createAuthorization(), couponId);
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

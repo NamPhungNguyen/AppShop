@@ -8,6 +8,7 @@ import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/product_page.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
+import 'package:front_shop/domain/models/user.dart';
 import 'package:front_shop/domain/states/category_state.dart';
 import 'package:front_shop/domain/states/checkout_state.dart';
 import 'package:front_shop/domain/states/comment_state.dart';
@@ -37,6 +38,7 @@ import 'domain/states/cart_state.dart';
 import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
 import 'domain/states/shipping_address_default_state.dart';
+import 'domain/states/user_admin_state.dart';
 
 // TokenState provider
 final tokenStateProvider =
@@ -69,6 +71,11 @@ final locationStateProvider =
 
 final userStateProvider = StateNotifierProvider<UserState, AsyncValue<MyInfo>>(
   (ref) => UserState(ref),
+);
+
+final userAdminStateProvider =
+    StateNotifierProvider<UserAdminState, AsyncValue<UserResponse>>(
+  (ref) => UserAdminState(ref),
 );
 
 final categoryStateProvider =

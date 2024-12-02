@@ -7,6 +7,7 @@ import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/order_entity.dart';
 import 'package:front_shop/server/data/entities/product_entity.dart';
 import 'package:front_shop/server/data/entities/signup_entity.dart';
+import 'package:front_shop/server/data/entities/user_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../data/entities/cart_product_entity.dart';
@@ -48,6 +49,17 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @GET('/users/list-user')
+  Future<HttpResponse<UserResponseEntity>> getListUser(
+    @Header("Authorization") authorization,
+  );
+
+  @DELETE('/users/delete-user/{userId}')
+  Future<HttpResponse<void>> deleteUser(
+    @Header("Authorization") authorization,
+    @Path("userId") String userid,
+  );
+
   @PUT('/users/update-profile-name-user')
   Future<HttpResponse<MyInfoEntity>> updateProfileName(
     @Header("Authorization") authorization,
@@ -82,6 +94,12 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @POST('/product/create')
+  Future<HttpResponse<void>> createProduct(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
   @GET('/product/list-product-category/{categoryId}')
   Future<HttpResponse<ProductsEntity>> fetchAllProductByCategory(
     @Header("Authorization") authorization,
@@ -93,6 +111,15 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
     @Query('page') int page,
     @Query('size') int size,
+  );
+
+  @GET('/product/search')
+  Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
+    @Header("Authorization") String authorization,
+    @Query("name") String? name,
+    @Query("priceMin") double? priceMin,
+    @Query("priceMax") double? priceMax,
+    @Query("sortByPriceAsc") bool sortByPriceAsc,
   );
 
   @POST('/favorites/add/{productId}')
@@ -207,18 +234,28 @@ abstract class ClientApi {
     @Path("commentId") String commentId,
   );
 
-  @GET('/product/search')
-  Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
-    @Header("Authorization") String authorization,
-    @Query("name") String? name,
-    @Query("priceMin") double? priceMin,
-    @Query("priceMax") double? priceMax,
-    @Query("sortByPriceAsc") bool sortByPriceAsc,
-  );
-
   @GET('/coupon/active')
   Future<HttpResponse<List<CouponEntity>>> getCoupons(
     @Header("Authorization") authorization,
+  );
+
+  @POST('/coupon')
+  Future<HttpResponse<void>> createCoupon(
+    @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('/coupon/{couponId}')
+  Future<HttpResponse<void>> updateCoupon(
+    @Header("Authorization") authorization,
+    @Path("couponId") String couponId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE('/coupon/{couponId}')
+  Future<HttpResponse<void>> deleteCoupon(
+    @Header("Authorization") authorization,
+    @Path("couponId") String couponId,
   );
 
   @POST('/coupon/apply-coupon')
@@ -270,12 +307,6 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
     @Path("orderId") String orderId,
     @Query("status") String status,
-  );
-
-  @POST('/product/create')
-  Future<HttpResponse<void>> createProduct(
-    @Header("Authorization") authorization,
-    @Body() Map<String, dynamic> body,
   );
 
   @POST('/categories/create-categories')

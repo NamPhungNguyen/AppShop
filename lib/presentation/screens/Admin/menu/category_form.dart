@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../main.dart';
-import 'category_detail_screen.dart'; // Add import for the edit screen
+import 'category_detail_screen.dart';
 
 class CategoryFormScreen extends ConsumerStatefulWidget {
   static const String routeName = '/manage_categories';
@@ -17,6 +21,32 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  File? _selectedImage;
+  bool _isUploading = false;
+
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<String?> _uploadImage(File imageFile) async {
+    try {
+      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      final storageRef =
+          FirebaseStorage.instance.ref().child('categories/$fileName');
+      final uploadTask = await storageRef.putFile(imageFile);
+      return await storageRef.getDownloadURL();
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,42 +94,97 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: _selectedImage != null
+                          ? Image.file(_selectedImage!, fit: BoxFit.cover)
+                          : const Center(
+                              child: Text('Tap to select an image'),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        final name = _nameController.text;
-                        final description = _descriptionController.text;
-                        final image = 'categories.png';
-                        ref
-                            .read(categoryStateProvider.notifier)
-                            .createCategory(name, description, image)
-                            .then((_) {
-                          // Show confirmation message and clear the form
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Category added successfully')),
-                          );
-                          _nameController.clear();
-                          _descriptionController.clear();
+                    onPressed: _isUploading
+                        ? null
+                        : () async {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              if (_selectedImage == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please select an image'),
+                                  ),
+                                );
+                                return;
+                              }
 
-                          // After adding a new category, fetch all categories again
-                          ref
-                              .read(categoryStateProvider.notifier)
-                              .fetchAllCategories();
-                        });
-                      }
-                    },
-                    child: const Text('Add Category'),
+                              setState(() {
+                                _isUploading = true;
+                              });
+
+                              final imageUrl =
+                                  await _uploadImage(_selectedImage!);
+
+                              if (imageUrl == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Image upload failed')),
+                                );
+                                setState(() {
+                                  _isUploading = false;
+                                });
+                                return;
+                              }
+
+                              final name = _nameController.text;
+                              final description = _descriptionController.text;
+
+                              ref
+                                  .read(categoryStateProvider.notifier)
+                                  .createCategory(name, description, imageUrl)
+                                  .then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Category added successfully')),
+                                );
+                                _nameController.clear();
+                                _descriptionController.clear();
+                                setState(() {
+                                  _selectedImage = null;
+                                  _isUploading = false;
+                                });
+
+                                // Fetch all categories again
+                                ref
+                                    .read(categoryStateProvider.notifier)
+                                    .fetchAllCategories();
+                              });
+                            }
+                          },
+                    child: _isUploading
+                        ? const CircularProgressIndicator()
+                        : const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text('Add Category'),
+                        ),
                   ),
                 ],
               ),
             ),
           ),
 
-          // Divider
+          /// Divider
           const Divider(thickness: 1, height: 1, color: Colors.grey),
 
-          // List Section
+          /// List Section
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -114,14 +199,16 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                         child: ListTile(
                           title: Text(category.name),
                           subtitle: Text(category.description),
+                          leading: category.image != null
+                              ? Image.network(category.image!, width: 50)
+                              : const Icon(Icons.image_not_supported),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                 icon:
-                                    const Icon(Icons.edit, color: Colors.blue),
+                                    const Icon(Icons.edit, color: Colors.grey),
                                 onPressed: () {
-                                  // Navigate to CategoryDetailScreen to edit
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -134,51 +221,52 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
                                 onPressed: () {
-                                  // Show confirmation dialog before deleting
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text('Confirm Deletion'),
-                                        content: const Text('Are you sure you want to delete this category?'),
+                                        content: const Text(
+                                            'Are you sure you want to delete this category?'),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              // Close the dialog
                                               Navigator.of(context).pop();
                                             },
                                             child: const Text('Cancel'),
                                           ),
                                           TextButton(
                                             onPressed: () async {
-                                              // Perform delete action
+                                              Navigator.of(context).pop();
                                               try {
-                                                // Delete the category
-                                                await ref.read(categoryStateProvider.notifier).deleteCategory(
-                                                  category.categoryId.toString(),
-                                                );
-                                                print(category.categoryId.toString());
-                                                // Close the dialog
-                                                Navigator.of(context).pop();
+                                                await ref
+                                                    .read(categoryStateProvider
+                                                        .notifier)
+                                                    .deleteCategory(category
+                                                        .categoryId
+                                                        .toString());
 
-                                                // Fetch all categories again after deletion
-                                                await ref.read(categoryStateProvider.notifier).fetchAllCategories();
+                                                await ref
+                                                    .read(categoryStateProvider
+                                                        .notifier)
+                                                    .fetchAllCategories();
 
-                                                // Show confirmation message
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   const SnackBar(
-                                                    content: Text('Category deleted successfully'),
+                                                    content: Text(
+                                                        'Category deleted successfully'),
                                                   ),
                                                 );
                                               } catch (error) {
-                                                // Close the dialog on error
-                                                Navigator.of(context).pop();
-
-                                                // Handle any errors that might occur during the delete operation
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(content: Text('Error: $error')),
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content: Text(
+                                                          'Error: $error')),
                                                 );
                                               }
                                             },
@@ -190,7 +278,6 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                                   );
                                 },
                               ),
-
                             ],
                           ),
                         ),
@@ -198,14 +285,9 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                     },
                   );
                 },
-                loading: () {
-                  // Show loading indicator while fetching categories
-                  return const Center(child: CircularProgressIndicator());
-                },
-                error: (error, stackTrace) {
-                  // Show error message if any issue occurs
-                  return Center(child: Text('Error: $error'));
-                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) =>
+                    Center(child: Text('Error: $error')),
               ),
             ),
           ),

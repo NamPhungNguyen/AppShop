@@ -9,12 +9,12 @@ import '../../../domain/domain_modules.dart';
 
 class AddCommentSection extends ConsumerStatefulWidget {
   final String productId;
-  final VoidCallback onCommentAdded;  // Add callback
+  final VoidCallback onCommentAdded;
 
   const AddCommentSection({
     Key? key,
     required this.productId,
-    required this.onCommentAdded,  // Accept callback in constructor
+    required this.onCommentAdded,
   }) : super(key: key);
 
   @override
@@ -52,11 +52,17 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
     return downloadUrls;
   }
 
-  // Submit comment and images using the API
   Future<void> _submitComment(WidgetRef ref) async {
     if (_commentController.text.isEmpty && _selectedImages.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please add text or images!")),
+      );
+      return;
+    }
+
+    if (_rating == 0.0) { // Check if rating is 0
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select a rating!")),
       );
       return;
     }
@@ -72,18 +78,17 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
       // Call API to add comment
       final commentUsecase = ref.read(commentUsecaseProvider);
       await commentUsecase.addComment(
-        widget.productId, // Pass productId from widget
+        widget.productId,
         _commentController.text,
         _rating.toInt(),
         imageUrls,
       );
 
-      // After comment is added, call the callback to invalidate and refresh comments
-      widget.onCommentAdded();  // Trigger the refresh callback
+      widget.onCommentAdded(); // Refresh callback
 
-      // Clear inputs after submission
       _commentController.clear();
       _selectedImages.clear();
+      _rating = 0.0;  // Reset the rating stars
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Comment submitted successfully!")),
@@ -100,95 +105,131 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        const Text(
-          "Add a Review",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        const SizedBox(height: 10),
-
-        // Input for comment text
-        TextField(
-          controller: _commentController,
-          decoration: const InputDecoration(
-            hintText: "Write your review...",
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 3,
-        ),
-        const SizedBox(height: 10),
-
-        // Rating input
-        const Text(
-          "Rating:",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Slider(
-          value: _rating,
-          min: 0,
-          max: 5,
-          divisions: 5,
-          label: _rating.toStringAsFixed(1),
-          onChanged: (value) {
-            setState(() {
-              _rating = value;
-            });
-          },
-        ),
-        Text("Rating: ${_rating.toStringAsFixed(1)} / 5"),
-        const SizedBox(height: 10),
-
-        // Buttons to add images or submit the comment
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton.icon(
-              onPressed: _pickImages,
-              icon: const Icon(Icons.image),
-              label: const Text("Add Images"),
+            const Text(
+              "Add a Review",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: _isLoading ? null : () => _submitComment(ref),
-              child: _isLoading
-                  ? const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              )
-                  : const Text("Submit"),
+            const SizedBox(height: 10),
+
+            // Comment Text Field
+            TextField(
+              controller: _commentController,
+              decoration: const InputDecoration(
+                hintText: "Write your review...",
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              ),
+              maxLines: 3,
             ),
+            const SizedBox(height: 10),
+
+            // Rating section with stars
+            const Text(
+              "Rating:",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: List.generate(5, (index) {
+                return IconButton(
+                  icon: Icon(
+                    index < _rating ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _rating = index + 1.0;
+                    });
+                  },
+                );
+              }),
+            ),
+            Text("${_rating.toStringAsFixed(1)} / 5"),
+            const SizedBox(height: 10),
+
+            // Buttons for adding images and submitting
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _pickImages,
+                    icon: const Icon(Icons.image),
+                    label: const Text("Add Images"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : () => _submitComment(ref),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14.5),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                        : const Text("Submit"),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // Display selected images
+            if (_selectedImages.isNotEmpty) ...[
+              const Text(
+                "Selected Images:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: _selectedImages
+                    .map(
+                      (image) => ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      File(image.path),
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+                    .toList(),
+              ),
+              const SizedBox(height: 10),
+            ],
           ],
         ),
-        const SizedBox(height: 10),
 
-        // Display selected images
-        if (_selectedImages.isNotEmpty) ...[
-          const Text(
-            "Selected Images:",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: _selectedImages
-                .map(
-                  (image) => Image.file(
-                File(image.path),
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
+        // Full-screen loading overlay
+        if (_isLoading)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               ),
-            )
-                .toList(),
+            ),
           ),
-          const SizedBox(height: 10),
-        ],
       ],
     );
   }
 }
-

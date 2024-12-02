@@ -36,13 +36,13 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
     final favoriteState = ref.read(favoriteStateProvider);
     isFavorite = favoriteState.maybeWhen(
       data: (favorites) => favorites.any(
-          (favProduct) => favProduct.productId == widget.product.productId),
+              (favProduct) => favProduct.productId == widget.product.productId),
       orElse: () => false,
     );
   }
 
   Future<void> _toggleFavorite() async {
-    if (isProcessing) return;
+    if (isProcessing || !widget.product.available) return; // Không cho phép khi sản phẩm hết hàng
 
     setState(() {
       isProcessing = true;
@@ -53,10 +53,8 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
       final favoriteNotifier = ref.read(favoriteStateProvider.notifier);
 
       if (isFavorite) {
-        // Thêm vào danh sách yêu thích
         await favoriteNotifier.addProductToFavorites(widget.product);
       } else {
-        // Xóa khỏi danh sách yêu thích
         await favoriteNotifier
             .removeProductFromFavorites(widget.product.productId.toString());
       }
@@ -120,7 +118,7 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                       child: TRoundedContainer(
                         radius: AppSizes.sm,
                         backgroundColor:
-                            AppColors.textSecondary.withOpacity(0.8),
+                        AppColors.textSecondary.withOpacity(0.8),
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSizes.sm, vertical: AppSizes.xs),
                         child: Text(
@@ -140,9 +138,27 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                     child: TCircularIcon(
                       icon: isFavorite ? Iconsax.heart5 : Iconsax.heart,
                       color: isFavorite ? Colors.red : Colors.grey,
-                      onPressed: isProcessing ? null : _toggleFavorite,
+                      onPressed: isProcessing || !widget.product.available
+                          ? null
+                          : _toggleFavorite, // Không cho phép nhấn khi hết hàng
                     ),
                   ),
+
+                  // Nếu sản phẩm không còn hàng, hiển thị thông báo "Hết hàng"
+                  if (!widget.product.available)
+                    Positioned(
+                      bottom: 10,
+                      left: 8,
+                      child: TRoundedContainer(
+                        radius: AppSizes.sm,
+                        backgroundColor: Colors.red.withOpacity(0.8),
+                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.sm, vertical: AppSizes.xs),
+                        child: Text(
+                          'Hết hàng',
+                          style: Theme.of(context).textTheme.labelLarge!.apply(color: Colors.white),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -205,20 +221,20 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                             .textTheme
                             .headlineMedium!
                             .copyWith(
-                              fontSize: 14,
-                              color: AppColors.primaryColor,
-                            ),
+                          fontSize: 14,
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                       const SizedBox(width: AppSizes.xs),
                       if (widget.product.discount != null)
                         Text(
                           "${widget.product.price.toStringAsFixed(2)}đ",
                           style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
+                          Theme.of(context).textTheme.labelSmall!.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
                         ),
                     ],
                   ),
@@ -231,3 +247,4 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
     );
   }
 }
+

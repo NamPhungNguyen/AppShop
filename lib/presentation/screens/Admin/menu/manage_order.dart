@@ -10,6 +10,8 @@ import '../../../../main.dart';
 class ManageOrderScreen extends ConsumerStatefulWidget {
   static const String routeName = '/manage_orders';
 
+  const ManageOrderScreen({super.key});
+
   @override
   ConsumerState<ManageOrderScreen> createState() => _ManageOrderScreenState();
 }
@@ -95,10 +97,7 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
       ),
       body: Column(
         children: [
-          // Filter Section
           _buildFilterSection(),
-
-          // Expanded Order List Section
           Expanded(
             child: orderState.when(
               data: (orderPages) => _buildOrderList(orderPages.content),
@@ -108,8 +107,6 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
               ),
             ),
           ),
-
-          // Pagination Section
           orderState.when(
             data: (orderPages) => _buildPagination(orderPages),
             loading: () => const SizedBox(),
@@ -129,59 +126,74 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInputField('Full Name', fullNameController),
-            _buildInputField('Phone Number', phoneNumberController),
-            _buildInputField('Address Detail', addressDetailController),
-            _buildDatePickerField('Start Date', startDateController, (date) {
-              setState(() {
-                startDate = date;
-                startDateController.text = date;
-              });
-            }),
-            const SizedBox(height: 8),
-            _buildDatePickerField('End Date', endDateController, (date) {
-              setState(() {
-                endDate = date;
-                endDateController.text = date;
-              });
-            }),
+            ExpansionTile(
+              title: const Text('Filter Options'),
+              leading: const Icon(Icons.filter_list),
+              children: [
+                _buildInputField('Full Name', fullNameController),
+                const SizedBox(height: 8),
+                _buildInputField('Phone Number', phoneNumberController),
+                const SizedBox(height: 8),
+                _buildInputField('Address Detail', addressDetailController),
+                const SizedBox(height: 8),
+                _buildDatePickerField('Start Date', startDateController, (date) {
+                  setState(() {
+                    startDate = date;
+                    startDateController.text = date;
+                  });
+                }),
+                const SizedBox(height: 8),
+                _buildDatePickerField('End Date', endDateController, (date) {
+                  setState(() {
+                    endDate = date;
+                    endDateController.text = date;
+                  });
+                }),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: _fetchOrders,
-                    child: const Text('Search'),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _fetchOrders,
+                      child: const Text('Search'),
+                    ),
                   ),
                   const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        fullName = null;
-                        phoneNumber = null;
-                        addressDetail = null;
-                        startDate = null;
-                        endDate = null;
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          fullName = null;
+                          phoneNumber = null;
+                          addressDetail = null;
+                          startDate = null;
+                          endDate = null;
 
-                        fullNameController.clear();
-                        phoneNumberController.clear();
-                        addressDetailController.clear();
-                        startDateController.clear();
-                        endDateController.clear();
-                      });
-                      _fetchOrders();
-                    },
-                    child: const Text('Clear Date'),
+                          fullNameController.clear();
+                          phoneNumberController.clear();
+                          addressDetailController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                        });
+                        _fetchOrders();
+                      },
+                      child: const Text('Clear'),
+                    ),
                   ),
                 ],
               ),
-            ),
+            )
+
           ],
         ),
       ),
     );
   }
+
 
   Widget _buildInputField(String label, TextEditingController controller) {
     return TextFormField(

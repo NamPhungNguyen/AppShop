@@ -21,9 +21,13 @@ import '../../commom/widgets/Search/search_and_filter.dart';
 import '../Address/address_view.dart';
 import '../Address/update_address.dart';
 import '../Admin/admin_home.dart';
+import '../Admin/menu/add_coupon_screen.dart';
 import '../Admin/menu/add_product_page.dart';
 import '../Admin/menu/category_form.dart';
+import '../Admin/menu/manage_coupon.dart';
 import '../Admin/menu/manage_order.dart';
+import '../Admin/menu/manage_product_screen.dart';
+import '../Admin/menu/manage_user_screen.dart';
 import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
 import '../Menu/Account/update_email.dart';
@@ -113,6 +117,14 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const CategoryFormScreen());
       case ManageOrderScreen.routeName:
         return MaterialPageRoute(builder: (_) => ManageOrderScreen());
+      case ManageCouponScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const ManageCouponScreen());
+      case AddCouponScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const AddCouponScreen());
+      case ManageUsersScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const ManageUsersScreen());
+      case ProductManagementPage.routeName:
+        return MaterialPageRoute(builder: (_) => const ProductManagementPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

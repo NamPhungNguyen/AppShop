@@ -31,6 +31,8 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   List<String> selectedSizes = [];
   List<String> customColors = [];
 
+  String? selectedCategory;
+
   // Firebase Storage instance
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -42,7 +44,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         setState(() {
           _imageFiles = pickedFiles;
         });
-        print("Đã chọn ${_imageFiles.length} ảnh"); // Log kiểm tra
+        print("Đã chọn ${_imageFiles.length} ảnh");
       } else {
         print("Không có ảnh nào được chọn.");
       }
@@ -86,7 +88,13 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       ));
       return;
     }
-
+    if (selectedCategory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Please select a category."),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
     _uploadImages().then((imageUrls) {
       ref.read(productStateProvider.notifier).createProduct(
             name: nameController.text,
@@ -97,7 +105,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
             color: customColors,
             brand: brandController.text,
             imgProduct: imageUrls,
-            categoryId: 1,
+            categoryId: int.parse(selectedCategory!),
             discount: int.parse(discountController.text),
           );
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -131,11 +139,19 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        final productState = ref.watch(productStateProvider);
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Add Product'),
+            title: const Text(
+              'Add Product',
+              style: TextStyle(color: Colors.white),
+            ),
             backgroundColor: AppColors.primaryColor,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white), // Set the back icon color to white
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -174,6 +190,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                   _buildTextField(discountController, 'Discount Percentage',
                       keyboardType: TextInputType.number),
 
+                  const SizedBox(height: 10),
+                  _buildCategoryDropdown(),
+                  const SizedBox(height: 20),
+
                   const SizedBox(height: 20),
 
                   // Multi-select Size
@@ -200,10 +220,9 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                           text.split(',').map((color) => color.trim()).toList();
                     });
                   }),
-
                   const SizedBox(height: 20),
 
-                  // Image Picker with Preview
+                  /// Image Picker with Preview
                   GestureDetector(
                     onTap: _pickImages,
                     child: Container(
@@ -247,7 +266,6 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                         },
                       ),
                     ),
-
                   const SizedBox(height: 20),
 
                   /// Submit Button
@@ -288,9 +306,9 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         filled: true,
-        fillColor: Colors.grey[200],
+        fillColor: Colors.white,
       ),
       keyboardType: keyboardType,
     );
@@ -317,6 +335,36 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
               .toList(),
         ),
       ],
+    );
+  }
+
+  Widget _buildCategoryDropdown() {
+    final categoryState = ref.watch(categoryStateProvider);
+    return categoryState.when(
+      data: (categories) {
+        return DropdownButtonFormField<String>(
+          value: selectedCategory,
+          decoration: InputDecoration(
+            labelText: 'Category',
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.grey[200],
+          ),
+          items: categories.result
+              .map((category) => DropdownMenuItem<String>(
+                    value: category.categoryId.toString(),
+                    child: Text(category.name),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            setState(() {
+              selectedCategory = value;
+            });
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error')),
     );
   }
 }

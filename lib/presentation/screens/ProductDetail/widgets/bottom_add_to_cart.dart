@@ -63,6 +63,8 @@ class TBottomAddToCart extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+
+              ///price
               Row(
                 children: [
                   TRoundedImage(
@@ -111,6 +113,8 @@ class TBottomAddToCart extends ConsumerWidget {
                   ),
                 ],
               ),
+
+              /// colors
               Text(
                 'Colors',
                 style: Theme.of(context)
@@ -151,6 +155,8 @@ class TBottomAddToCart extends ConsumerWidget {
                 }).toList(),
               ),
               const SizedBox(height: AppSizes.spaceBtwItems),
+
+              ///size
               Text(
                 'Select Size',
                 style: Theme.of(context)
@@ -191,6 +197,8 @@ class TBottomAddToCart extends ConsumerWidget {
                 }).toList(),
               ),
               const SizedBox(height: AppSizes.spaceBtwItems),
+
+              /// quantity
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -241,41 +249,45 @@ class TBottomAddToCart extends ConsumerWidget {
               const SizedBox(height: AppSizes.spaceBtwItems / 2),
               Align(
                 alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final selectedColor = selectedColorNotifier.value;
-                    final selectedSize = selectedSizeNotifier.value;
-                    final quantity = quantityNotifier.value;
+                child: SizedBox(
+                  width: double.infinity, // Nút sẽ chiếm hết chiều ngang của màn hình
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final selectedColor = selectedColorNotifier.value;
+                      final selectedSize = selectedSizeNotifier.value;
+                      final quantity = quantityNotifier.value;
 
-                    if (selectedColor != null && selectedSize != null) {
-                      await ref
-                          .read(cartStateProvider.notifier)
-                          .addProductToCart(product.productId, quantity,
-                              selectedColor, selectedSize);
-                      Navigator.pop(context);
-                      Fluttertoast.showToast(
-                        msg: 'Product added to cart!',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                      );
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: 'Please select a color and size.',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(AppSizes.md),
-                    backgroundColor: AppColors.primaryColor,
-                    side: const BorderSide(color: AppColors.primaryColor),
+                      if (selectedColor != null && selectedSize != null) {
+                        await ref
+                            .read(cartStateProvider.notifier)
+                            .addProductToCart(product.productId, quantity,
+                            selectedColor, selectedSize);
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(
+                          msg: 'Product added to cart!',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: 'Please select a color and size.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(AppSizes.md),
+                      backgroundColor: AppColors.primaryColor,
+                      side: const BorderSide(color: AppColors.primaryColor),
+                    ),
+                    child: const Text("Add now"),
                   ),
-                  child: const Text("Add now"),
                 ),
               ),
+
             ],
           ),
         );

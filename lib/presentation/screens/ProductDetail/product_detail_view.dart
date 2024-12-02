@@ -20,7 +20,9 @@ class ProductDetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      bottomNavigationBar: TBottomAddToCart(product: product),
+      bottomNavigationBar: product.available
+          ? TBottomAddToCart(product: product)
+          : null, // Set to null if the product is not available
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -84,3 +86,4 @@ class ProductDetailView extends ConsumerWidget {
     );
   }
 }
+

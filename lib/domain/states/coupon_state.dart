@@ -10,6 +10,7 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
     _fetchCoupons();
   }
 
+  // Fetch coupons
   Future<void> _fetchCoupons() async {
     try {
       state = const AsyncValue.loading();
@@ -20,6 +21,7 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
     }
   }
 
+  // Apply coupon
   Future<void> applyCoupon(String poolCode) async {
     try {
       state = const AsyncValue.loading();
@@ -35,6 +37,58 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
     }
   }
 
+  // Create coupon
+  Future<void> createCoupon(String poolCode, String code, double discountAmount,
+      String expiryDate, bool active, int totalQuantity) async {
+    try {
+      state = const AsyncValue.loading();
+
+      await _couponUsecase.createCoupon(
+          poolCode, code, discountAmount, expiryDate, active, totalQuantity);
+
+      final updatedCoupons = await _couponUsecase.getCoupons();
+      state = AsyncValue.data(updatedCoupons);
+      print("Coupon created successfully");
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+      print("Error creating coupon: $e");
+    }
+  }
+
+  // update coupon
+  Future<void> updateCoupon(
+      String couponId,
+      String poolCode,
+      String code,
+      double discountAmount,
+      String expiryDate,
+      bool active,
+      int totalQuantity) async {
+    try {
+      state = const AsyncValue.loading();
+
+      await _couponUsecase.updateCoupon(couponId, poolCode, code,
+          discountAmount, expiryDate, active, totalQuantity);
+
+      final updatedCoupons = await _couponUsecase.getCoupons();
+      state = AsyncValue.data(updatedCoupons);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> deleteCoupon(String couponId) async {
+    try {
+      state = const AsyncValue.loading();
+
+      await _couponUsecase.deleteCoupon(couponId);
+
+      final updatedCoupons = await _couponUsecase.getCoupons();
+      state = AsyncValue.data(updatedCoupons);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
   double get getDiscountAmount => discountAmount;
 }
-

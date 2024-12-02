@@ -36,7 +36,6 @@ class LoginView extends ConsumerWidget {
         // Admin role
         Navigator.pushNamed(context, AdminHome.routeName);
       } else {
-        // Regular user
         Navigator.pushNamed(context, BottomBar.routeName);
       }
     }
@@ -46,9 +45,8 @@ class LoginView extends ConsumerWidget {
         data: (updatedLogin) async {
           if (updatedLogin.result.authenticated) {
             String token = updatedLogin.result.token;
-            PreferenceUtil.setAuthToken(token); // Save the token
+            PreferenceUtil.setAuthToken(token);
             print(token);
-            // Decode the token and check the role
             checkUserRole(token);
 
             Fluttertoast.showToast(
@@ -132,8 +130,7 @@ class LoginView extends ConsumerWidget {
                   ButtonPrimary(
                     text: "Login",
                     onPressed: () {
-                      if (emailController.text.isEmpty ||
-                          passwordController.text.isEmpty) {
+                      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                         Fluttertoast.showToast(
                           msg: 'Please enter your email and password.',
                           toastLength: Toast.LENGTH_SHORT,
@@ -144,26 +141,13 @@ class LoginView extends ConsumerWidget {
                         return;
                       }
 
-                      // Check for admin credentials
-                      if (emailController.text == 'admin' &&
-                          passwordController.text == 'admin') {
-                        // Directly simulate login with admin credentials
-                        ref.read(loginStateProvider.notifier).login(
-                          'admin',
-                          'admin',
-                        );
-                        Navigator.pushNamed(
-                          context,
-                          AdminHome.routeName,
-                        );
-                      } else {
-                        // Otherwise, normal login
-                        ref.read(loginStateProvider.notifier).login(
-                          emailController.text,
-                          passwordController.text,
-                        );
-                      }
+                      // Kiểm tra admin credentials
+                      ref.read(loginStateProvider.notifier).login(
+                        emailController.text,
+                        passwordController.text,
+                      );
                     },
+
                   ),
               ],
             ),

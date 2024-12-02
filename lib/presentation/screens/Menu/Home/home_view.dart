@@ -4,6 +4,7 @@ import 'package:front_shop/presentation/commom/widgets/Search/search_and_filter.
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
 
+import '../../../../domain/domain_modules.dart';
 import '../../../../domain/models/category.dart';
 import '../../../../main.dart';
 import '../../../../utils/assets_path_util.dart';
@@ -87,13 +88,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          // Reset the page and fetch products again
           setState(() {
             currentPage = 0;
             totalPages = 0;
             isLoading = false;
           });
           await ref.read(productPageStateProvider.notifier).fetchInitialProducts(4);
+          await ref.read(userStateProvider.notifier).getMyInfo();
         },
         child: homeState.when(
           loading: () => const Center(child: CircularProgressIndicator()),

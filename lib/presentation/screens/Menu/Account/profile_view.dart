@@ -4,7 +4,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front_shop/domain/domain_modules.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/update_email.dart';
 import 'package:front_shop/presentation/screens/Menu/Account/update_phone_number.dart';

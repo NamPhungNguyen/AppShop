@@ -17,7 +17,7 @@ class TSearchContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0),
       child: GestureDetector(
-        onTap: onTap,  // Thêm sự kiện onTap
+        onTap: onTap,
         child: Container(
           width: DeviceUtils.getScreenWidth(context),
           padding: const EdgeInsets.all(AppSizes.md),
