@@ -60,17 +60,26 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
 
   void _fetchOrders() {
     final selectedStatus = statuses[_tabController.index];
+    print("Fetching orders with filters:");
+    print("Status: $selectedStatus");
+    print("Full Name: $fullName");
+    print("Phone Number: $phoneNumber");
+    print("Address Detail: $addressDetail");
+    print("Start Date: $startDate");
+    print("End Date: $endDate");
+
     ref.read(orderPagesStateProvider.notifier).searchOrderPages(
-          status: selectedStatus,
-          startDate: startDate,
-          endDate: endDate,
-          fullName: fullName,
-          phoneNumber: phoneNumber,
-          addressDetail: addressDetail,
-          page: currentPage,
-          size: pageSize,
-        );
+      status: selectedStatus,
+      startDate: startDate,
+      endDate: endDate,
+      fullName: fullName,
+      phoneNumber: phoneNumber,
+      addressDetail: addressDetail,
+      page: currentPage,
+      size: pageSize,
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -158,9 +167,19 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _fetchOrders,
+                      onPressed: () {
+                        setState(() {
+                          fullName = fullNameController.text.isNotEmpty ? fullNameController.text : null;
+                          phoneNumber = phoneNumberController.text.isNotEmpty ? phoneNumberController.text : null;
+                          addressDetail = addressDetailController.text.isNotEmpty ? addressDetailController.text : null;
+                          startDate = startDateController.text.isNotEmpty ? startDateController.text : null;
+                          endDate = endDateController.text.isNotEmpty ? endDateController.text : null;
+                        });
+                        _fetchOrders();
+                      },
                       child: const Text('Search'),
                     ),
+
                   ),
                   const SizedBox(width: 16),
                   Expanded(
