@@ -455,6 +455,12 @@ class ClientService {
     return res.data;
   }
 
+  Future<List<CouponEntity>> getAllCoupon() async {
+    final res = await clientApi.getAllCoupon(await Util.createAuthorization());
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
   Future<void> createCoupon(
     String poolCode,
     String code,

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:front_shop/domain/models/order.dart';
 import 'package:front_shop/presentation/commom/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
 import 'package:front_shop/utils/constants/sizes.dart';
-import 'package:front_shop/domain/models/order.dart';
 
 class TOrderListItems extends StatelessWidget {
   final List<Order> orders;
-  final Function(String orderId) onCancelOrder; // Callback to handle order cancellation
+  final Function(String orderId) onCancelOrder;
 
   const TOrderListItems({
     super.key,
     required this.orders,
-    required this.onCancelOrder, // Pass the cancel order logic from parent
+    required this.onCancelOrder,
   });
 
   @override
   Widget build(BuildContext context) {
     if (orders.isEmpty) {
-      // If no orders are present, display a message
       return Center(
         child: Text(
           'No orders available',
@@ -32,7 +31,8 @@ class TOrderListItems extends StatelessWidget {
     return ListView.separated(
       itemCount: orders.length,
       shrinkWrap: true,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSizes.spaceBtwItems),
+      separatorBuilder: (_, __) =>
+          const SizedBox(height: AppSizes.spaceBtwItems),
       itemBuilder: (_, orderIndex) {
         final order = orders[orderIndex];
 
@@ -43,7 +43,7 @@ class TOrderListItems extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order Details Header
+              /// Order Details Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -57,7 +57,27 @@ class TOrderListItems extends StatelessWidget {
                   _buildOrderStatusBadge(context, order.status),
                 ],
               ),
-              SizedBox(height: AppSizes.spaceBtwItems / 2),
+              const SizedBox(height: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Recipient: ${order.shippingAddress.fullName}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Address: ${order.shippingAddress.addressDetail}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Phone: ${order.shippingAddress.phoneNumber}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
               Text(
                 'Total: \$${order.totalAmount.toStringAsFixed(2)}',
                 style: Theme.of(context)
@@ -65,16 +85,16 @@ class TOrderListItems extends StatelessWidget {
                     .bodyLarge!
                     .apply(color: AppColors.primaryColor),
               ),
-              SizedBox(height: AppSizes.spaceBtwItems / 2),
+              const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-              // List of Products
+              /// List of Products
               Column(
                 children: order.products.map((product) {
                   return _buildProductItem(context, product);
                 }).toList(),
               ),
 
-              // Cancel Order Button (conditionally displayed)
+              /// Cancel Order Button (conditionally displayed)
               if (order.status.toLowerCase() != 'completed' &&
                   order.status.toLowerCase() != 'shipped' &&
                   order.status.toLowerCase() != 'cancelled') ...[
@@ -82,7 +102,8 @@ class TOrderListItems extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: ElevatedButton.icon(
-                    onPressed: () => _showCancelConfirmationDialog(context, order.orderId.toString()),
+                    onPressed: () => _showCancelConfirmationDialog(
+                        context, order.orderId.toString()),
                     icon: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Icon(Icons.cancel, size: 16),
@@ -148,7 +169,7 @@ class TOrderListItems extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceBtwItems / 2),
       child: Row(
         children: [
-          // Product Image
+          /// Product Image
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
@@ -160,7 +181,7 @@ class TOrderListItems extends StatelessWidget {
           ),
           const SizedBox(width: AppSizes.spaceBtwItems),
 
-          // Product Details
+          /// Product Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,13 +233,13 @@ class TOrderListItems extends StatelessWidget {
           content: const Text('Are you sure you want to cancel this order?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('No'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                onCancelOrder(orderId); // Trigger cancellation logic
+                Navigator.of(context).pop();
+                onCancelOrder(orderId);
               },
               child: const Text('Yes'),
             ),

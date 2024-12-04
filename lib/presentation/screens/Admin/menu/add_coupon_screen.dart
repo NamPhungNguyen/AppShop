@@ -20,7 +20,7 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
   final TextEditingController _poolCodeController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
   final TextEditingController _discountAmountController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _expiryDateController = TextEditingController();
   bool _active = true;
   int _totalQuantity = 0;
@@ -39,10 +39,13 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
   }
 
   Future<void> _selectExpiryDate(BuildContext context) async {
+    DateTime today = DateTime.now();
+    DateTime tomorrow = today.add(Duration(days: 1));
+
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      initialDate: tomorrow,
+      firstDate: tomorrow,
       lastDate: DateTime(2100),
     );
 
@@ -64,11 +67,33 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
       final totalQuantity = _totalQuantity;
 
       try {
-        print(
-            'Coupon Data: $poolCode, $code, $discountAmount, $expiryDate, $active, $totalQuantity');
+        DateTime selectedExpiryDate = DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").parse(expiryDate);
+        DateTime tomorrow = DateTime.now().add(Duration(days: 1));
+
+        DateTime selectedExpiryDateOnly = DateTime(selectedExpiryDate.year, selectedExpiryDate.month, selectedExpiryDate.day);
+        DateTime tomorrowOnly = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
+
+        if (selectedExpiryDateOnly.isBefore(tomorrowOnly)) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text('Invalid Expiry Date'),
+              content: const Text('The expiry date must be after today.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+          return;
+        }
+
+        print('Coupon Data: $poolCode, $code, $discountAmount, $expiryDate, $active, $totalQuantity');
         if (widget.coupon != null) {
           print('Updating coupon...');
-          await ref.read(couponStateProvider.notifier).updateCoupon(
+          await ref.read(couponAdminStateProvider.notifier).updateCoupon(
               widget.coupon!.id.toString(),
               poolCode,
               code,
@@ -76,6 +101,8 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
               expiryDate,
               active,
               totalQuantity);
+          // Navigate back to the manage coupon screen after updating
+          Navigator.popAndPushNamed(context, '/manage_coupon');
         } else {
           print('Creating new coupon...');
           await ref.read(couponStateProvider.notifier).createCoupon(poolCode,
@@ -101,6 +128,7 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

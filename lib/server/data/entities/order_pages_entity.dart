@@ -28,6 +28,7 @@ class OrderContentEntity with _$OrderContentEntity {
     required String status,
     required List<ProductPageOrderEntity> products,
     required int addressId,
+    required ShippingPageAddressEntity shippingAddress,
     required String createdAt,
     required String updatedAt,
   }) = _OrderContentEntity;
@@ -52,4 +53,22 @@ class ProductPageOrderEntity with _$ProductPageOrderEntity {
   }) = _ProductPageOrderEntity;
 
   factory ProductPageOrderEntity.fromJson(Map<String, dynamic> json) => _$ProductPageOrderEntityFromJson(json);
+}
+
+@freezed
+class ShippingPageAddressEntity with _$ShippingPageAddressEntity {
+  factory ShippingPageAddressEntity({
+    required int addressId,
+    required String fullName,
+    required String phoneNumber,
+    required String addressDetail,
+    String? additionalAddress,
+    required String province,
+    required String city,
+    required String country,
+    required bool isDefault,
+  }) = _ShippingPageAddressEntity;
+
+  factory ShippingPageAddressEntity.fromJson(Map<String, dynamic> json) =>
+      _$ShippingPageAddressEntityFromJson(json);
 }

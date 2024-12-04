@@ -35,6 +35,7 @@ import 'domain/models/login.dart';
 import 'domain/models/order.dart';
 import 'domain/models/order_pages.dart';
 import 'domain/states/cart_state.dart';
+import 'domain/states/coupon_admin_state.dart';
 import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
 import 'domain/states/shipping_address_default_state.dart';
@@ -141,6 +142,11 @@ final orderPagesStateProvider =
 final couponStateProvider =
     StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
   return CouponState(ref.read(couponUsecaseProvider));
+});
+
+final couponAdminStateProvider =
+    StateNotifierProvider<CouponAdminState, AsyncValue<List<Coupon>>>((ref) {
+  return CouponAdminState(ref.read(couponUsecaseProvider));
 });
 
 final orderStateProvider =

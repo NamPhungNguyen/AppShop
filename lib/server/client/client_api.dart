@@ -239,6 +239,11 @@ abstract class ClientApi {
     @Header("Authorization") authorization,
   );
 
+  @GET('/coupon/list-all')
+  Future<HttpResponse<List<CouponEntity>>> getAllCoupon(
+    @Header("Authorization") authorization,
+  );
+
   @POST('/coupon')
   Future<HttpResponse<void>> createCoupon(
     @Header("Authorization") authorization,

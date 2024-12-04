@@ -21,6 +21,7 @@ mixin _$Order {
   String get status => throw _privateConstructorUsedError;
   List<ProductOrder> get products => throw _privateConstructorUsedError;
   int get addressId => throw _privateConstructorUsedError;
+  Address get shippingAddress => throw _privateConstructorUsedError;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -38,7 +39,10 @@ abstract class $OrderCopyWith<$Res> {
       double totalAmount,
       String status,
       List<ProductOrder> products,
-      int addressId});
+      int addressId,
+      Address shippingAddress});
+
+  $AddressCopyWith<$Res> get shippingAddress;
 }
 
 /// @nodoc
@@ -61,6 +65,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? status = null,
     Object? products = null,
     Object? addressId = null,
+    Object? shippingAddress = null,
   }) {
     return _then(_value.copyWith(
       orderId: null == orderId
@@ -83,7 +88,21 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.addressId
           : addressId // ignore: cast_nullable_to_non_nullable
               as int,
+      shippingAddress: null == shippingAddress
+          ? _value.shippingAddress
+          : shippingAddress // ignore: cast_nullable_to_non_nullable
+              as Address,
     ) as $Val);
+  }
+
+  /// Create a copy of Order
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get shippingAddress {
+    return $AddressCopyWith<$Res>(_value.shippingAddress, (value) {
+      return _then(_value.copyWith(shippingAddress: value) as $Val);
+    });
   }
 }
 
@@ -99,7 +118,11 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       double totalAmount,
       String status,
       List<ProductOrder> products,
-      int addressId});
+      int addressId,
+      Address shippingAddress});
+
+  @override
+  $AddressCopyWith<$Res> get shippingAddress;
 }
 
 /// @nodoc
@@ -120,6 +143,7 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? status = null,
     Object? products = null,
     Object? addressId = null,
+    Object? shippingAddress = null,
   }) {
     return _then(_$OrderImpl(
       orderId: null == orderId
@@ -142,6 +166,10 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.addressId
           : addressId // ignore: cast_nullable_to_non_nullable
               as int,
+      shippingAddress: null == shippingAddress
+          ? _value.shippingAddress
+          : shippingAddress // ignore: cast_nullable_to_non_nullable
+              as Address,
     ));
   }
 }
@@ -154,7 +182,8 @@ class _$OrderImpl implements _Order {
       required this.totalAmount,
       required this.status,
       required final List<ProductOrder> products,
-      required this.addressId})
+      required this.addressId,
+      required this.shippingAddress})
       : _products = products;
 
   @override
@@ -173,10 +202,12 @@ class _$OrderImpl implements _Order {
 
   @override
   final int addressId;
+  @override
+  final Address shippingAddress;
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId)';
+    return 'Order(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId, shippingAddress: $shippingAddress)';
   }
 
   @override
@@ -190,12 +221,20 @@ class _$OrderImpl implements _Order {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.addressId, addressId) ||
-                other.addressId == addressId));
+                other.addressId == addressId) &&
+            (identical(other.shippingAddress, shippingAddress) ||
+                other.shippingAddress == shippingAddress));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, orderId, totalAmount, status,
-      const DeepCollectionEquality().hash(_products), addressId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      orderId,
+      totalAmount,
+      status,
+      const DeepCollectionEquality().hash(_products),
+      addressId,
+      shippingAddress);
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -212,7 +251,8 @@ abstract class _Order implements Order {
       required final double totalAmount,
       required final String status,
       required final List<ProductOrder> products,
-      required final int addressId}) = _$OrderImpl;
+      required final int addressId,
+      required final Address shippingAddress}) = _$OrderImpl;
 
   @override
   int get orderId;
@@ -224,6 +264,8 @@ abstract class _Order implements Order {
   List<ProductOrder> get products;
   @override
   int get addressId;
+  @override
+  Address get shippingAddress;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.
@@ -550,5 +592,302 @@ abstract class _ProductOrder implements ProductOrder {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductOrderImplCopyWith<_$ProductOrderImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$Address {
+  int get addressId => throw _privateConstructorUsedError;
+  String get fullName => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
+  String get addressDetail => throw _privateConstructorUsedError;
+  String? get additionalAddress => throw _privateConstructorUsedError;
+  String get province => throw _privateConstructorUsedError;
+  String get city => throw _privateConstructorUsedError;
+  String get country => throw _privateConstructorUsedError;
+  bool get isDefault => throw _privateConstructorUsedError;
+
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AddressCopyWith<Address> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AddressCopyWith<$Res> {
+  factory $AddressCopyWith(Address value, $Res Function(Address) then) =
+      _$AddressCopyWithImpl<$Res, Address>;
+  @useResult
+  $Res call(
+      {int addressId,
+      String fullName,
+      String phoneNumber,
+      String addressDetail,
+      String? additionalAddress,
+      String province,
+      String city,
+      String country,
+      bool isDefault});
+}
+
+/// @nodoc
+class _$AddressCopyWithImpl<$Res, $Val extends Address>
+    implements $AddressCopyWith<$Res> {
+  _$AddressCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? addressId = null,
+    Object? fullName = null,
+    Object? phoneNumber = null,
+    Object? addressDetail = null,
+    Object? additionalAddress = freezed,
+    Object? province = null,
+    Object? city = null,
+    Object? country = null,
+    Object? isDefault = null,
+  }) {
+    return _then(_value.copyWith(
+      addressId: null == addressId
+          ? _value.addressId
+          : addressId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      addressDetail: null == addressDetail
+          ? _value.addressDetail
+          : addressDetail // ignore: cast_nullable_to_non_nullable
+              as String,
+      additionalAddress: freezed == additionalAddress
+          ? _value.additionalAddress
+          : additionalAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: null == province
+          ? _value.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: null == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
+  factory _$$AddressImplCopyWith(
+          _$AddressImpl value, $Res Function(_$AddressImpl) then) =
+      __$$AddressImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int addressId,
+      String fullName,
+      String phoneNumber,
+      String addressDetail,
+      String? additionalAddress,
+      String province,
+      String city,
+      String country,
+      bool isDefault});
+}
+
+/// @nodoc
+class __$$AddressImplCopyWithImpl<$Res>
+    extends _$AddressCopyWithImpl<$Res, _$AddressImpl>
+    implements _$$AddressImplCopyWith<$Res> {
+  __$$AddressImplCopyWithImpl(
+      _$AddressImpl _value, $Res Function(_$AddressImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? addressId = null,
+    Object? fullName = null,
+    Object? phoneNumber = null,
+    Object? addressDetail = null,
+    Object? additionalAddress = freezed,
+    Object? province = null,
+    Object? city = null,
+    Object? country = null,
+    Object? isDefault = null,
+  }) {
+    return _then(_$AddressImpl(
+      addressId: null == addressId
+          ? _value.addressId
+          : addressId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      addressDetail: null == addressDetail
+          ? _value.addressDetail
+          : addressDetail // ignore: cast_nullable_to_non_nullable
+              as String,
+      additionalAddress: freezed == additionalAddress
+          ? _value.additionalAddress
+          : additionalAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: null == province
+          ? _value.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: null == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AddressImpl implements _Address {
+  _$AddressImpl(
+      {required this.addressId,
+      required this.fullName,
+      required this.phoneNumber,
+      required this.addressDetail,
+      this.additionalAddress,
+      required this.province,
+      required this.city,
+      required this.country,
+      required this.isDefault});
+
+  @override
+  final int addressId;
+  @override
+  final String fullName;
+  @override
+  final String phoneNumber;
+  @override
+  final String addressDetail;
+  @override
+  final String? additionalAddress;
+  @override
+  final String province;
+  @override
+  final String city;
+  @override
+  final String country;
+  @override
+  final bool isDefault;
+
+  @override
+  String toString() {
+    return 'Address(addressId: $addressId, fullName: $fullName, phoneNumber: $phoneNumber, addressDetail: $addressDetail, additionalAddress: $additionalAddress, province: $province, city: $city, country: $country, isDefault: $isDefault)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddressImpl &&
+            (identical(other.addressId, addressId) ||
+                other.addressId == addressId) &&
+            (identical(other.fullName, fullName) ||
+                other.fullName == fullName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.addressDetail, addressDetail) ||
+                other.addressDetail == addressDetail) &&
+            (identical(other.additionalAddress, additionalAddress) ||
+                other.additionalAddress == additionalAddress) &&
+            (identical(other.province, province) ||
+                other.province == province) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.country, country) || other.country == country) &&
+            (identical(other.isDefault, isDefault) ||
+                other.isDefault == isDefault));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, addressId, fullName, phoneNumber,
+      addressDetail, additionalAddress, province, city, country, isDefault);
+
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
+      __$$AddressImplCopyWithImpl<_$AddressImpl>(this, _$identity);
+}
+
+abstract class _Address implements Address {
+  factory _Address(
+      {required final int addressId,
+      required final String fullName,
+      required final String phoneNumber,
+      required final String addressDetail,
+      final String? additionalAddress,
+      required final String province,
+      required final String city,
+      required final String country,
+      required final bool isDefault}) = _$AddressImpl;
+
+  @override
+  int get addressId;
+  @override
+  String get fullName;
+  @override
+  String get phoneNumber;
+  @override
+  String get addressDetail;
+  @override
+  String? get additionalAddress;
+  @override
+  String get province;
+  @override
+  String get city;
+  @override
+  String get country;
+  @override
+  bool get isDefault;
+
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

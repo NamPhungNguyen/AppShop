@@ -16,6 +16,12 @@ class CouponUsecaseImpl implements CouponUsecase {
   }
 
   @override
+  Future<List<Coupon>> getAllCoupon() async {
+    final entity = await _couponRepository.getAllCoupon();
+    return CouponTranslator.translate(entity);
+  }
+
+  @override
   Future<CouponApply> applyCoupon(String poolCode) async {
     final entity = await _couponRepository.applyCoupon(poolCode);
     return CouponTranslator.translateCoupon(entity);

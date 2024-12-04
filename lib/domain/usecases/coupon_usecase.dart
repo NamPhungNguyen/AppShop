@@ -4,6 +4,8 @@ import 'package:front_shop/domain/models/coupon_apply.dart';
 abstract class CouponUsecase {
   Future<List<Coupon>> getCoupons();
 
+  Future<List<Coupon>> getAllCoupon();
+
   Future<void> createCoupon(
     String poolCode,
     String code,

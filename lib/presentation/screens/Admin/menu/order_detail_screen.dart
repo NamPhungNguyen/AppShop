@@ -43,6 +43,11 @@ class OrderDetailScreen extends ConsumerWidget {
 
             const SizedBox(height: 16),
 
+            // Shipping Address
+            _buildShippingAddressSection(orderContent.shippingAddress),
+
+            const SizedBox(height: 16),
+
             // Product List
             Expanded(
               child: _buildProductList(orderContent.products),
@@ -57,6 +62,36 @@ class OrderDetailScreen extends ConsumerWidget {
               ref,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShippingAddressSection(ShippingPageAddress address) {
+    return Container(
+      width: double.infinity,
+      child: Card(
+        elevation: 3,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Shipping Address:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text('Full Name: ${address.fullName}'),
+              Text('Phone: ${address.phoneNumber}'),
+              Text('Address: ${address.addressDetail}'),
+              if (address.additionalAddress != null)
+                Text('Additional Info: ${address.additionalAddress!}'),
+              Text('City: ${address.city}'),
+              Text('Province: ${address.province}'),
+              Text('Country: ${address.country}'),
+            ],
+          ),
         ),
       ),
     );

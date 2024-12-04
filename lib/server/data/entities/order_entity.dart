@@ -11,6 +11,7 @@ class OrderEntity with _$OrderEntity {
     required String status,
     required List<ProductOrderEntity> products,
     required int addressId,
+    required AddressEntity shippingAddress,
   }) = _OrderEntity;
 
   factory OrderEntity.fromJson(Map<String, dynamic> json) => _$OrderEntityFromJson(json);
@@ -32,4 +33,21 @@ class ProductOrderEntity with _$ProductOrderEntity {
   }) = _ProductOrderEntity;
 
   factory ProductOrderEntity.fromJson(Map<String, dynamic> json) => _$ProductOrderEntityFromJson(json);
+}
+
+@freezed
+class AddressEntity with _$AddressEntity {
+  factory AddressEntity({
+    required int addressId,
+    required String fullName,
+    required String phoneNumber,
+    required String addressDetail,
+    String? additionalAddress,
+    required String province,
+    required String city,
+    required String country,
+    required bool isDefault,
+  }) = _AddressEntity;
+
+  factory AddressEntity.fromJson(Map<String, dynamic> json) => _$AddressEntityFromJson(json);
 }

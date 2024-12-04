@@ -4,14 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../main.dart';
 import 'add_coupon_screen.dart';
 
-class ManageCouponScreen extends ConsumerWidget {
+class ManageCouponScreen extends ConsumerStatefulWidget {
   static const String routeName = '/manage_coupon';
 
   const ManageCouponScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final couponState = ref.watch(couponStateProvider);
+  _ManageCouponScreenState createState() => _ManageCouponScreenState();
+}
+
+class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final couponState = ref.watch(couponAdminStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -83,7 +88,30 @@ class ManageCouponScreen extends ConsumerWidget {
 
                           // Nếu người dùng xác nhận, thực hiện xóa
                           if (shouldDelete == true) {
-                            await ref.read(couponStateProvider.notifier).deleteCoupon(coupon.id.toString());
+                            try {
+                              // Call the deleteCoupon method
+                              await ref.read(couponAdminStateProvider.notifier).deleteCoupon(coupon.id.toString());
+
+                              // Show success message if widget is still mounted
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Coupon deleted successfully!'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              // Show error message if widget is still mounted
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error deleting coupon: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
                           }
                         },
                       ),
@@ -111,3 +139,4 @@ class ManageCouponScreen extends ConsumerWidget {
     );
   }
 }
+

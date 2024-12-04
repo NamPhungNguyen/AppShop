@@ -5,6 +5,8 @@ import '../entities/coupon_apply_entity.dart';
 abstract class CouponRepository {
   Future<List<CouponEntity>> getCoupons();
 
+  Future<List<CouponEntity>> getAllCoupon();
+
   Future<void> createCoupon(
     String poolCode,
     String code,

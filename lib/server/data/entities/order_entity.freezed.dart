@@ -25,6 +25,7 @@ mixin _$OrderEntity {
   String get status => throw _privateConstructorUsedError;
   List<ProductOrderEntity> get products => throw _privateConstructorUsedError;
   int get addressId => throw _privateConstructorUsedError;
+  AddressEntity get shippingAddress => throw _privateConstructorUsedError;
 
   /// Serializes this OrderEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +48,10 @@ abstract class $OrderEntityCopyWith<$Res> {
       double totalAmount,
       String status,
       List<ProductOrderEntity> products,
-      int addressId});
+      int addressId,
+      AddressEntity shippingAddress});
+
+  $AddressEntityCopyWith<$Res> get shippingAddress;
 }
 
 /// @nodoc
@@ -70,6 +74,7 @@ class _$OrderEntityCopyWithImpl<$Res, $Val extends OrderEntity>
     Object? status = null,
     Object? products = null,
     Object? addressId = null,
+    Object? shippingAddress = null,
   }) {
     return _then(_value.copyWith(
       orderId: null == orderId
@@ -92,7 +97,21 @@ class _$OrderEntityCopyWithImpl<$Res, $Val extends OrderEntity>
           ? _value.addressId
           : addressId // ignore: cast_nullable_to_non_nullable
               as int,
+      shippingAddress: null == shippingAddress
+          ? _value.shippingAddress
+          : shippingAddress // ignore: cast_nullable_to_non_nullable
+              as AddressEntity,
     ) as $Val);
+  }
+
+  /// Create a copy of OrderEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressEntityCopyWith<$Res> get shippingAddress {
+    return $AddressEntityCopyWith<$Res>(_value.shippingAddress, (value) {
+      return _then(_value.copyWith(shippingAddress: value) as $Val);
+    });
   }
 }
 
@@ -109,7 +128,11 @@ abstract class _$$OrderEntityImplCopyWith<$Res>
       double totalAmount,
       String status,
       List<ProductOrderEntity> products,
-      int addressId});
+      int addressId,
+      AddressEntity shippingAddress});
+
+  @override
+  $AddressEntityCopyWith<$Res> get shippingAddress;
 }
 
 /// @nodoc
@@ -130,6 +153,7 @@ class __$$OrderEntityImplCopyWithImpl<$Res>
     Object? status = null,
     Object? products = null,
     Object? addressId = null,
+    Object? shippingAddress = null,
   }) {
     return _then(_$OrderEntityImpl(
       orderId: null == orderId
@@ -152,6 +176,10 @@ class __$$OrderEntityImplCopyWithImpl<$Res>
           ? _value.addressId
           : addressId // ignore: cast_nullable_to_non_nullable
               as int,
+      shippingAddress: null == shippingAddress
+          ? _value.shippingAddress
+          : shippingAddress // ignore: cast_nullable_to_non_nullable
+              as AddressEntity,
     ));
   }
 }
@@ -164,7 +192,8 @@ class _$OrderEntityImpl implements _OrderEntity {
       required this.totalAmount,
       required this.status,
       required final List<ProductOrderEntity> products,
-      required this.addressId})
+      required this.addressId,
+      required this.shippingAddress})
       : _products = products;
 
   factory _$OrderEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -186,10 +215,12 @@ class _$OrderEntityImpl implements _OrderEntity {
 
   @override
   final int addressId;
+  @override
+  final AddressEntity shippingAddress;
 
   @override
   String toString() {
-    return 'OrderEntity(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId)';
+    return 'OrderEntity(orderId: $orderId, totalAmount: $totalAmount, status: $status, products: $products, addressId: $addressId, shippingAddress: $shippingAddress)';
   }
 
   @override
@@ -203,13 +234,21 @@ class _$OrderEntityImpl implements _OrderEntity {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.addressId, addressId) ||
-                other.addressId == addressId));
+                other.addressId == addressId) &&
+            (identical(other.shippingAddress, shippingAddress) ||
+                other.shippingAddress == shippingAddress));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, orderId, totalAmount, status,
-      const DeepCollectionEquality().hash(_products), addressId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      orderId,
+      totalAmount,
+      status,
+      const DeepCollectionEquality().hash(_products),
+      addressId,
+      shippingAddress);
 
   /// Create a copy of OrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -233,7 +272,8 @@ abstract class _OrderEntity implements OrderEntity {
       required final double totalAmount,
       required final String status,
       required final List<ProductOrderEntity> products,
-      required final int addressId}) = _$OrderEntityImpl;
+      required final int addressId,
+      required final AddressEntity shippingAddress}) = _$OrderEntityImpl;
 
   factory _OrderEntity.fromJson(Map<String, dynamic> json) =
       _$OrderEntityImpl.fromJson;
@@ -248,6 +288,8 @@ abstract class _OrderEntity implements OrderEntity {
   List<ProductOrderEntity> get products;
   @override
   int get addressId;
+  @override
+  AddressEntity get shippingAddress;
 
   /// Create a copy of OrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -596,5 +638,326 @@ abstract class _ProductOrderEntity implements ProductOrderEntity {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductOrderEntityImplCopyWith<_$ProductOrderEntityImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+AddressEntity _$AddressEntityFromJson(Map<String, dynamic> json) {
+  return _AddressEntity.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AddressEntity {
+  int get addressId => throw _privateConstructorUsedError;
+  String get fullName => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
+  String get addressDetail => throw _privateConstructorUsedError;
+  String? get additionalAddress => throw _privateConstructorUsedError;
+  String get province => throw _privateConstructorUsedError;
+  String get city => throw _privateConstructorUsedError;
+  String get country => throw _privateConstructorUsedError;
+  bool get isDefault => throw _privateConstructorUsedError;
+
+  /// Serializes this AddressEntity to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of AddressEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AddressEntityCopyWith<AddressEntity> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AddressEntityCopyWith<$Res> {
+  factory $AddressEntityCopyWith(
+          AddressEntity value, $Res Function(AddressEntity) then) =
+      _$AddressEntityCopyWithImpl<$Res, AddressEntity>;
+  @useResult
+  $Res call(
+      {int addressId,
+      String fullName,
+      String phoneNumber,
+      String addressDetail,
+      String? additionalAddress,
+      String province,
+      String city,
+      String country,
+      bool isDefault});
+}
+
+/// @nodoc
+class _$AddressEntityCopyWithImpl<$Res, $Val extends AddressEntity>
+    implements $AddressEntityCopyWith<$Res> {
+  _$AddressEntityCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AddressEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? addressId = null,
+    Object? fullName = null,
+    Object? phoneNumber = null,
+    Object? addressDetail = null,
+    Object? additionalAddress = freezed,
+    Object? province = null,
+    Object? city = null,
+    Object? country = null,
+    Object? isDefault = null,
+  }) {
+    return _then(_value.copyWith(
+      addressId: null == addressId
+          ? _value.addressId
+          : addressId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      addressDetail: null == addressDetail
+          ? _value.addressDetail
+          : addressDetail // ignore: cast_nullable_to_non_nullable
+              as String,
+      additionalAddress: freezed == additionalAddress
+          ? _value.additionalAddress
+          : additionalAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: null == province
+          ? _value.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: null == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AddressEntityImplCopyWith<$Res>
+    implements $AddressEntityCopyWith<$Res> {
+  factory _$$AddressEntityImplCopyWith(
+          _$AddressEntityImpl value, $Res Function(_$AddressEntityImpl) then) =
+      __$$AddressEntityImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int addressId,
+      String fullName,
+      String phoneNumber,
+      String addressDetail,
+      String? additionalAddress,
+      String province,
+      String city,
+      String country,
+      bool isDefault});
+}
+
+/// @nodoc
+class __$$AddressEntityImplCopyWithImpl<$Res>
+    extends _$AddressEntityCopyWithImpl<$Res, _$AddressEntityImpl>
+    implements _$$AddressEntityImplCopyWith<$Res> {
+  __$$AddressEntityImplCopyWithImpl(
+      _$AddressEntityImpl _value, $Res Function(_$AddressEntityImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AddressEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? addressId = null,
+    Object? fullName = null,
+    Object? phoneNumber = null,
+    Object? addressDetail = null,
+    Object? additionalAddress = freezed,
+    Object? province = null,
+    Object? city = null,
+    Object? country = null,
+    Object? isDefault = null,
+  }) {
+    return _then(_$AddressEntityImpl(
+      addressId: null == addressId
+          ? _value.addressId
+          : addressId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      addressDetail: null == addressDetail
+          ? _value.addressDetail
+          : addressDetail // ignore: cast_nullable_to_non_nullable
+              as String,
+      additionalAddress: freezed == additionalAddress
+          ? _value.additionalAddress
+          : additionalAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: null == province
+          ? _value.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: null == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AddressEntityImpl implements _AddressEntity {
+  _$AddressEntityImpl(
+      {required this.addressId,
+      required this.fullName,
+      required this.phoneNumber,
+      required this.addressDetail,
+      this.additionalAddress,
+      required this.province,
+      required this.city,
+      required this.country,
+      required this.isDefault});
+
+  factory _$AddressEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AddressEntityImplFromJson(json);
+
+  @override
+  final int addressId;
+  @override
+  final String fullName;
+  @override
+  final String phoneNumber;
+  @override
+  final String addressDetail;
+  @override
+  final String? additionalAddress;
+  @override
+  final String province;
+  @override
+  final String city;
+  @override
+  final String country;
+  @override
+  final bool isDefault;
+
+  @override
+  String toString() {
+    return 'AddressEntity(addressId: $addressId, fullName: $fullName, phoneNumber: $phoneNumber, addressDetail: $addressDetail, additionalAddress: $additionalAddress, province: $province, city: $city, country: $country, isDefault: $isDefault)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddressEntityImpl &&
+            (identical(other.addressId, addressId) ||
+                other.addressId == addressId) &&
+            (identical(other.fullName, fullName) ||
+                other.fullName == fullName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.addressDetail, addressDetail) ||
+                other.addressDetail == addressDetail) &&
+            (identical(other.additionalAddress, additionalAddress) ||
+                other.additionalAddress == additionalAddress) &&
+            (identical(other.province, province) ||
+                other.province == province) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.country, country) || other.country == country) &&
+            (identical(other.isDefault, isDefault) ||
+                other.isDefault == isDefault));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, addressId, fullName, phoneNumber,
+      addressDetail, additionalAddress, province, city, country, isDefault);
+
+  /// Create a copy of AddressEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddressEntityImplCopyWith<_$AddressEntityImpl> get copyWith =>
+      __$$AddressEntityImplCopyWithImpl<_$AddressEntityImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AddressEntityImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AddressEntity implements AddressEntity {
+  factory _AddressEntity(
+      {required final int addressId,
+      required final String fullName,
+      required final String phoneNumber,
+      required final String addressDetail,
+      final String? additionalAddress,
+      required final String province,
+      required final String city,
+      required final String country,
+      required final bool isDefault}) = _$AddressEntityImpl;
+
+  factory _AddressEntity.fromJson(Map<String, dynamic> json) =
+      _$AddressEntityImpl.fromJson;
+
+  @override
+  int get addressId;
+  @override
+  String get fullName;
+  @override
+  String get phoneNumber;
+  @override
+  String get addressDetail;
+  @override
+  String? get additionalAddress;
+  @override
+  String get province;
+  @override
+  String get city;
+  @override
+  String get country;
+  @override
+  bool get isDefault;
+
+  /// Create a copy of AddressEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddressEntityImplCopyWith<_$AddressEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -10,6 +10,7 @@ class Order with _$Order {
     required String status,
     required List<ProductOrder> products,
     required int addressId,
+    required Address shippingAddress,
   }) = _Order;
 }
 
@@ -27,4 +28,19 @@ class ProductOrder with _$ProductOrder {
     required double totalPrice,
     required double discountPrice,
   }) = _ProductOrder;
+}
+
+@freezed
+class Address with _$Address {
+  factory Address({
+    required int addressId,
+    required String fullName,
+    required String phoneNumber,
+    required String addressDetail,
+    String? additionalAddress,
+    required String province,
+    required String city,
+    required String country,
+    required bool isDefault,
+  }) = _Address;
 }

@@ -46,6 +46,8 @@ _$OrderContentEntityImpl _$$OrderContentEntityImplFromJson(
               (e) => ProductPageOrderEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
       addressId: (json['addressId'] as num).toInt(),
+      shippingAddress: ShippingPageAddressEntity.fromJson(
+          json['shippingAddress'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
     );
@@ -58,6 +60,7 @@ Map<String, dynamic> _$$OrderContentEntityImplToJson(
       'status': instance.status,
       'products': instance.products,
       'addressId': instance.addressId,
+      'shippingAddress': instance.shippingAddress,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };
@@ -92,4 +95,32 @@ Map<String, dynamic> _$$ProductPageOrderEntityImplToJson(
       'discount': instance.discount,
       'totalPrice': instance.totalPrice,
       'discountPrice': instance.discountPrice,
+    };
+
+_$ShippingPageAddressEntityImpl _$$ShippingPageAddressEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ShippingPageAddressEntityImpl(
+      addressId: (json['addressId'] as num).toInt(),
+      fullName: json['fullName'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+      addressDetail: json['addressDetail'] as String,
+      additionalAddress: json['additionalAddress'] as String?,
+      province: json['province'] as String,
+      city: json['city'] as String,
+      country: json['country'] as String,
+      isDefault: json['isDefault'] as bool,
+    );
+
+Map<String, dynamic> _$$ShippingPageAddressEntityImplToJson(
+        _$ShippingPageAddressEntityImpl instance) =>
+    <String, dynamic>{
+      'addressId': instance.addressId,
+      'fullName': instance.fullName,
+      'phoneNumber': instance.phoneNumber,
+      'addressDetail': instance.addressDetail,
+      'additionalAddress': instance.additionalAddress,
+      'province': instance.province,
+      'city': instance.city,
+      'country': instance.country,
+      'isDefault': instance.isDefault,
     };

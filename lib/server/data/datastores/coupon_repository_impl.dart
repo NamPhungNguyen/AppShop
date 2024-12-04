@@ -15,6 +15,11 @@ class CouponRepositoryImpl implements CouponRepository {
   }
 
   @override
+  Future<List<CouponEntity>> getAllCoupon() async {
+    return await _clientService.getAllCoupon();
+  }
+
+  @override
   Future<CouponApplyEntity> applyCoupon(String poolCode) async {
     return await _clientService.applyCoupon(poolCode);
   }

@@ -7,13 +7,18 @@ import '../models/order_pages.dart';
 
 class OrderTranslator {
   static List<Order> translate(List<OrderEntity> entities) {
-    return entities.map((entity) => Order(
-      orderId: entity.orderId,
-      totalAmount: entity.totalAmount,
-      status: entity.status,
-      products: entity.products.map((productEntity) => translatorProductOrder(productEntity)).toList(),
-      addressId: entity.addressId,
-    )).toList();
+    return entities
+        .map((entity) => Order(
+              orderId: entity.orderId,
+              totalAmount: entity.totalAmount,
+              status: entity.status,
+              products: entity.products
+                  .map((productEntity) => translatorProductOrder(productEntity))
+                  .toList(),
+              addressId: entity.addressId,
+              shippingAddress: translateAddress(entity.shippingAddress),
+            ))
+        .toList();
   }
 
   static ProductOrder translatorProductOrder(ProductOrderEntity entity) {
@@ -28,6 +33,20 @@ class OrderTranslator {
       discount: entity.discount,
       totalPrice: entity.totalPrice,
       discountPrice: entity.discountPrice,
+    );
+  }
+
+  static Address translateAddress(AddressEntity entity) {
+    return Address(
+      addressId: entity.addressId,
+      fullName: entity.fullName,
+      phoneNumber: entity.phoneNumber,
+      addressDetail: entity.addressDetail,
+      additionalAddress: entity.additionalAddress,
+      province: entity.province,
+      city: entity.city,
+      country: entity.country,
+      isDefault: entity.isDefault,
     );
   }
 
@@ -70,12 +89,14 @@ class OrderTranslator {
       status: entity.status,
       products: entity.products.map(translateProductPageOrder).toList(),
       addressId: entity.addressId,
+      shippingAddress: translateShippingPageAddress(entity.shippingAddress),
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     );
   }
 
-  static ProductPageOrder translateProductPageOrder(ProductPageOrderEntity entity) {
+  static ProductPageOrder translateProductPageOrder(
+      ProductPageOrderEntity entity) {
     return ProductPageOrder(
       cartItemId: entity.cartItemId,
       productId: entity.productId,
@@ -88,6 +109,20 @@ class OrderTranslator {
       discount: entity.discount,
       totalPrice: entity.totalPrice,
       discountPrice: entity.discountPrice,
+    );
+  }
+
+  static ShippingPageAddress translateShippingPageAddress(
+      ShippingPageAddressEntity entity) {
+    return ShippingPageAddress(
+      addressId: entity.addressId,
+      fullName: entity.fullName,
+      phoneNumber: entity.phoneNumber,
+      addressDetail: entity.addressDetail,
+      province: entity.province,
+      city: entity.city,
+      country: entity.country,
+      isDefault: entity.isDefault,
     );
   }
 }

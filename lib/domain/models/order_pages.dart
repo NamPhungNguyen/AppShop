@@ -25,6 +25,7 @@ class OrderContent with _$OrderContent {
     required String status,
     required List<ProductPageOrder> products,
     required int addressId,
+    required ShippingPageAddress shippingAddress,
     required String createdAt,
     required String updatedAt,
   }) = _OrderContent;
@@ -45,4 +46,19 @@ class ProductPageOrder with _$ProductPageOrder {
     required int totalPrice,
     required int discountPrice,
   }) = _ProductPageOrder;
+}
+
+@freezed
+class ShippingPageAddress with _$ShippingPageAddress {
+  factory ShippingPageAddress({
+    required int addressId,
+    required String fullName,
+    required String phoneNumber,
+    required String addressDetail,
+    String? additionalAddress,
+    required String province,
+    required String city,
+    required String country,
+    required bool isDefault,
+  }) = _ShippingPageAddress;
 }
