@@ -5,11 +5,14 @@ import 'package:front_shop/presentation/screens/Admin/menu/product_detail_admin_
 
 import '../../../../domain/models/product_page.dart';
 import '../../../../main.dart';
+import '../../../commom/widgets/custom_shapes/containers/search_container.dart';
+import '../../../commom/widgets/image_text_widgets/vertical_image_text.dart';
+import 'admin_search_producct.dart';
 
 class ProductManagementPage extends ConsumerStatefulWidget {
   static const String routeName = '/manage-product';
 
-  const ProductManagementPage({Key? key}) : super(key: key);
+  const ProductManagementPage({super.key});
 
   @override
   _ProductManagementPageState createState() => _ProductManagementPageState();
@@ -17,22 +20,21 @@ class ProductManagementPage extends ConsumerStatefulWidget {
 
 class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
   final int pageSize = 5;
-  String searchQuery = "";
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      ref.read(productPageStateProvider.notifier).fetchInitialProducts(pageSize);
+      ref
+          .read(productPageStateProvider.notifier)
+          .fetchInitialProducts(pageSize);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
     final productPageState = ref.watch(productPageStateProvider);
     final categoriesState = ref.watch(categoryStateProvider);
-    final searchState = ref.watch(productSearchStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,62 +44,48 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
         data: (productPage) {
           return Column(
             children: [
-              // Search Bar
+              /// Search Bar
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Search products...",
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+                child: TSearchContainer(
+                  text: 'Search your product',
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    AdminSearchAndFilterScreen.routeName,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
                 ),
               ),
-              // Category List (Horizontal ListView)
+
+              /// Category List (Horizontal ListView)
               categoriesState.when(
                 data: (categories) {
                   return Container(
                     height: 120,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.result.length,
                       itemBuilder: (context, index) {
                         final category = categories.result[index];
                         return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductCategoryView(
-                                  categoryId: category.categoryId.toString(),
-                                ),
+                          child: Column(
+                            children: [
+                              TVerticalImageText(
+                                image: category.image,
+                                title: category.name,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ProductCategoryView(
+                                        categoryId:
+                                            category.categoryId.toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                            // Space between categories
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 25,
-                                  backgroundImage: NetworkImage(category.image),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  category.name,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
+                            ],
                           ),
                         );
                       },
@@ -108,46 +96,45 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
                 error: (error, stack) => Center(child: Text('Error: $error')),
               ),
 
-
               /// Product List
               Expanded(
-                  child: productPage.content.isEmpty
-                      ? const Center(child: Text("No products found."))
-                      : ListView.builder(
-                          itemCount: productPage.content.length,
-                          itemBuilder: (context, index) {
-                            final product = productPage.content[index];
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                                vertical: 8.0,
+                child: productPage.content.isEmpty
+                    ? const Center(child: Text("No products found."))
+                    : ListView.builder(
+                        itemCount: productPage.content.length,
+                        itemBuilder: (context, index) {
+                          final product = productPage.content[index];
+                          return Card(
+                            margin: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(product.imgProduct[0]),
                               ),
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(product.imgProduct[0])),
-                                title: Text(product.name),
-                                subtitle: Text(product.brand),
-                                trailing: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Price: \$${product.price}"),
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProductDetailAdminPage(
-                                              product: product),
+                              title: Text(product.name),
+                              subtitle: Text(product.brand),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Price: ${product.price} đ"),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailAdminPage(
+                                      product: product,
                                     ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        )),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+              ),
 
               /// Pagination Controls
               _buildPagination(productPage.totalPages, productPage),

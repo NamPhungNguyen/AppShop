@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/presentation/screens/Admin/menu/product_detail_admin_screen.dart';
 
 import '../../../../domain/models/product.dart';
 import '../../../../main.dart';
@@ -7,21 +8,17 @@ import '../../../../main.dart';
 class ProductCategoryView extends ConsumerWidget {
   final String categoryId;
 
-  const ProductCategoryView({Key? key, required this.categoryId})
-      : super(key: key);
+  const ProductCategoryView({super.key, required this.categoryId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productStateProvider);
-
     ref
         .read(productStateProvider.notifier)
         .fetchAllProductByCategory(categoryId);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Products by Category"),
-      ),
+      appBar: AppBar(title: const Text("Products by Category")),
       body: productState.when(
         data: (products) => _buildProductList(products.result),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -31,11 +28,9 @@ class ProductCategoryView extends ConsumerWidget {
   }
 
   Widget _buildProductList(List<Product> products) {
-    // Check if the product list is empty
     if (products.isEmpty) {
       return const Center(
-        child: Text("No products available in this category."),
-      );
+          child: Text("No products available in this category."));
     }
 
     return ListView.builder(
@@ -56,6 +51,15 @@ class ProductCategoryView extends ConsumerWidget {
                 Text("Price: \$${product.price}"),
               ],
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductDetailAdminPage(product: product),
+                ),
+              );
+            },
           ),
         );
       },

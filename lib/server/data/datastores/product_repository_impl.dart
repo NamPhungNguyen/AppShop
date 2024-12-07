@@ -75,4 +75,34 @@ class ProductRepositoryImpl implements ProductRepository {
       discount,
     );
   }
+
+  @override
+  Future<void> updateProduct(
+      String productId,
+      String? name,
+      String? description,
+      double? price,
+      int? stock,
+      List<String>? size,
+      List<String>? color,
+      String? brand,
+      List<String>? imgProduct,
+      int? categoryId,
+      double? discount,
+      bool? isAvailable) async {
+    return await _clientService.updateProduct(
+      productId: productId,
+      name: name,
+      description: description,
+      price: price,
+      stock: stock,
+      size: size,
+      color: color,
+      brand: brand,
+      imgProduct: imgProduct,
+      categoryId: categoryId,
+      discount: discount,
+      isAvailable: isAvailable,
+    );
+  }
 }

@@ -29,4 +29,19 @@ abstract class ProductRepository {
     int categoryId,
     int discount,
   );
+
+  Future<void> updateProduct(
+    String productId,
+    String? name,
+    String? description,
+    double? price,
+    int? stock,
+    List<String>? size,
+    List<String>? color,
+    String? brand,
+    List<String>? imgProduct,
+    int? categoryId,
+    double? discount,
+    bool? isAvailable,
+  );
 }

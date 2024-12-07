@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
+import 'package:front_shop/presentation/screens/Admin/menu/product_detail_admin_screen.dart';
 
 import '../../../../main.dart';
 
@@ -11,10 +11,10 @@ final priceMaxProvider = StateProvider<String?>((ref) => null);
 final sortOrderProvider = StateProvider<String>((ref) => 'Low to High');
 final hasSearchedProvider = StateProvider<bool>((ref) => false);
 
-class SearchAndFilterScreen extends ConsumerWidget {
-  static const String routeName = '/search_and_filter_screen';
+class AdminSearchAndFilterScreen extends ConsumerWidget {
+  static const String routeName = '/admin_search_and_filter_screen';
 
-  const SearchAndFilterScreen({Key? key}) : super(key: key);
+  const AdminSearchAndFilterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +26,7 @@ class SearchAndFilterScreen extends ConsumerWidget {
     final hasSearched = ref.watch(hasSearchedProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Search & Filter')),
+      appBar: AppBar(title: const Text('Admin Search & Filter')),
       body: Column(
         children: [
           // Search Bar
@@ -145,17 +145,17 @@ class SearchAndFilterScreen extends ConsumerWidget {
                 ref.read(hasSearchedProvider.notifier).state = true;
                 final sortByPriceAsc = sortOrder == 'Low to High';
                 ref.read(productSearchStateProvider.notifier).searchAndFilter(
-                      searchQuery,
-                      priceMin,
-                      priceMax,
-                      sortByPriceAsc,
-                    );
+                  searchQuery,
+                  priceMin,
+                  priceMax,
+                  sortByPriceAsc,
+                );
               },
               child: const Text('Search'),
             ),
           ),
 
-          ///show item after search
+          /// Show item after search
           Expanded(
             child: productState.when(
               data: (products) {
@@ -173,7 +173,7 @@ class SearchAndFilterScreen extends ConsumerWidget {
                       onTap: () {
                         Navigator.pushNamed(
                           context,
-                          ProductDetailView.routeName,
+                          ProductDetailAdminPage.routeName,
                           arguments: product,
                         );
                       },

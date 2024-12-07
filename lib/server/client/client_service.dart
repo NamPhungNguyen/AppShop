@@ -213,6 +213,42 @@ class ClientService {
     return res.data;
   }
 
+  Future<void> updateProduct({
+    required String productId,
+    String? name,
+    String? description,
+    double? price,
+    int? stock,
+    List<String>? size,
+    List<String>? color,
+    String? brand,
+    List<String>? imgProduct,
+    int? categoryId,
+    double? discount,
+    bool? isAvailable,
+  }) async {
+    final Map<String, dynamic> body = {};
+
+    if (name != null) body['name'] = name;
+    if (description != null) body['description'] = description;
+    if (price != null) body['price'] = price;
+    if (stock != null) body['stock'] = stock;
+    if (size != null) body['size'] = size;
+    if (color != null) body['color'] = color;
+    if (brand != null) body['brand'] = brand;
+    if (imgProduct != null) body['imgProduct'] = imgProduct;
+    if (categoryId != null) body['categoryId'] = categoryId;
+    if (discount != null) body['discount'] = discount;
+    if (isAvailable != null) body['isAvailable'] = isAvailable;
+    final res = await clientApi.updateProduct(
+      await Util.createAuthorization(),
+      productId,
+      body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
   Future<List<ProductEntity>> searchAndFilter(String? name, double? priceMin,
       double? priceMax, bool sortByPriceAsc) async {
     final res = await clientApi.searchAndFilter(

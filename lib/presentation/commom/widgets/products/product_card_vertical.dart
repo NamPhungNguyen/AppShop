@@ -26,23 +26,23 @@ class ProductCardVertical extends ConsumerStatefulWidget {
 
 class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
   late bool isFavorite;
-  bool isProcessing = false; // Trạng thái đang xử lý (chặn double click)
+  bool isProcessing = false;
 
   @override
   void initState() {
     super.initState();
 
-    // Lấy trạng thái ban đầu từ provider
     final favoriteState = ref.read(favoriteStateProvider);
     isFavorite = favoriteState.maybeWhen(
       data: (favorites) => favorites.any(
-              (favProduct) => favProduct.productId == widget.product.productId),
+          (favProduct) => favProduct.productId == widget.product.productId),
       orElse: () => false,
     );
   }
 
   Future<void> _toggleFavorite() async {
-    if (isProcessing || !widget.product.available) return; // Không cho phép khi sản phẩm hết hàng
+    if (isProcessing || !widget.product.available)
+      return; // Không cho phép khi sản phẩm hết hàng
 
     setState(() {
       isProcessing = true;
@@ -118,7 +118,7 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                       child: TRoundedContainer(
                         radius: AppSizes.sm,
                         backgroundColor:
-                        AppColors.textSecondary.withOpacity(0.8),
+                            AppColors.textSecondary.withOpacity(0.8),
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSizes.sm, vertical: AppSizes.xs),
                         child: Text(
@@ -152,10 +152,14 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                       child: TRoundedContainer(
                         radius: AppSizes.sm,
                         backgroundColor: Colors.red.withOpacity(0.8),
-                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.sm, vertical: AppSizes.xs),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.sm, vertical: AppSizes.xs),
                         child: Text(
                           'Hết hàng',
-                          style: Theme.of(context).textTheme.labelLarge!.apply(color: Colors.white),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .apply(color: Colors.white),
                         ),
                       ),
                     ),
@@ -221,20 +225,20 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                             .textTheme
                             .headlineMedium!
                             .copyWith(
-                          fontSize: 14,
-                          color: AppColors.primaryColor,
-                        ),
+                              fontSize: 14,
+                              color: AppColors.primaryColor,
+                            ),
                       ),
                       const SizedBox(width: AppSizes.xs),
                       if (widget.product.discount != null)
                         Text(
                           "${widget.product.price.toStringAsFixed(2)}đ",
                           style:
-                          Theme.of(context).textTheme.labelSmall!.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
                         ),
                     ],
                   ),
@@ -247,4 +251,3 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
     );
   }
 }
-

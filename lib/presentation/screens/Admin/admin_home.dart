@@ -108,27 +108,19 @@ class AdminHome extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Welcome to the Admin Dashboard!',
+                'Monthly Revenue for 2024',
                 style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Monthly Revenue for 2024',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: SizedBox(
-                  height: 300,
-                  child: BarChart(
-                    BarChartData(
-                      barGroups: _generateBarGroups(),
-                      titlesData: _getTitlesData(),
-                      gridData: FlGridData(show: false),
-                      borderData: FlBorderData(show: false),
-                      maxY: _calculateMaxY(),
-                    ),
+              SizedBox(
+                height: 300,
+                child: BarChart(
+                  BarChartData(
+                    barGroups: _generateBarGroups(),
+                    titlesData: _getTitlesData(),
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    maxY: 120000000, // Maximum Y-axis value
                   ),
                 ),
               ),
@@ -139,31 +131,13 @@ class AdminHome extends ConsumerWidget {
     );
   }
 
-  double _calculateMaxY() {
-    final revenueData = [
-      100000,
-      1000000,
-      10000000,
-      50000000,
-      100000000,
-      500000000,
-      1000000000,
-    ];
-    double maxRevenue = revenueData.reduce((a, b) => a > b ? a : b).toDouble();
-    return maxRevenue * 1.2;
-  }
-
   List<BarChartGroupData> _generateBarGroups() {
-    // Test data for revenue
+    // Doanh thu dữ liệu cho 12 tháng (đơn vị VNĐ)
     final revenueData = [
-      100000, // 100 thousand
-      1000000, // 1 million
-      10000000, // 10 million
-      50000000, // 50 million
-      100000000, // 100 million
-      500000000, // 500 million
-      1000000000, // 1 billion
+      20000000, 50000000, 40000000, 60000000, 70000000, 30000000,
+      80000000, 90000000, 100000000, 40000000, 30000000, 60000000,
     ];
+
     return List.generate(revenueData.length, (index) {
       return BarChartGroupData(
         x: index,
@@ -179,28 +153,16 @@ class AdminHome extends ConsumerWidget {
     });
   }
 
-  String _getFormattedValue(double value) {
-    // Convert values to a readable format
-    if (value >= 1000000000) {
-      return '${(value / 1000000000).toStringAsFixed(1)} B'; // Billions
-    } else if (value >= 100000000) {
-      return '${(value / 100000000).toStringAsFixed(1)} M'; // Millions
-    } else if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(1)} K'; // Thousands
-    } else {
-      return value.toStringAsFixed(0);
-    }
-  }
-
   FlTitlesData _getTitlesData() {
     return FlTitlesData(
       leftTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 70,
+          reservedSize: 60,
           getTitlesWidget: (value, meta) {
+            // Hiển thị tiền tệ dạng VNĐ
             return Text(
-              _getFormattedValue(value),
+              '${(value / 1000000).toStringAsFixed(0)} triệu đ',
               style: const TextStyle(fontSize: 12),
             );
           },
@@ -211,35 +173,14 @@ class AdminHome extends ConsumerWidget {
           showTitles: true,
           reservedSize: 40,
           getTitlesWidget: (value, meta) {
-            // 12 months display
-            switch (value.toInt()) {
-              case 0:
-                return const Text('Jan');
-              case 1:
-                return const Text('Feb');
-              case 2:
-                return const Text('Mar');
-              case 3:
-                return const Text('Apr');
-              case 4:
-                return const Text('May');
-              case 5:
-                return const Text('Jun');
-              case 6:
-                return const Text('Jul');
-              case 7:
-                return const Text('Aug');
-              case 8:
-                return const Text('Sep');
-              case 9:
-                return const Text('Oct');
-              case 10:
-                return const Text('Nov');
-              case 11:
-                return const Text('Dec');
-              default:
-                return const SizedBox.shrink();
-            }
+            const months = [
+              'T1', 'T2', 'T3', 'T4', 'T5', 'T6',
+              'T7', 'T8', 'T9', 'T10', 'T11', 'T12'
+            ];
+            return Text(
+              months[value.toInt()],
+              style: const TextStyle(fontSize: 12),
+            );
           },
         ),
       ),

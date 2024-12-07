@@ -23,11 +23,13 @@ import '../Address/update_address.dart';
 import '../Admin/admin_home.dart';
 import '../Admin/menu/add_coupon_screen.dart';
 import '../Admin/menu/add_product_page.dart';
+import '../Admin/menu/admin_search_producct.dart';
 import '../Admin/menu/category_form.dart';
 import '../Admin/menu/manage_coupon.dart';
 import '../Admin/menu/manage_order.dart';
 import '../Admin/menu/manage_product_screen.dart';
 import '../Admin/menu/manage_user_screen.dart';
+import '../Admin/menu/product_detail_admin_screen.dart';
 import '../Login/log_in_view.dart';
 import '../Menu/Account/account_view.dart';
 import '../Menu/Account/update_email.dart';
@@ -125,6 +127,13 @@ class MainView {
         return MaterialPageRoute(builder: (_) => const ManageUsersScreen());
       case ProductManagementPage.routeName:
         return MaterialPageRoute(builder: (_) => const ProductManagementPage());
+      case AdminSearchAndFilterScreen.routeName:
+        return MaterialPageRoute(
+            builder: (_) => const AdminSearchAndFilterScreen());
+      case ProductDetailAdminPage.routeName:
+        final product = settings.arguments as Product;
+        return MaterialPageRoute(
+            builder: (_) => ProductDetailAdminPage(product: product));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

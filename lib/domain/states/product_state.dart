@@ -9,7 +9,7 @@ class ProductState extends StateNotifier<AsyncValue<Products>> {
     fetchAllProduct();
   }
 
-  // Fetch all products
+  /// Fetch all products
   Future<void> fetchAllProduct() async {
     state = const AsyncValue.loading();
     try {
@@ -21,21 +21,20 @@ class ProductState extends StateNotifier<AsyncValue<Products>> {
     }
   }
 
-  // Fetch products by category
+  /// Fetch products by category
   Future<void> fetchAllProductByCategory(String categoryId) async {
     state = const AsyncValue.loading();
     try {
       final productUsecase = _ref.read(productUsecaseProvider);
-      final products = await productUsecase.fetchAllProductByCategory(categoryId);
+      final products =
+          await productUsecase.fetchAllProductByCategory(categoryId);
       state = AsyncValue.data(products);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
 
-
-
-  // Create a product
+  /// Create a product
   Future<void> createProduct({
     required String name,
     required String description,
@@ -63,6 +62,42 @@ class ProductState extends StateNotifier<AsyncValue<Products>> {
         categoryId,
         discount,
       );
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> updateProduct(
+    String productId,
+    String? name,
+    String? description,
+    double? price,
+    int? stock,
+    List<String>? size,
+    List<String>? color,
+    String? brand,
+    List<String>? imgProduct,
+    int? categoryId,
+    double? discount,
+    bool? isAvailable,
+  ) async {
+    state = const AsyncValue.loading();
+    try {
+      final productUsecase = _ref.read(productUsecaseProvider);
+      await productUsecase.updateProduct(
+          productId,
+          name,
+          description,
+          price,
+          stock,
+          size,
+          color,
+          brand,
+          imgProduct,
+          categoryId,
+          discount,
+          isAvailable);
+      await fetchAllProduct();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

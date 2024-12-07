@@ -26,7 +26,7 @@ class TVerticalImageText extends StatelessWidget {
         padding: const EdgeInsets.only(
             right: AppSizes.spaceBtwSections, bottom: AppSizes.spaceBtwItems),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Keep the column size to minimum
+          mainAxisSize: MainAxisSize.min,
           children: [
             /// Circular icon
             Container(

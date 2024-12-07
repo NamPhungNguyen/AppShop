@@ -82,4 +82,35 @@ class ProductUsecaseImpl implements ProductUsecase {
       discount,
     );
   }
+
+  @override
+  Future<void> updateProduct(
+    String productId,
+    String? name,
+    String? description,
+    double? price,
+    int? stock,
+    List<String>? size,
+    List<String>? color,
+    String? brand,
+    List<String>? imgProduct,
+    int? categoryId,
+    double? discount,
+    bool? isAvailable,
+  ) async {
+    return await _productRepository.updateProduct(
+      productId,
+      name,
+      description,
+      price,
+      stock,
+      size,
+      color,
+      brand,
+      imgProduct,
+      categoryId,
+      discount,
+      isAvailable
+    );
+  }
 }

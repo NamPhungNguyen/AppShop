@@ -113,6 +113,13 @@ abstract class ClientApi {
     @Query('size') int size,
   );
 
+  @PUT('/product/update/{productId}')
+  Future<HttpResponse<void>> updateProduct(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
+    @Body() Map<String, dynamic> body,
+  );
+
   @GET('/product/search')
   Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
     @Header("Authorization") String authorization,

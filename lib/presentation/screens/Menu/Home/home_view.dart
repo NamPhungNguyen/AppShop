@@ -56,7 +56,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final homeState = ref.watch(homeStateProvider);
