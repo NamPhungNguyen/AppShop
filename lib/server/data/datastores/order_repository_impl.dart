@@ -1,4 +1,5 @@
 import 'package:front_shop/server/client/client_service.dart';
+import 'package:front_shop/server/data/entities/monthly_revenue_entity.dart';
 import 'package:front_shop/server/data/entities/order_entity.dart';
 import 'package:front_shop/server/data/entities/order_pages_entity.dart';
 import 'package:front_shop/server/data/repository/order_repository.dart';
@@ -49,5 +50,10 @@ class OrderRepositoryImpl implements OrderRepository {
   @override
   Future<void> updateStatusOrder(String orderId, String status) async {
     return await _clientService.updateStatusOrder(orderId, status);
+  }
+
+  @override
+  Future<List<MonthlyRevenueEntity>> getMonthlyRevenue() async {
+    return await _clientService.getMonthlyRevenue();
   }
 }

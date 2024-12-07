@@ -17,6 +17,7 @@ import 'package:front_shop/utils/header_token.dart';
 
 import '../data/entities/cart_product_entity.dart';
 import '../data/entities/coupon_apply_entity.dart';
+import '../data/entities/monthly_revenue_entity.dart';
 import '../data/entities/order_pages_entity.dart';
 
 class ClientService {
@@ -591,6 +592,13 @@ class ClientService {
       String status, int page, int size) async {
     final res = await clientApi.getOrderPages(
         await Util.createAuthorization(), status, page, size);
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<List<MonthlyRevenueEntity>> getMonthlyRevenue() async {
+    final res =
+        await clientApi.getMonthlyRevenue(await Util.createAuthorization());
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;
   }

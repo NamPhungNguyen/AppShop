@@ -1,6 +1,8 @@
 import 'package:front_shop/server/data/entities/order_entity.dart';
 import 'package:front_shop/server/data/entities/order_pages_entity.dart';
 
+import '../entities/monthly_revenue_entity.dart';
+
 abstract class OrderRepository {
   Future<void> createOrder(
       String? paymentMethod, String? couponCode, int addressId);
@@ -8,6 +10,8 @@ abstract class OrderRepository {
   Future<List<OrderEntity>> fetchAllOrder();
 
   Future<void> cancelOrder(String orderId);
+
+  Future<List<MonthlyRevenueEntity>> getMonthlyRevenue();
 
   Future<void> updateStatusOrder(String orderId, String status);
 

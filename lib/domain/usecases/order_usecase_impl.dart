@@ -1,5 +1,7 @@
+import 'package:front_shop/domain/models/monthly_revenue.dart';
 import 'package:front_shop/domain/models/order.dart';
 import 'package:front_shop/domain/models/order_pages.dart';
+import 'package:front_shop/domain/translator/monthly_revenue_translator.dart';
 import 'package:front_shop/domain/translator/order_translator.dart';
 import 'package:front_shop/domain/usecases/order_usecase.dart';
 import 'package:front_shop/server/data/repository/order_repository.dart';
@@ -52,5 +54,11 @@ class OrderUsecaseImpl implements OrderUsecase {
   @override
   Future<void> updateStatusOrder(String orderId, String status) async {
     return await _orderRepository.updateStatusOrder(orderId, status);
+  }
+
+  @override
+  Future<List<MonthlyRevenue>> getMonthlyRevenue() async {
+    final entity = await _orderRepository.getMonthlyRevenue();
+    return MonthlyRevenueTranslator.translatorAll(entity);
   }
 }

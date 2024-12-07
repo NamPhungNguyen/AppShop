@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/domain/models/category.dart';
 import 'package:front_shop/domain/models/comment.dart';
+import 'package:front_shop/domain/models/monthly_revenue.dart';
 import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/product.dart';
 import 'package:front_shop/domain/models/product_page.dart';
@@ -38,6 +39,7 @@ import 'domain/states/cart_state.dart';
 import 'domain/states/coupon_admin_state.dart';
 import 'domain/states/coupon_state.dart';
 import 'domain/states/login_state.dart';
+import 'domain/states/monthly_state.dart';
 import 'domain/states/shipping_address_default_state.dart';
 import 'domain/states/user_admin_state.dart';
 
@@ -68,6 +70,11 @@ final loginStateProvider = StateNotifierProvider<LoginState, AsyncValue<Login>>(
 final locationStateProvider =
     StateNotifierProvider<LocationState, AsyncValue<bool>>(
   (ref) => LocationState(ref),
+);
+
+final monthlyRevenueStateProvider =
+    StateNotifierProvider<MonthlyState, AsyncValue<List<MonthlyRevenue>>>(
+  (ref) => MonthlyState(ref),
 );
 
 final userStateProvider = StateNotifierProvider<UserState, AsyncValue<MyInfo>>(

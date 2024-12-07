@@ -13,6 +13,7 @@ import 'package:retrofit/retrofit.dart';
 import '../data/entities/cart_product_entity.dart';
 import '../data/entities/coupon_apply_entity.dart';
 import '../data/entities/coupon_entity.dart';
+import '../data/entities/monthly_revenue_entity.dart';
 import '../data/entities/order_pages_entity.dart';
 import '../data/entities/product_page_entity.dart';
 import '../data/entities/shipping_address_entity.dart';
@@ -293,6 +294,11 @@ abstract class ClientApi {
     @Query("status") String status,
     @Query("page") int page,
     @Query("size") int size,
+  );
+
+  @GET('/order/monthly')
+  Future<HttpResponse<List<MonthlyRevenueEntity>>> getMonthlyRevenue(
+    @Header("Authorization") authorization,
   );
 
   @GET('/order/orders/search')

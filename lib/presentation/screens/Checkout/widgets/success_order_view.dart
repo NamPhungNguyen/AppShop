@@ -31,7 +31,10 @@ class OrderSuccessView extends ConsumerWidget {
                 Navigator.pushNamed(context, OrderView.routeName);
                 await ref.watch(cartStateProvider.notifier).fetchCartUser();
               },
-              child: const Text('Go to Order'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: const Text('Go to Order'),
+              ),
             ),
           ],
         ),

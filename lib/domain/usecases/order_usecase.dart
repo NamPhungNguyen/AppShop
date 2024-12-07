@@ -1,5 +1,6 @@
 import 'package:front_shop/domain/models/order.dart';
 
+import '../models/monthly_revenue.dart';
 import '../models/order_pages.dart';
 
 abstract class OrderUsecase {
@@ -8,6 +9,7 @@ abstract class OrderUsecase {
 
   Future<List<Order>> fetchAllOrder();
 
+  Future<List<MonthlyRevenue>> getMonthlyRevenue();
   Future<void> cancelOrder(String orderId);
 
   Future<void> updateStatusOrder(String orderId, String status);

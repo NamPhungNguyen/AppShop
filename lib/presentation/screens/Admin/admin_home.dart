@@ -5,6 +5,7 @@ import 'package:front_shop/presentation/screens/Admin/menu/category_form.dart';
 import 'package:front_shop/presentation/screens/Login/log_in_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../domain/models/monthly_revenue.dart';
 import '../../../main.dart';
 import 'menu/add_product_page.dart';
 import 'menu/manage_coupon.dart';
@@ -21,7 +22,8 @@ class AdminHome extends ConsumerWidget {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
     await ref.read(loginStateProvider.notifier).logout();
-    Navigator.pushNamedAndRemoveUntil(context, LoginView.routeName, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+        context, LoginView.routeName, (route) => false);
   }
 
   @override
@@ -114,14 +116,27 @@ class AdminHome extends ConsumerWidget {
               const SizedBox(height: 20),
               SizedBox(
                 height: 300,
-                child: BarChart(
-                  BarChartData(
-                    barGroups: _generateBarGroups(),
-                    titlesData: _getTitlesData(),
-                    gridData: const FlGridData(show: false),
-                    borderData: FlBorderData(show: false),
-                    maxY: 120000000, // Maximum Y-axis value
-                  ),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final revenueState = ref.watch(monthlyRevenueStateProvider);
+                    return revenueState.when(
+                      data: (data) {
+                        return BarChart(
+                          BarChartData(
+                            barGroups: _generateBarGroups(data),
+                            titlesData: _getTitlesData(),
+                            gridData: const FlGridData(show: false),
+                            borderData: FlBorderData(show: false),
+                            maxY: 10000,
+                          ),
+                        );
+                      },
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) =>
+                          Center(child: Text('Error loading data')),
+                    );
+                  },
                 ),
               ),
             ],
@@ -131,19 +146,13 @@ class AdminHome extends ConsumerWidget {
     );
   }
 
-  List<BarChartGroupData> _generateBarGroups() {
-    // Doanh thu dữ liệu cho 12 tháng (đơn vị VNĐ)
-    final revenueData = [
-      20000000, 50000000, 40000000, 60000000, 70000000, 30000000,
-      80000000, 90000000, 100000000, 40000000, 30000000, 60000000,
-    ];
-
-    return List.generate(revenueData.length, (index) {
+  List<BarChartGroupData> _generateBarGroups(List<MonthlyRevenue> data) {
+    return List.generate(data.length, (index) {
       return BarChartGroupData(
         x: index,
         barRods: [
           BarChartRodData(
-            toY: revenueData[index].toDouble(),
+            toY: data[index].revenue.toDouble(),
             color: Colors.blueAccent,
             width: 16,
             borderRadius: BorderRadius.circular(4),
@@ -153,18 +162,25 @@ class AdminHome extends ConsumerWidget {
     });
   }
 
+  /// Map Y-Axis intervals properly
   FlTitlesData _getTitlesData() {
+    const intervalCount = 5; // Number of intervals
+    final maxInterval = 10000; // Your max Y-value
+    final step = (maxInterval / intervalCount);
+
     return FlTitlesData(
       leftTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 60,
           getTitlesWidget: (value, meta) {
-            // Hiển thị tiền tệ dạng VNĐ
-            return Text(
-              '${(value / 1000000).toStringAsFixed(0)} triệu đ',
-              style: const TextStyle(fontSize: 12),
-            );
+            if (value % step == 0) {
+              return Text(
+                '${value.toInt()} đ',
+                style: const TextStyle(fontSize: 12),
+              );
+            }
+            return const Text('');
           },
         ),
       ),
@@ -174,8 +190,18 @@ class AdminHome extends ConsumerWidget {
           reservedSize: 40,
           getTitlesWidget: (value, meta) {
             const months = [
-              'T1', 'T2', 'T3', 'T4', 'T5', 'T6',
-              'T7', 'T8', 'T9', 'T10', 'T11', 'T12'
+              'T1',
+              'T2',
+              'T3',
+              'T4',
+              'T5',
+              'T6',
+              'T7',
+              'T8',
+              'T9',
+              'T10',
+              'T11',
+              'T12'
             ];
             return Text(
               months[value.toInt()],
@@ -186,4 +212,5 @@ class AdminHome extends ConsumerWidget {
       ),
     );
   }
+
 }

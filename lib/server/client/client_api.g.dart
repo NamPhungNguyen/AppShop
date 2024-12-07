@@ -1633,6 +1633,46 @@ class _ClientApi implements ClientApi {
   }
 
   @override
+  Future<HttpResponse<List<MonthlyRevenueEntity>>> getMonthlyRevenue(
+      dynamic authorization) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': authorization};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<HttpResponse<List<MonthlyRevenueEntity>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order/monthly',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<MonthlyRevenueEntity> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) =>
+              MonthlyRevenueEntity.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<OrderPagesEntity>> searchOrderPages(
     dynamic authorization,
     String? status,
