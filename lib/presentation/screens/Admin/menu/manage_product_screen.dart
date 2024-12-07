@@ -22,8 +22,11 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(productPageStateProvider.notifier).fetchInitialProducts(pageSize);
+    Future.delayed(Duration.zero, () {
+      ref.read(productPageStateProvider.notifier).fetchInitialProducts(pageSize);
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +64,11 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
               categoriesState.when(
                 data: (categories) {
                   return Container(
-                    height: 120, // Set height for horizontal list
+                    height: 120,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.result.length,
-                      // Only the actual categories
                       itemBuilder: (context, index) {
                         final category = categories.result[index];
                         return GestureDetector(

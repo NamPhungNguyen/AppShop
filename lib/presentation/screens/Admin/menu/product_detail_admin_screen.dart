@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/utils/constants/app_colors.dart';
+
 import '../../../../domain/models/product.dart';
 import '../../../../main.dart';
 
 class ProductDetailAdminPage extends ConsumerStatefulWidget {
   final Product product;
 
-  const ProductDetailAdminPage({Key? key, required this.product}) : super(key: key);
+  const ProductDetailAdminPage({Key? key, required this.product})
+      : super(key: key);
 
   static const String routeName = '/product-detail';
 
@@ -24,20 +26,27 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
   late bool _isAvailable;
   late String _selectedCategory;
   late List<String> _selectedImages;
-  late String _selectedSize;
+  late List<String> _selectedSizes;
+  late List<String> _selectedColors;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.product.name);
-    _descriptionController = TextEditingController(text: widget.product.description);
-    _priceController = TextEditingController(text: widget.product.price.toString());
-    _stockController = TextEditingController(text: widget.product.stock.toString());
-    _discountController = TextEditingController(text: widget.product.discount?.toString() ?? "");
+    _descriptionController =
+        TextEditingController(text: widget.product.description);
+    _priceController =
+        TextEditingController(text: widget.product.price.toString());
+    _stockController =
+        TextEditingController(text: widget.product.stock.toString());
+    _discountController =
+        TextEditingController(text: widget.product.discount?.toString() ?? "");
     _isAvailable = widget.product.available;
     _selectedCategory = widget.product.categoryName;
-    _selectedImages = List.from(widget.product.imgProduct);  // Handle images
-    _selectedSize = widget.product.size.isNotEmpty ? widget.product.size[0] : "M";  // Default to first size if available
+    _selectedImages = List.from(widget.product.imgProduct);
+    _selectedSizes = List.from(widget.product.size);
+    _selectedColors =
+        List.from(widget.product.color); // Initialize from product model
   }
 
   @override
@@ -60,28 +69,23 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            // Product Name
             _buildTextField(_nameController, "Product Name", false),
-
-            // Product Description
             _buildTextField(_descriptionController, "Description", true),
+            _buildTextField(
+                _priceController, "Price", false, TextInputType.number),
+            _buildTextField(
+                _stockController, "Stock", false, TextInputType.number),
+            _buildTextField(
+                _discountController, "Discount", false, TextInputType.number),
 
-            // Product Price
-            _buildTextField(_priceController, "Price", false, TextInputType.number),
-
-            // Product Stock
-            _buildTextField(_stockController, "Stock", false, TextInputType.number),
-
-            // Discount (optional)
-            _buildTextField(_discountController, "Discount", false, TextInputType.number),
-
-            // Availability Switch
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Is Available", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Text("Is Available",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   Switch(
                     value: _isAvailable,
                     onChanged: (value) {
@@ -95,62 +99,89 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
               ),
             ),
 
-            // Category Dropdown
             _buildCategoryDropdown(),
 
-            // Size Selection
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: DropdownButton<String>(
-                value: _selectedSize,
-                onChanged: (String? newSize) {
-                  setState(() {
-                    _selectedSize = newSize ?? _selectedSize;
-                  });
-                },
-                isExpanded: true,
-                icon: const Icon(Icons.arrow_drop_down),
-                iconSize: 30,
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-                items: widget.product.size.map((size) {
-                  return DropdownMenuItem<String>(
-                    value: size,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Text(size, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-
-            // Image Selection (Multiple Images)
+            // Image management
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Product Images", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  for (var image in _selectedImages)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Image.network(image),
+                  const Text("Images",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Wrap(
+                    spacing: 10,
+                    children: _selectedImages.map((image) {
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(image),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: -4,
+                            right: -4,
+                            child: IconButton(
+                              icon: const Icon(Icons.remove_circle,
+                                  color: Colors.red),
+                              onPressed: () {
+                                setState(() {
+                                  _selectedImages.remove(image);
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text("Add Image"),
+                      ),
                     ),
-                  // Add UI for adding/removing images if needed
+                  ),
                 ],
               ),
             ),
 
+            /// Size Selection
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: _buildSizeSelection(),
+            ),
+
+            /// Color Selection
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: _buildColorSelection(),
+            ),
+
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: (){},
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 backgroundColor: AppColors.primaryColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                textStyle:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              child: const Text("Update Product", style: TextStyle(fontSize: 18)),
+              child:
+                  const Text("Update Product", style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
@@ -158,8 +189,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
     );
   }
 
-  // A helper function to create TextField widgets
-  Widget _buildTextField(TextEditingController controller, String label, bool isMultiline, [TextInputType keyboardType = TextInputType.text]) {
+  Widget _buildTextField(
+      TextEditingController controller, String label, bool isMultiline,
+      [TextInputType keyboardType = TextInputType.text]) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: TextField(
@@ -168,11 +200,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
         maxLines: isMultiline ? 3 : 1,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          labelStyle:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           filled: true,
           fillColor: Colors.white,
         ),
@@ -180,7 +214,6 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
     );
   }
 
-  // Function to handle category dropdown
   Widget _buildCategoryDropdown() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -213,9 +246,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
                       value: category.name,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          category.name,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            category.name,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     );
@@ -230,5 +267,84 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
       ),
     );
   }
-}
 
+  Widget _buildSizeSelection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Sizes",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Wrap(
+          spacing: 10,
+          children: ['S', 'M', 'L', 'XL', 'XXL'].map((size) {
+            return ChoiceChip(
+              label: Text(size),
+              selected: _selectedSizes.contains(size),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    _selectedSizes.add(size);
+                  } else {
+                    _selectedSizes.remove(size);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildColorSelection() {
+    final TextEditingController _colorController = TextEditingController();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Colors",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Wrap(
+          spacing: 10,
+          children: _selectedColors.map((color) {
+            return Chip(
+              label: Text(color),
+              deleteIcon: const Icon(Icons.close),
+              onDeleted: () {
+                setState(() {
+                  _selectedColors.remove(color);
+                });
+              },
+            );
+          }).toList(),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _colorController,
+                decoration: const InputDecoration(
+                  labelText: "Add New Color",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                final color = _colorController.text.trim();
+                if (color.isNotEmpty && !_selectedColors.contains(color)) {
+                  setState(() {
+                    _selectedColors.add(color);
+                  });
+                  _colorController.clear();
+                }
+              },
+              child: const Text("Add"),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
