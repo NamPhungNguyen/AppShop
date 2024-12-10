@@ -32,42 +32,33 @@ class ProductReviewsView extends ConsumerWidget {
         onRefresh: () async {
           ref.invalidate(commentStateProvider(product.productId.toString()));
         },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: AppSizes.spaceBtwSections),
-                AddCommentSection(
-                  productId: product.productId.toString(),
-                  onCommentAdded: () {
-                    // Invalidate the comment state provider to trigger a refresh
-                    ref.invalidate(
-                        commentStateProvider(product.productId.toString()));
-                  },
-                ),
-
-                /// User reviews list based on commentState
-                commentState.when(
-                  data: (comments) {
-                    return Column(
-                      children: comments.result.map((comment) {
-                        return UserReviewCard(comment: comment);
-                      }).toList(),
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stackTrace) =>
-                      Center(child: Text('Error: $error')),
-                ),
-              ],
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
+          children: [
+            const SizedBox(height: AppSizes.spaceBtwSections),
+            AddCommentSection(
+              productId: product.productId.toString(),
+              onCommentAdded: () {
+                // Invalidate the comment state provider to trigger a refresh
+                ref.invalidate(commentStateProvider(product.productId.toString()));
+              },
             ),
-          ),
+            commentState.when(
+              data: (comments) {
+                return Column(
+                  children: comments.result.map((comment) {
+                    return UserReviewCard(comment: comment);
+                  }).toList(),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) =>
+                  Center(child: Text('Error: $error')),
+            ),
+          ],
         ),
       ),
+
     );
   }
 }

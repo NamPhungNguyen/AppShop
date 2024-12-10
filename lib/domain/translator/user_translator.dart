@@ -1,7 +1,9 @@
 import 'package:front_shop/domain/models/my_info.dart';
+import 'package:front_shop/domain/models/validate.dart';
 
 import '../../server/data/entities/my_info_entity.dart';
 import '../../server/data/entities/user_entity.dart';
+import '../../server/data/entities/validate_entity.dart';
 import '../models/user.dart';
 
 class UseTranslator {
@@ -25,6 +27,10 @@ class UseTranslator {
     return UserResponse(
       result: entity.result.map(translateUserEntityToUser).toList(),
     );
+  }
+
+  static Validate translateValidate(final ValidateEntity entity) {
+    return Validate(code: entity.code, message: entity.message);
   }
 
   static User translateUserEntityToUser(final UserEntity entity) {

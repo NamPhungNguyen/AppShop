@@ -17,6 +17,7 @@ import '../data/entities/monthly_revenue_entity.dart';
 import '../data/entities/order_pages_entity.dart';
 import '../data/entities/product_page_entity.dart';
 import '../data/entities/shipping_address_entity.dart';
+import '../data/entities/validate_entity.dart';
 
 part 'client_api.g.dart';
 
@@ -42,6 +43,21 @@ abstract class ClientApi {
   @PUT('/users/location-preference')
   Future<HttpResponse<void>> updateLocation(
     @Header("Authorization") authorization,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/users/forgot-password')
+  Future<HttpResponse<void>> forgotPassword(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/users/validate-otp')
+  Future<HttpResponse<ValidateEntity>> validateOtp(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/users/change-password')
+  Future<HttpResponse<void>> changePassword(
     @Body() Map<String, dynamic> body,
   );
 

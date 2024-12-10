@@ -12,7 +12,7 @@ import 'package:iconsax/iconsax.dart';
 class SavedView extends ConsumerWidget {
   static const String routeName = '/saved_view';
 
-  SavedView({super.key});
+  const SavedView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +32,6 @@ class SavedView extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          // Set the state to loading before fetching new data
           ref.read(favoriteStateProvider.notifier).fetchFavoriteProducts();
         },
         child: favoriteProductsAsync.when(

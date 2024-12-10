@@ -1,5 +1,6 @@
 import 'package:front_shop/server/data/entities/my_info_entity.dart';
 import 'package:front_shop/server/data/entities/user_entity.dart';
+import 'package:front_shop/server/data/entities/validate_entity.dart';
 
 abstract class UserRepository {
   Future<MyInfoEntity> myInfo();
@@ -15,4 +16,10 @@ abstract class UserRepository {
   Future<MyInfoEntity> updateProfileImg(String img);
 
   Future<MyInfoEntity> updateProfileEmail(String email);
+
+  Future<void> forgotPassword(String email);
+
+  Future<ValidateEntity> validateOtp(String email, String otp);
+
+  Future<void> changePassword(String email, String newPassword);
 }

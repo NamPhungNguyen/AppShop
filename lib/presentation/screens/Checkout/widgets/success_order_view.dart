@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/main.dart';
-import 'package:front_shop/presentation/screens/Menu/Home/home_view.dart';
+import 'package:front_shop/presentation/screens/Menu/Cart/cart_view.dart';
 
-import '../../BottomBar/bottom_bar.dart';
 import '../../Order/order_view.dart';
 
 class OrderSuccessView extends ConsumerWidget {
@@ -14,6 +13,12 @@ class OrderSuccessView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Success'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, CartView.routeName);
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -31,9 +36,9 @@ class OrderSuccessView extends ConsumerWidget {
                 Navigator.pushNamed(context, OrderView.routeName);
                 await ref.watch(cartStateProvider.notifier).fetchCartUser();
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: const Text('Go to Order'),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text('Go to Order'),
               ),
             ),
           ],

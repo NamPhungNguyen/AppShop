@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_shop/utils/constants/app_colors.dart';
+
 import '../../../../domain/models/user.dart';
 
 class UserDetailScreen extends StatelessWidget {
@@ -12,7 +12,6 @@ class UserDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Details'),
-        backgroundColor: AppColors.primaryColor, // Matching AppBar color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

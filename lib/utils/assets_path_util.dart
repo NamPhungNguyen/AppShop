@@ -28,4 +28,8 @@ class AssetsPathUtil {
   static String payments(String name){
     return "$basePath/payments/$name";
   }
+
+  static String banner(String name){
+    return "$basePath/banner/$name";
+  }
 }

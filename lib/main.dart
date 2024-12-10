@@ -10,6 +10,7 @@ import 'package:front_shop/domain/models/product_page.dart';
 import 'package:front_shop/domain/models/shipping_address.dart';
 import 'package:front_shop/domain/models/signup.dart';
 import 'package:front_shop/domain/models/user.dart';
+import 'package:front_shop/domain/models/validate.dart';
 import 'package:front_shop/domain/states/category_state.dart';
 import 'package:front_shop/domain/states/checkout_state.dart';
 import 'package:front_shop/domain/states/comment_state.dart';
@@ -25,6 +26,7 @@ import 'package:front_shop/domain/states/shipping_address_state.dart';
 import 'package:front_shop/domain/states/signup_state.dart';
 import 'package:front_shop/domain/states/token_state.dart';
 import 'package:front_shop/domain/states/user_state.dart';
+import 'package:front_shop/domain/states/validate_state.dart';
 import 'package:front_shop/presentation/screens/MainView/main_view.dart';
 import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
 import 'package:front_shop/utils/theme/theme.dart';
@@ -84,6 +86,11 @@ final userStateProvider = StateNotifierProvider<UserState, AsyncValue<MyInfo>>(
 final userAdminStateProvider =
     StateNotifierProvider<UserAdminState, AsyncValue<UserResponse>>(
   (ref) => UserAdminState(ref),
+);
+
+final validateStateProvider =
+    StateNotifierProvider<ValidateState, AsyncValue<Validate>>(
+  (ref) => ValidateState(ref),
 );
 
 final categoryStateProvider =

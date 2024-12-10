@@ -41,6 +41,10 @@ class CheckoutView extends ConsumerWidget {
           'Order summary',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
+        leadingOnPressed: () async {
+          await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
+          await ref.read(cartStateProvider.notifier).fetchCartUser();
+        },
       ),
       body: checkoutState.when(
         data: (cartCheckoutProducts) {
@@ -128,6 +132,8 @@ class CheckoutView extends ConsumerWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const OrderSuccessView()),
                 );
+                await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
+                await ref.read(cartStateProvider.notifier).fetchCartUser();
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Failed to place order: $e')),

@@ -1,5 +1,6 @@
 import 'package:front_shop/domain/models/my_info.dart';
 import 'package:front_shop/domain/models/user.dart';
+import 'package:front_shop/domain/models/validate.dart';
 import 'package:front_shop/domain/translator/user_translator.dart';
 import 'package:front_shop/domain/usecases/user_usecase.dart';
 import 'package:front_shop/server/data/repository/user_repository.dart';
@@ -48,5 +49,21 @@ class UserUsecaseImpl implements UserUsecase {
   @override
   Future<void> deleteUser(String userId) async {
     return await _userRepository.deleteUser(userId);
+  }
+
+  @override
+  Future<void> forgotPassword(String email) async {
+    return await _userRepository.forgotPassword(email);
+  }
+
+  @override
+  Future<Validate> validateOtp(String email, String otp) async {
+    final entity = await _userRepository.validateOtp(email, otp);
+    return UseTranslator.translateValidate(entity);
+  }
+
+  @override
+  Future<void> changePassword(String email, String newPassword) async {
+    return await _userRepository.changePassword(email, newPassword);
   }
 }

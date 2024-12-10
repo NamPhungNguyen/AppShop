@@ -63,7 +63,6 @@ class TBottomAddToCart extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               ///price
               Row(
                 children: [
@@ -123,7 +122,8 @@ class TBottomAddToCart extends ConsumerWidget {
                     .copyWith(color: AppColors.tertiaryText),
               ),
               Wrap(
-                spacing: 8.0,
+                spacing: 8.0, // Khoảng cách ngang giữa các item
+                runSpacing: 8.0, // Khoảng cách dọc giữa các dòng
                 children: product.color.map((colorOption) {
                   return ValueListenableBuilder<String?>(
                     valueListenable: selectedColorNotifier,
@@ -146,7 +146,8 @@ class TBottomAddToCart extends ConsumerWidget {
                           ),
                           child: Text(
                             colorOption,
-                            style: TextStyle(fontSize: AppSizes.spaceBtwItems),
+                            style: const TextStyle(
+                                fontSize: AppSizes.spaceBtwItems),
                           ),
                         ),
                       );
@@ -154,6 +155,7 @@ class TBottomAddToCart extends ConsumerWidget {
                   );
                 }).toList(),
               ),
+
               const SizedBox(height: AppSizes.spaceBtwItems),
 
               ///size
@@ -250,7 +252,8 @@ class TBottomAddToCart extends ConsumerWidget {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: double.infinity, // Nút sẽ chiếm hết chiều ngang của màn hình
+                  width: double.infinity,
+                  // Nút sẽ chiếm hết chiều ngang của màn hình
                   child: ElevatedButton(
                     onPressed: () async {
                       final selectedColor = selectedColorNotifier.value;
@@ -261,7 +264,7 @@ class TBottomAddToCart extends ConsumerWidget {
                         await ref
                             .read(cartStateProvider.notifier)
                             .addProductToCart(product.productId, quantity,
-                            selectedColor, selectedSize);
+                                selectedColor, selectedSize);
                         Navigator.pop(context);
                         Fluttertoast.showToast(
                           msg: 'Product added to cart!',
@@ -287,7 +290,6 @@ class TBottomAddToCart extends ConsumerWidget {
                   ),
                 ),
               ),
-
             ],
           ),
         );

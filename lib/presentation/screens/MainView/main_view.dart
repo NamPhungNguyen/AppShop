@@ -58,11 +58,13 @@ class MainView {
       case ForgotPasswordView.routeName:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case ForgotPasswordCodeView.routeName:
+        final email = settings.arguments.toString();
         return MaterialPageRoute(
-            builder: (_) => const ForgotPasswordCodeView());
+            builder: (_) => ForgotPasswordCodeView(email: email));
       case ForgotCreateNewPasswordView.routeName:
+        final email = settings.arguments.toString();
         return MaterialPageRoute(
-            builder: (_) => const ForgotCreateNewPasswordView());
+            builder: (_) => ForgotCreateNewPasswordView(email: email));
       case AllowLocationView.routeName:
         return MaterialPageRoute(builder: (_) => const AllowLocationView());
       case EnterYourLocationView.routeName:

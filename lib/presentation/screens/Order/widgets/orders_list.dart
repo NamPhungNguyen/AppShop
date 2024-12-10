@@ -38,7 +38,7 @@ class TOrderListItems extends StatelessWidget {
 
         return TRoundedContainer(
           showBorder: true,
-          padding: EdgeInsets.all(AppSizes.md),
+          padding: const EdgeInsets.all(AppSizes.md),
           backgroundColor: AppColors.light,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,10 @@ class TOrderListItems extends StatelessWidget {
                 // Product Price and Quantity
                 Text(
                   '\$${product.totalPrice.toStringAsFixed(2)} (x${product.quantity})',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(color: AppColors.primaryColor),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems / 4),
 
@@ -207,12 +210,18 @@ class TOrderListItems extends StatelessWidget {
                   children: [
                     Text(
                       'Color: ${product.color}',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Size: ${product.size}',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

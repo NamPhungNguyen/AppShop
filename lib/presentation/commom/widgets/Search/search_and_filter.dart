@@ -84,7 +84,6 @@ class SearchAndFilterScreen extends ConsumerWidget {
 
                 const SizedBox(height: 16),
 
-                // Sorting Dropdown (Low to High, High to Low)
                 const Text(
                   'Sort by Price',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -94,14 +93,9 @@ class SearchAndFilterScreen extends ConsumerWidget {
                   value: sortOrder,
                   style: const TextStyle(color: Colors.black),
                   isExpanded: true,
-                  // Ensures the button takes the full width
                   icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
                   underline: const SizedBox(),
-                  // Removes the default underline
-
-                  // Wrap the DropdownButton with a Container for decoration
                   itemHeight: null,
-                  // Prevents the default fixed height
                   items: ['Low to High', 'High to Low']
                       .map((String sortOrderOption) {
                     return DropdownMenuItem<String>(
@@ -202,25 +196,19 @@ class SearchBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Search...',
-              ),
-              onChanged: onSearch,
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: TextField(
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Search...',
             ),
+            onChanged: onSearch,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

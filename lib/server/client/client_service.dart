@@ -19,6 +19,7 @@ import '../data/entities/cart_product_entity.dart';
 import '../data/entities/coupon_apply_entity.dart';
 import '../data/entities/monthly_revenue_entity.dart';
 import '../data/entities/order_pages_entity.dart';
+import '../data/entities/validate_entity.dart';
 
 class ClientService {
   factory ClientService() => _instance;
@@ -91,6 +92,49 @@ class ClientService {
     try {
       final res = await clientApi.updateLocation(
           await Util.createAuthorization(), body);
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<void> forgotPassword(String email) async {
+    Map<String, dynamic> body = {'email': email};
+    try {
+      final res = await clientApi.forgotPassword(body);
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<ValidateEntity> validateOtp(String email, String otp) async {
+    Map<String, dynamic> body = {
+      'email': email,
+      'otp': otp,
+    };
+    try {
+      final res =
+          await clientApi.validateOtp(body);
+      _apiErrorHandlingIfNeeded(res.response);
+      return res.data;
+    } on DioError catch (e) {
+      final errResponse = e.response?.data;
+      throw Exception(errResponse);
+    }
+  }
+
+  Future<void> changePassword(String email, String newPassword) async {
+    Map<String, dynamic> body = {
+      'email': email,
+      'newPassword': newPassword,
+    };
+    try {
+      final res = await clientApi.changePassword(body);
       _apiErrorHandlingIfNeeded(res.response);
       return res.data;
     } on DioError catch (e) {

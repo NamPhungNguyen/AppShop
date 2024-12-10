@@ -134,7 +134,7 @@ class AdminHome extends ConsumerWidget {
                       loading: () =>
                           const Center(child: CircularProgressIndicator()),
                       error: (error, stack) =>
-                          Center(child: Text('Error loading data')),
+                          const Center(child: Text('Error loading data')),
                     );
                   },
                 ),
@@ -164,8 +164,8 @@ class AdminHome extends ConsumerWidget {
 
   /// Map Y-Axis intervals properly
   FlTitlesData _getTitlesData() {
-    const intervalCount = 5; // Number of intervals
-    final maxInterval = 10000; // Your max Y-value
+    const intervalCount = 5;
+    final maxInterval = 10000;
     final step = (maxInterval / intervalCount);
 
     return FlTitlesData(
@@ -212,5 +212,4 @@ class AdminHome extends ConsumerWidget {
       ),
     );
   }
-
 }
