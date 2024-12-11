@@ -38,7 +38,6 @@ class _CategoryProductsViewState extends ConsumerState<CategoryProductsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products in ${widget.category.name}'),
-        backgroundColor: Colors.white,
       ),
       body: RefreshIndicator(
         onRefresh: _refreshProducts,

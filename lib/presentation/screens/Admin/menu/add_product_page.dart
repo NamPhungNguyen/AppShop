@@ -27,11 +27,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   final TextEditingController customColorController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<XFile> _imageFiles = [];
-
   List<String> selectedSizes = [];
   List<String> customColors = [];
-
   String? selectedCategory;
+  bool isLoading = false;
 
   // Firebase Storage instance
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -53,22 +52,30 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     }
   }
 
-  // Method to upload images to Firebase Storage
   Future<List<String>> _uploadImages() async {
     List<String> imageUrls = [];
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       for (var imageFile in _imageFiles) {
         String fileName = imageFile.name;
         Reference storageRef = _storage.ref().child('product_images/$fileName');
-        await storageRef.putFile(File(imageFile.path)); // Upload image
-
+        await storageRef.putFile(File(imageFile.path));
         String downloadUrl = await storageRef.getDownloadURL();
         imageUrls.add(downloadUrl);
       }
+
+      return imageUrls;
     } catch (e) {
       print("Error uploading images: $e");
+      return [];
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-    return imageUrls;
   }
 
   void _submitForm() {
@@ -88,6 +95,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       ));
       return;
     }
+
     if (selectedCategory == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Please select a category."),
@@ -95,8 +103,23 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       ));
       return;
     }
+
     _uploadImages().then((imageUrls) {
-      ref.read(productStateProvider.notifier).createProduct(
+      if (imageUrls.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Failed to upload images."),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      setState(() {
+        isLoading = true; // Set loading true before making DB insert
+      });
+
+      ref
+          .read(productStateProvider.notifier)
+          .createProduct(
             name: nameController.text,
             description: descriptionController.text,
             price: double.parse(priceController.text),
@@ -107,31 +130,40 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
             imgProduct: imageUrls,
             categoryId: int.parse(selectedCategory!),
             discount: int.parse(discountController.text),
-          );
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Product added successfully!"),
-        backgroundColor: Colors.green,
-      ));
+          )
+          .then((_) {
+        setState(() {
+          isLoading = false;
+        });
 
-      // Reset form after submission
-      nameController.clear();
-      descriptionController.clear();
-      priceController.clear();
-      stockController.clear();
-      brandController.clear();
-      discountController.clear();
-      customColorController.clear();
-      setState(() {
-        _imageFiles.clear();
-        selectedSizes.clear();
-        customColors.clear();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Product added successfully!"),
+          backgroundColor: Colors.green,
+        ));
+
+        // Reset form after submission
+        nameController.clear();
+        descriptionController.clear();
+        priceController.clear();
+        stockController.clear();
+        brandController.clear();
+        discountController.clear();
+        customColorController.clear();
+        setState(() {
+          _imageFiles.clear();
+          selectedSizes.clear();
+          customColors.clear();
+        });
+      }).catchError((e) {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Database insert failed: $e"),
+          backgroundColor: Colors.red,
+        ));
       });
-    }).catchError((e) {
-      // Handle image upload error
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Image upload failed: $e"),
-        backgroundColor: Colors.red,
-      ));
     });
   }
 
@@ -147,149 +179,159 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
             ),
             backgroundColor: AppColors.primaryColor,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white), // Set the back icon color to white
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              // Set the back icon color to white
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Product Name
-                  _buildTextField(nameController, 'Product Name'),
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Product Name
+                        _buildTextField(nameController, 'Product Name'),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Product Description
-                  _buildTextField(descriptionController, 'Product Description'),
+                        // Product Description
+                        _buildTextField(
+                            descriptionController, 'Product Description'),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Product Price
-                  _buildTextField(priceController, 'Product Price',
-                      keyboardType: TextInputType.number),
+                        // Product Price
+                        _buildTextField(priceController, 'Product Price',
+                            keyboardType: TextInputType.number),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Product Stock
-                  _buildTextField(stockController, 'Stock Quantity',
-                      keyboardType: TextInputType.number),
+                        // Product Stock
+                        _buildTextField(stockController, 'Stock Quantity',
+                            keyboardType: TextInputType.number),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Product Brand
-                  _buildTextField(brandController, 'Brand'),
+                        // Product Brand
+                        _buildTextField(brandController, 'Brand'),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Discount
-                  _buildTextField(discountController, 'Discount Percentage',
-                      keyboardType: TextInputType.number),
+                        // Discount
+                        _buildTextField(
+                            discountController, 'Discount Percentage',
+                            keyboardType: TextInputType.number),
 
-                  const SizedBox(height: 10),
-                  _buildCategoryDropdown(),
-                  const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        _buildCategoryDropdown(),
+                        const SizedBox(height: 20),
 
-                  const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                  // Multi-select Size
-                  _buildMultiSelectField('Size', ['S', 'M', 'L', 'XL', 'XXL'],
-                      (value) {
-                    setState(() {
-                      if (selectedSizes.contains(value)) {
-                        selectedSizes.remove(value);
-                      } else {
-                        selectedSizes.add(value);
-                      }
-                    });
-                  }),
+                        // Multi-select Size
+                        _buildMultiSelectField(
+                            'Size', ['S', 'M', 'L', 'XL', 'XXL'], (value) {
+                          setState(() {
+                            if (selectedSizes.contains(value)) {
+                              selectedSizes.remove(value);
+                            } else {
+                              selectedSizes.add(value);
+                            }
+                          });
+                        }),
 
-                  const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                  // Custom Color Input (User can input multiple colors separated by commas)
-                  _buildTextField(customColorController,
-                      'Custom Color(s) (separate by commas)',
-                      hintText: 'Enter color names or hex codes',
-                      onChanged: (text) {
-                    setState(() {
-                      customColors =
-                          text.split(',').map((color) => color.trim()).toList();
-                    });
-                  }),
-                  const SizedBox(height: 20),
+                        // Custom Color Input (User can input multiple colors separated by commas)
+                        _buildTextField(customColorController,
+                            'Custom Color(s) (separate by commas)',
+                            hintText: 'Enter color names or hex codes',
+                            onChanged: (text) {
+                          setState(() {
+                            customColors = text
+                                .split(',')
+                                .map((color) => color.trim())
+                                .toList();
+                          });
+                        }),
+                        const SizedBox(height: 20),
 
-                  /// Image Picker with Preview
-                  GestureDetector(
-                    onTap: _pickImages,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_a_photo,
-                              color: AppColors.primaryColor),
-                          SizedBox(width: 10),
-                          Text(
-                            'Pick Product Images',
-                            style: TextStyle(color: AppColors.primaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (_imageFiles.isNotEmpty)
-                    SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _imageFiles.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Image.file(
-                              File(_imageFiles[index].path),
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
+                        /// Image Picker with Preview
+                        GestureDetector(
+                          onTap: _pickImages,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                  const SizedBox(height: 20),
-
-                  /// Submit Button
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                            padding: const EdgeInsets.all(12),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_a_photo,
+                                    color: AppColors.primaryColor),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Pick Product Images',
+                                  style:
+                                      TextStyle(color: AppColors.primaryColor),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child:
-                            Text('Add Product', style: TextStyle(fontSize: 16)),
-                      ),
+                        const SizedBox(height: 10),
+                        if (_imageFiles.isNotEmpty)
+                          SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _imageFiles.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Image.file(
+                                    File(_imageFiles[index].path),
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        const SizedBox(height: 20),
+
+                        /// Submit Button
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: AppColors.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Text('Add Product',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
         );
       },
     );

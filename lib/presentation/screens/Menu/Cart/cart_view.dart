@@ -28,7 +28,9 @@ class _CartViewState extends ConsumerState<CartView> {
     selectedItems = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-       await ref.read(shippingAddressDefaultStateProvider.notifier).getDefaultAddress();
+        await ref
+            .read(shippingAddressDefaultStateProvider.notifier)
+            .getDefaultAddress();
       } catch (e) {
         debugPrint('Error fetching default address: $e');
       }
@@ -42,6 +44,7 @@ class _CartViewState extends ConsumerState<CartView> {
     Future<void> refreshCart() async {
       await ref.read(cartStateProvider.notifier).fetchCartUser();
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Cart", style: Theme.of(context).textTheme.headlineMedium),
@@ -74,6 +77,7 @@ class _CartViewState extends ConsumerState<CartView> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  /// checkbox select alll
                   Row(
                     children: [
                       Checkbox(
@@ -97,8 +101,11 @@ class _CartViewState extends ConsumerState<CartView> {
                       const Text("Select All"),
                     ],
                   ),
+
+                  /// item
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(height: 8),
                       itemCount: cartProducts.result.length,
                       itemBuilder: (context, index) {
                         final product = cartProducts.result[index];
@@ -115,40 +122,42 @@ class _CartViewState extends ConsumerState<CartView> {
                           direction: DismissDirection.endToStart,
                           confirmDismiss: (direction) async {
                             return await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Confirm Deletion'),
-                                  content: const Text(
-                                      'Are you sure you want to remove this item from the cart?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(true);
-                                      },
-                                      child: const Text('Delete'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ) ??
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Deletion'),
+                                      content: const Text(
+                                          'Are you sure you want to remove this item from the cart?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ) ??
                                 false;
                           },
                           onDismissed: (direction) async {
                             try {
                               await ref
                                   .read(cartStateProvider.notifier)
-                                  .deleteProductFromCart(product.cartItemId.toString());
+                                  .deleteProductFromCart(
+                                      product.cartItemId.toString());
                               if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("${product.productName} removed from cart"),
+                                  content: Text(
+                                      "${product.productName} removed from cart"),
                                 ),
                               );
                             } catch (e) {
@@ -165,17 +174,19 @@ class _CartViewState extends ConsumerState<CartView> {
                               GestureDetector(
                                 onTap: () async {
                                   setState(() {
-                                    selectedItems[index] = !selectedItems[index];
+                                    selectedItems[index] =
+                                        !selectedItems[index];
                                   });
-                                  final cartUsecase = ref.read(cartUsecaseProvider);
+                                  final cartUsecase =
+                                      ref.read(cartUsecaseProvider);
                                   await cartUsecase.updateCheckoutStatus(
                                     [product.cartItemId],
                                     selectedItems[index],
                                   );
                                 },
                                 child: Container(
-                                  width: 24.0,
-                                  height: 24.0,
+                                  width: 22.0,
+                                  height: 20.0,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -196,7 +207,7 @@ class _CartViewState extends ConsumerState<CartView> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8.0),
+                              const SizedBox(width: 4.0),
                               Expanded(
                                 child: TCartItem(
                                   imageUrl: product.imageUrl,
@@ -208,21 +219,22 @@ class _CartViewState extends ConsumerState<CartView> {
                                     await ref
                                         .read(cartStateProvider.notifier)
                                         .updateItemQuantity(
-                                      product.cartItemId.toString(),
-                                      product.quantity + 1,
-                                    );
+                                          product.cartItemId.toString(),
+                                          product.quantity + 1,
+                                        );
                                   },
                                   onDecrement: () async {
                                     if (product.quantity > 1) {
                                       await ref
                                           .read(cartStateProvider.notifier)
                                           .updateItemQuantity(
-                                        product.cartItemId.toString(),
-                                        product.quantity - 1,
-                                      );
+                                            product.cartItemId.toString(),
+                                            product.quantity - 1,
+                                          );
                                     }
                                   },
-                                  priceDiscount: product.discountPrice.toString(),
+                                  priceDiscount:
+                                      product.discountPrice.toString(),
                                   totalPrice: product.totalPrice.toString(),
                                 ),
                               ),
@@ -232,7 +244,7 @@ class _CartViewState extends ConsumerState<CartView> {
                       },
                     ),
                   ),
-            
+
                   /// Display total price
                   Padding(
                     padding: const EdgeInsets.symmetric(

@@ -32,7 +32,7 @@ class CheckoutView extends ConsumerWidget {
       },
       loading: () => 0.0,
       error: (error, stackTrace) => 0.0,
-    );  // Get discount amount from CouponState
+    );
 
     return Scaffold(
       appBar: TAppbar(
@@ -54,6 +54,8 @@ class CheckoutView extends ConsumerWidget {
               padding: const EdgeInsets.all(AppSizes.defaultSpace),
               child: Column(
                 children: [
+
+                  /// shipping address
                   const ShippingAddressDefaultView(),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
@@ -68,7 +70,7 @@ class CheckoutView extends ConsumerWidget {
                   const TCouponCode(),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
-                  /// -- billing section
+                  /// billing section
                   TRoundedContainer(
                     showBorder: true,
                     backgroundColor: Colors.white,

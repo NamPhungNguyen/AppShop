@@ -6,7 +6,6 @@ import 'package:front_shop/presentation/commom/widgets/icons/circular_icon.dart'
 import 'package:front_shop/presentation/commom/widgets/layouts/grid_layout.dart';
 import 'package:front_shop/presentation/commom/widgets/products/product_card_vertical.dart';
 import 'package:front_shop/presentation/screens/Notification/notification_view.dart';
-import 'package:front_shop/utils/constants/sizes.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SavedView extends ConsumerWidget {
@@ -17,7 +16,6 @@ class SavedView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favoriteProductsAsync = ref.watch(favoriteStateProvider);
-
     return Scaffold(
       appBar: TAppbar(
         title: Text("Saved items",
@@ -37,7 +35,7 @@ class SavedView extends ConsumerWidget {
         child: favoriteProductsAsync.when(
           data: (products) {
             return Padding(
-              padding: const EdgeInsets.all(AppSizes.defaultSpace),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: products.isEmpty
                   ? const Center(child: Text("No saved items"))
                   : TGridLayout(
