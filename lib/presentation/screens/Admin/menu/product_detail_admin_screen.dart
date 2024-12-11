@@ -134,11 +134,36 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
     }
   }
 
+  Future<void> _deleteProduct() async {
+    try {
+      final notifier = ref.read(productStateProvider.notifier);
+      await notifier.deleteProduct(widget.product.productId.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product deleted successfully')),
+      );
+      Navigator.pop(context);
+      await ref
+          .read(productPageStateProvider.notifier)
+          .fetchInitialProducts(5);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error deleting product: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Product Detail"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteProduct,
+            color: AppColors.primaryColor,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

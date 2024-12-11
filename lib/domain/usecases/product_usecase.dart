@@ -11,6 +11,8 @@ abstract class ProductUsecase {
 
   Future<void> addProductToFavorites(String productId);
 
+  Future<void> deleteProduct(String productId);
+
   Future<void> removeProductToFavorites(String productId);
 
   Future<List<Product>> fetchAllProductToFavorites();

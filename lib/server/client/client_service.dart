@@ -118,8 +118,7 @@ class ClientService {
       'otp': otp,
     };
     try {
-      final res =
-          await clientApi.validateOtp(body);
+      final res = await clientApi.validateOtp(body);
       _apiErrorHandlingIfNeeded(res.response);
       return res.data;
     } on DioError catch (e) {
@@ -289,6 +288,15 @@ class ClientService {
       await Util.createAuthorization(),
       productId,
       body,
+    );
+    _apiErrorHandlingIfNeeded(res.response);
+    return res.data;
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    final res = await clientApi.deleteProduct(
+      await Util.createAuthorization(),
+      productId,
     );
     _apiErrorHandlingIfNeeded(res.response);
     return res.data;

@@ -105,4 +105,9 @@ class ProductRepositoryImpl implements ProductRepository {
       isAvailable: isAvailable,
     );
   }
+
+  @override
+  Future<void> deleteProduct(String productId) async {
+    return await _clientService.deleteProduct(productId);
+  }
 }

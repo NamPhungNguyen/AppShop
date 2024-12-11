@@ -99,18 +99,22 @@ class ProductUsecaseImpl implements ProductUsecase {
     bool? isAvailable,
   ) async {
     return await _productRepository.updateProduct(
-      productId,
-      name,
-      description,
-      price,
-      stock,
-      size,
-      color,
-      brand,
-      imgProduct,
-      categoryId,
-      discount,
-      isAvailable
-    );
+        productId,
+        name,
+        description,
+        price,
+        stock,
+        size,
+        color,
+        brand,
+        imgProduct,
+        categoryId,
+        discount,
+        isAvailable);
+  }
+
+  @override
+  Future<void> deleteProduct(String productId) async {
+    return _productRepository.deleteProduct(productId);
   }
 }

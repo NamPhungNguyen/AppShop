@@ -137,6 +137,12 @@ abstract class ClientApi {
     @Body() Map<String, dynamic> body,
   );
 
+  @DELETE('/product/delete/{productId}')
+  Future<HttpResponse<void>> deleteProduct(
+    @Header("Authorization") authorization,
+    @Path("productId") String productId,
+  );
+
   @GET('/product/search')
   Future<HttpResponse<List<ProductEntity>>> searchAndFilter(
     @Header("Authorization") String authorization,

@@ -34,6 +34,17 @@ class ProductState extends StateNotifier<AsyncValue<Products>> {
     }
   }
 
+  Future<void> deleteProduct(String productId) async {
+    state = const AsyncValue.loading();
+    try {
+      final productUsecase = _ref.read(productUsecaseProvider);
+      await productUsecase.deleteProduct(productId);
+      await fetchAllProduct();
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
   /// Create a product
   Future<void> createProduct({
     required String name,

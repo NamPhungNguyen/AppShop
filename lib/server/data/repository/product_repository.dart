@@ -14,6 +14,8 @@ abstract class ProductRepository {
 
   Future<List<ProductEntity>> fetchAllProductToFavorites();
 
+  Future<void> deleteProduct(String productId);
+
   Future<List<ProductEntity>> searchAndFilter(
       String? name, double? priceMin, double? priceMax, bool sortByPriceAsc);
 
