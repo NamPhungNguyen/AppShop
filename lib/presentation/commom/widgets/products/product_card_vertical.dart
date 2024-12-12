@@ -41,7 +41,7 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
   }
 
   Future<void> _toggleFavorite() async {
-    if (isProcessing || !widget.product.available)
+    if (isProcessing || !widget.product.available || widget.product.stock <= 1)
       return; // Không cho phép khi sản phẩm hết hàng
 
     setState(() {
@@ -138,14 +138,14 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                     child: TCircularIcon(
                       icon: isFavorite ? Iconsax.heart5 : Iconsax.heart,
                       color: isFavorite ? Colors.red : Colors.grey,
-                      onPressed: isProcessing || !widget.product.available
+                      onPressed: isProcessing
                           ? null
                           : _toggleFavorite, // Không cho phép nhấn khi hết hàng
                     ),
                   ),
 
                   // Nếu sản phẩm không còn hàng, hiển thị thông báo "Hết hàng"
-                  if (!widget.product.available)
+                  if (!widget.product.available || widget.product.stock <= 1)
                     Positioned(
                       bottom: 10,
                       left: 8,

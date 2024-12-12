@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/main.dart';
+import 'package:front_shop/presentation/screens/BottomBar/bottom_bar.dart';
 import 'package:front_shop/presentation/screens/Menu/Cart/cart_view.dart';
 
 import '../../Order/order_view.dart';
@@ -16,7 +17,7 @@ class OrderSuccessView extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushNamed(context, CartView.routeName);
+            Navigator.pushNamed(context, BottomBar.routeName);
           },
         ),
       ),

@@ -24,7 +24,6 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
   File? _selectedImage;
   bool _isUploading = false;
 
-
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
@@ -172,9 +171,9 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
                     child: _isUploading
                         ? const CircularProgressIndicator()
                         : const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('Add Category'),
-                        ),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text('Add Category'),
+                          ),
                   ),
                 ],
               ),
@@ -190,99 +189,108 @@ class _CategoryFormScreenState extends ConsumerState<CategoryFormScreen> {
               padding: const EdgeInsets.all(8.0),
               child: categoryState.when(
                 data: (categories) {
-                  return ListView.builder(
-                    itemCount: categories.result.length,
-                    itemBuilder: (context, index) {
-                      final category = categories.result[index];
-                      return Card(
-                        elevation: 2,
-                        child: ListTile(
-                          title: Text(category.name),
-                          subtitle: Text(category.description),
-                          leading: category.image != null
-                              ? Image.network(category.image!, width: 50)
-                              : const Icon(Icons.image_not_supported),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon:
-                                    const Icon(Icons.edit, color: Colors.grey),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CategoryDetailScreen(
-                                        category: category,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon:
-                                    const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Confirm Deletion'),
-                                        content: const Text(
-                                            'Are you sure you want to delete this category?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('Cancel'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-                                              try {
-                                                await ref
-                                                    .read(categoryStateProvider
-                                                        .notifier)
-                                                    .deleteCategory(category
-                                                        .categoryId
-                                                        .toString());
-
-                                                await ref
-                                                    .read(categoryStateProvider
-                                                        .notifier)
-                                                    .fetchAllCategories();
-
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        'Category deleted successfully'),
-                                                  ),
-                                                );
-                                              } catch (error) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          'Error: $error')),
-                                                );
-                                              }
-                                            },
-                                            child: const Text('Delete'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await ref
+                          .read(categoryStateProvider.notifier)
+                          .fetchAllCategories();
                     },
+                    child: ListView.builder(
+                      itemCount: categories.result.length,
+                      itemBuilder: (context, index) {
+                        final category = categories.result[index];
+                        return Card(
+                          elevation: 2,
+                          child: ListTile(
+                            title: Text(category.name),
+                            subtitle: Text(category.description),
+                            leading: category.image != null
+                                ? Image.network(category.image!, width: 50)
+                                : const Icon(Icons.image_not_supported),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit,
+                                      color: Colors.grey),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CategoryDetailScreen(
+                                          category: category,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Confirm Deletion'),
+                                          content: const Text(
+                                              'Are you sure you want to delete this category?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                try {
+                                                  await ref
+                                                      .read(
+                                                          categoryStateProvider
+                                                              .notifier)
+                                                      .deleteCategory(category
+                                                          .categoryId
+                                                          .toString());
+
+                                                  await ref
+                                                      .read(
+                                                          categoryStateProvider
+                                                              .notifier)
+                                                      .fetchAllCategories();
+
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                          'Category deleted successfully'),
+                                                    ),
+                                                  );
+                                                } catch (error) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                        content: Text(
+                                                            'Error: $error')),
+                                                  );
+                                                }
+                                              },
+                                              child: const Text('Delete'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),

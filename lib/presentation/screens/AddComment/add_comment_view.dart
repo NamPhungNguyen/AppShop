@@ -60,7 +60,8 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
       return;
     }
 
-    if (_rating == 0.0) { // Check if rating is 0
+    if (_rating == 0.0) {
+      // Check if rating is 0
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please select a rating!")),
       );
@@ -72,10 +73,7 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
     });
 
     try {
-      // Upload images to Firebase and get URLs
       List<String> imageUrls = await uploadImages(_selectedImages);
-
-      // Call API to add comment
       final commentUsecase = ref.read(commentUsecaseProvider);
       await commentUsecase.addComment(
         widget.productId,
@@ -84,11 +82,11 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
         imageUrls,
       );
 
-      widget.onCommentAdded(); // Refresh callback
+      widget.onCommentAdded();
 
       _commentController.clear();
       _selectedImages.clear();
-      _rating = 0.0;  // Reset the rating stars
+      _rating = 0.0;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Comment submitted successfully!")),
@@ -104,7 +102,6 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +122,8 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
               decoration: const InputDecoration(
                 hintText: "Write your review...",
                 border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
               maxLines: 3,
             ),
@@ -177,11 +175,7 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14.5),
                     ),
-                    child: _isLoading
-                        ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                        : const Text("Submit"),
+                    child: const Text("Submit"),
                   ),
                 ),
               ],
@@ -201,32 +195,26 @@ class _AddCommentSectionState extends ConsumerState<AddCommentSection> {
                 children: _selectedImages
                     .map(
                       (image) => ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(
-                      File(image.path),
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                )
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          File(image.path),
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
               const SizedBox(height: 10),
             ],
           ],
         ),
-
-        // Full-screen loading overlay
         if (_isLoading)
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              ),
+          const Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: CircularProgressIndicator(),
             ),
           ),
       ],

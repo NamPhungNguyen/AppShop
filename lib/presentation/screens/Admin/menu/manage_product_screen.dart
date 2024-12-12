@@ -111,7 +111,14 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
                                 backgroundImage:
                                     NetworkImage(product.imgProduct[0]),
                               ),
-                              title: Text(product.name),
+                              title: Text(
+                                product.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
                               subtitle: Text(product.brand),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -158,6 +165,8 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
               ? () {
                   ref.read(productPageStateProvider.notifier).loadProducts(
                       productPage.pageable.pageNumber - 1, pageSize);
+
+                  ref.read(categoryStateProvider.notifier).fetchAllCategories();
                 }
               : null,
         ),
@@ -168,6 +177,7 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
               ? () {
                   ref.read(productPageStateProvider.notifier).loadProducts(
                       productPage.pageable.pageNumber + 1, pageSize);
+                  ref.read(categoryStateProvider.notifier).fetchAllCategories();
                 }
               : null,
         ),

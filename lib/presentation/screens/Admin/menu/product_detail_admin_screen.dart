@@ -136,15 +136,46 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailAdminPage> {
 
   Future<void> _deleteProduct() async {
     try {
-      final notifier = ref.read(productStateProvider.notifier);
-      await notifier.deleteProduct(widget.product.productId.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product deleted successfully')),
+      final shouldDelete = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Deletion'),
+            content:
+                const Text('Are you sure you want to delete this product?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Delete'),
+              ),
+            ],
+          );
+        },
       );
-      Navigator.pop(context);
-      await ref
-          .read(productPageStateProvider.notifier)
-          .fetchInitialProducts(5);
+
+      if (shouldDelete == true) {
+        final notifier = ref.read(productStateProvider.notifier);
+        await notifier.deleteProduct(widget.product.productId.toString());
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product deleted successfully')),
+        );
+
+        Navigator.pop(context);
+        await ref
+            .read(productPageStateProvider.notifier)
+            .fetchInitialProducts(5);
+      } else {
+        return;
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error deleting product: $e')),

@@ -61,25 +61,6 @@ class ManageUsersScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () async {
-                      final shouldDelete = await _confirmDelete(context);
-                      if (shouldDelete ?? false) {
-                        try {
-                          await ref.read(userAdminStateProvider.notifier).deleteUser(user.id.toString());
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${user.fullName} deleted successfully')),
-                          );
-                        } catch (e) {
-                          // Show error message if the deletion fails
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Failed to delete ${user.fullName}: $e')),
-                          );
-                        }
-                      }
-                    },
-                  ),
                 ),
               );
             },

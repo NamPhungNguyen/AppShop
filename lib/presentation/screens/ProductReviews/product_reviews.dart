@@ -39,7 +39,6 @@ class ProductReviewsView extends ConsumerWidget {
             AddCommentSection(
               productId: product.productId.toString(),
               onCommentAdded: () {
-                // Invalidate the comment state provider to trigger a refresh
                 ref.invalidate(commentStateProvider(product.productId.toString()));
               },
             ),
