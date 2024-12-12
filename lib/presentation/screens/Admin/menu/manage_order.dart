@@ -334,7 +334,7 @@ class _ManageOrderScreenState extends ConsumerState<ManageOrderScreen>
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '${order.totalAmount} đ',
+                        '${order.totalAmount.toStringAsFixed(2)}₫',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

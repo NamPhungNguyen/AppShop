@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/presentation/screens/Admin/menu/product_category_screen.dart';
 import 'package:front_shop/presentation/screens/Admin/menu/product_detail_admin_screen.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 import '../../../../domain/models/product_page.dart';
 import '../../../../main.dart';
@@ -123,7 +124,13 @@ class _ProductManagementPageState extends ConsumerState<ProductManagementPage> {
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("Price: ${product.price} đ"),
+                                  Text(
+                                    "Price: ${product.price}₫",
+                                    style: const TextStyle(
+                                        color: AppColors.primaryColor,
+                                      fontSize: 14
+                                    ),
+                                  ),
                                 ],
                               ),
                               onTap: () {

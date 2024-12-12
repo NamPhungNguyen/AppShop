@@ -218,7 +218,7 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                   Row(
                     children: [
                       Text(
-                        "${widget.product.discount != null ? (widget.product.price - (widget.product.price * (widget.product.discount! / 100))).toStringAsFixed(2) : widget.product.price.toStringAsFixed(2)}đ",
+                        "${widget.product.discount != null ? (widget.product.price - (widget.product.price * (widget.product.discount! / 100))).toStringAsFixed(2) : widget.product.price.toStringAsFixed(2)}₫",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
@@ -232,7 +232,7 @@ class _ProductCardVerticalState extends ConsumerState<ProductCardVertical> {
                       const SizedBox(width: AppSizes.xs),
                       if (widget.product.discount != null)
                         Text(
-                          "${widget.product.price.toStringAsFixed(2)}đ",
+                          "${widget.product.price.toStringAsFixed(2)}₫",
                           style:
                               Theme.of(context).textTheme.labelSmall!.copyWith(
                                     decoration: TextDecoration.lineThrough,

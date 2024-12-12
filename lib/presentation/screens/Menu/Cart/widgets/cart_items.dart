@@ -46,8 +46,8 @@ class TCartItems extends ConsumerWidget {
                   await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
                 }
               },
-              priceDiscount: product.discountPrice.toString(),
-              totalPrice: product.totalPrice.toString(),
+              priceDiscount: product.discountPrice.toStringAsFixed(2),
+              totalPrice: product.totalPrice.toStringAsFixed(2),
             ),
           ],
         );

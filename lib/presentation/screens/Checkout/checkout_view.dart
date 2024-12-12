@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/main.dart';
@@ -12,8 +10,8 @@ import 'package:front_shop/presentation/screens/Checkout/widgets/success_order_v
 import 'package:front_shop/utils/constants/sizes.dart';
 
 import '../../../domain/domain_modules.dart';
+import '../../commom/widgets/products/cart/cart_item.dart';
 import '../../commom/widgets/products/cart/coupon_widget.dart';
-import '../Menu/Cart/widgets/cart_items.dart';
 
 class CheckoutView extends ConsumerWidget {
   static const String routeName = "/checkout";
@@ -48,21 +46,65 @@ class CheckoutView extends ConsumerWidget {
       ),
       body: checkoutState.when(
         data: (cartCheckoutProducts) {
-          double totalAfterDiscount = cartCheckoutProducts.totalCheckoutPrice - discountAmount;
+          double totalAfterDiscount =
+              cartCheckoutProducts.totalCheckoutPrice - discountAmount;
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(AppSizes.defaultSpace),
               child: Column(
                 children: [
-
                   /// shipping address
                   const ShippingAddressDefaultView(),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
                   /// items in cart
-                  TCartItems(
-                    cartProducts: cartCheckoutProducts.selectedItems,
-                    showAddRemoveButtons: false,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cartCheckoutProducts.selectedItems.length,
+                    itemBuilder: (_, index) {
+                      final product = cartCheckoutProducts.selectedItems[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          children: [
+                            /// cart items
+                            TCartItem(
+                              imageUrl: product.imageUrl,
+                              title: product.productName,
+                              color: product.color,
+                              size: product.size,
+                              quantity: product.quantity,
+                              onIncrement: () async {
+                                await ref
+                                    .read(cartStateProvider.notifier)
+                                    .updateItemQuantity(
+                                        product.cartItemId.toString(),
+                                        product.quantity + 1);
+                                await ref
+                                    .read(checkoutStateProvider.notifier)
+                                    .fetchProductCheckout();
+                              },
+                              onDecrement: () async {
+                                if (product.quantity > 1) {
+                                  await ref
+                                      .read(cartStateProvider.notifier)
+                                      .updateItemQuantity(
+                                          product.cartItemId.toString(),
+                                          product.quantity - 1);
+                                  await ref
+                                      .read(checkoutStateProvider.notifier)
+                                      .fetchProductCheckout();
+                                }
+                              },
+                              priceDiscount:
+                                  product.discountPrice.toStringAsFixed(2),
+                              totalPrice: product.totalPrice.toStringAsFixed(2),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
@@ -88,7 +130,7 @@ class CheckoutView extends ConsumerWidget {
                         TBillingPaymentSection(
                           cartCheckoutProducts: cartCheckoutProducts,
                           discountAmount: discountAmount,
-                          totalAfterDiscount: totalAfterDiscount,// Pass updated discount amount here
+                          totalAfterDiscount: totalAfterDiscount,
                         ),
                         const SizedBox(height: AppSizes.spaceBtwItems),
                       ],
@@ -114,7 +156,8 @@ class CheckoutView extends ConsumerWidget {
             final selectedMethod = ref.read(selectedPaymentMethodProvider);
             if (selectedMethod == null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Please select a payment method!')),
+                const SnackBar(
+                    content: Text('Please select a payment method!')),
               );
               return;
             }
@@ -126,15 +169,18 @@ class CheckoutView extends ConsumerWidget {
             if (addressId != null) {
               try {
                 await ref.read(orderUsecaseProvider).createOrder(
-                  null, // Cart ID nếu cần
-                  selectedCouponCode,
-                  addressId,
-                );
+                      null, // Cart ID nếu cần
+                      selectedCouponCode,
+                      addressId,
+                    );
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const OrderSuccessView()),
+                  MaterialPageRoute(
+                      builder: (context) => const OrderSuccessView()),
                 );
-                await ref.read(checkoutStateProvider.notifier).fetchProductCheckout();
+                await ref
+                    .read(checkoutStateProvider.notifier)
+                    .fetchProductCheckout();
                 await ref.read(cartStateProvider.notifier).fetchCartUser();
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -150,8 +196,6 @@ class CheckoutView extends ConsumerWidget {
           child: const Text('Place order'),
         ),
       ),
-
     );
   }
 }
-

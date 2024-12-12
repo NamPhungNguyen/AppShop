@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../main.dart';
+import '../../../../utils/constants/app_colors.dart';
 import 'add_coupon_screen.dart';
 
 class ManageCouponScreen extends ConsumerStatefulWidget {
@@ -34,14 +35,20 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
                 return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    leading: const Icon(Icons.local_offer),
-                    title: Text(coupon.code),
+                    leading: const Icon(
+                      Icons.local_offer,
+                      color: Colors.green,
+                    ),
+                    title: Text(coupon.code,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Expiry Date: ${coupon.expiryDate}'),
                         Text(
-                            'Discount: \$${coupon.discountAmount.toStringAsFixed(2)}'),
+                          'Discount: \$${coupon.discountAmount.toStringAsFixed(2)}',
+                          style: const TextStyle(color: AppColors.primaryColor),
+                        ),
                         Text('Total Quantity: ${coupon.totalQuantity}'),
                       ],
                     ),
@@ -51,7 +58,6 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            // Pass the coupon data to the AddCouponScreen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -62,9 +68,11 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.primaryColor,
+                          ),
                           onPressed: () async {
-                            // Hiển thị dialog xác nhận
                             final shouldDelete = await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) {
@@ -90,15 +98,12 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
                               },
                             );
 
-                            // Nếu người dùng xác nhận, thực hiện xóa
                             if (shouldDelete == true) {
                               try {
-                                // Call the deleteCoupon method
                                 await ref
                                     .read(couponAdminStateProvider.notifier)
                                     .deleteCoupon(coupon.id.toString());
 
-                                // Show success message if widget is still mounted
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -109,7 +114,6 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
                                   );
                                 }
                               } catch (e) {
-                                // Show error message if widget is still mounted
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

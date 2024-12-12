@@ -49,18 +49,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference storageRef =
-          FirebaseStorage.instance.ref().child('profile_images/$fileName');
+      Reference storageRef = FirebaseStorage.instance.ref().child('profile_images/$fileName');
 
       // Upload the file
       await storageRef.putFile(imageFile);
 
       // Get the download URL
       String downloadUrl = await storageRef.getDownloadURL();
-      ref.refresh(userStateProvider);
 
-      print("Upload complete! Image URL: $downloadUrl");
+      // Call the updateImg function to update the profile image URL in the state
+      await ref.read(userStateProvider.notifier).updateImg(downloadUrl);
 
+      // Refresh the user data and stop loading
       setState(() {
         isLoading = false;
       });
@@ -74,6 +74,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       Fluttertoast.showToast(msg: "Failed to upload image: $e");
     }
   }
+
 
   void resetAllProviders(WidgetRef ref) {
     ref.invalidate(userStateProvider);

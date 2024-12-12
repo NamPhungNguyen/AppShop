@@ -176,7 +176,7 @@ class AdminHome extends ConsumerWidget {
           getTitlesWidget: (value, meta) {
             if (value % step == 0) {
               return Text(
-                '${value.toInt()} đ',
+                '${value.toInt()}₫',
                 style: const TextStyle(fontSize: 12),
               );
             }

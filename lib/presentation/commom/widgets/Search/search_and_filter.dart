@@ -163,7 +163,7 @@ class SearchAndFilterScreen extends ConsumerWidget {
                     return ListTile(
                       leading: Image.network(product.imgProduct[0]),
                       title: Text(product.name),
-                      subtitle: Text('${product.price.toStringAsFixed(0)} đ'),
+                      subtitle: Text('${product.price.toStringAsFixed(0)} ₫'),
                       onTap: () {
                         Navigator.pushNamed(
                           context,

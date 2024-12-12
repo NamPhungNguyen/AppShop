@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../domain/models/order_pages.dart';
 import '../../../../main.dart';
+import '../../../../utils/constants/app_colors.dart';
 
 final selectedStatusProvider = StateProvider<String>((ref) {
   return '';
@@ -115,7 +116,10 @@ class OrderDetailScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(
               'Created At: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(order.createdAt))}',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold),
             ),
             const Divider(height: 20, thickness: 1),
             Row(
@@ -126,11 +130,11 @@ class OrderDetailScreen extends ConsumerWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${order.totalAmount} đ',
+                  '${order.totalAmount.toStringAsFixed(2)}₫',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ],
@@ -168,7 +172,10 @@ class OrderDetailScreen extends ConsumerWidget {
                 Text('Quantity: ${product.quantity}'),
                 Text('Size: ${product.size}'),
                 Text('Color: ${product.color}'),
-                Text('Price: ${product.price} đ'),
+                Text(
+                  'Price: ${product.price.toStringAsFixed(2)}₫',
+                  style: const TextStyle(color: AppColors.primaryColor),
+                ),
               ],
             ),
           ),
@@ -192,7 +199,10 @@ class OrderDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: selectedStatus.isEmpty ? orderContent.status : selectedStatus,
+          value: selectedStatus != null && selectedStatus.isNotEmpty
+              ? selectedStatus
+              : orderContent.status,
+
           items: statuses.map((status) {
             return DropdownMenuItem(
               value: status,

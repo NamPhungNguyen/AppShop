@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/presentation/screens/Admin/menu/product_detail_admin_screen.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 import '../../../../domain/models/product.dart';
 import '../../../../main.dart';
@@ -43,12 +44,17 @@ class ProductCategoryView extends ConsumerWidget {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(product.imgProduct[0]),
             ),
-            title: Text(product.name),
+            title: Text(
+              product.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             subtitle: Text(product.brand),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Price: \$${product.price}"),
+                Text("Price: \$${product.price.toStringAsFixed(2)}",
+                    style: const TextStyle(color: AppColors.primaryColor)),
               ],
             ),
             onTap: () {

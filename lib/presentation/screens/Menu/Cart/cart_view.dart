@@ -77,7 +77,7 @@ class _CartViewState extends ConsumerState<CartView> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  /// checkbox select alll
+                  // Checkbox select all
                   Row(
                     children: [
                       Checkbox(
@@ -102,10 +102,11 @@ class _CartViewState extends ConsumerState<CartView> {
                     ],
                   ),
 
-                  /// item
+                  // item list
                   Expanded(
                     child: ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(height: 8),
+                      separatorBuilder: (context, index) =>
+                          const Divider(height: 8),
                       itemCount: cartProducts.result.length,
                       itemBuilder: (context, index) {
                         final product = cartProducts.result[index];
@@ -234,8 +235,9 @@ class _CartViewState extends ConsumerState<CartView> {
                                     }
                                   },
                                   priceDiscount:
-                                      product.discountPrice.toString(),
-                                  totalPrice: product.totalPrice.toString(),
+                                      product.discountPrice.toStringAsFixed(2),
+                                  totalPrice:
+                                      product.totalPrice.toStringAsFixed(2),
                                 ),
                               ),
                             ],
@@ -245,7 +247,7 @@ class _CartViewState extends ConsumerState<CartView> {
                     ),
                   ),
 
-                  /// Display total price
+                  // Display total price
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: AppSizes.spaceBtwItems,

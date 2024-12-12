@@ -18,56 +18,62 @@ class ManageUsersScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Manage Users'),
       ),
-      body: usersList.when(
-        data: (users) {
-          if (users.result.isEmpty) {
-            return const Center(child: Text('No users available.'));
-          }
-
-          return ListView.builder(
-            itemCount: users.result.length,
-            itemBuilder: (context, index) {
-              final user = users.result[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 4,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16),
-                  leading: CircleAvatar(
-                    radius: 25,
-                    backgroundImage: user.profileImgUrl != null &&
-                            user.profileImgUrl!.isNotEmpty
-                        ? NetworkImage(user.profileImgUrl!)
-                        : AssetImage(AssetsPathUtil.user('profile.png'))
-                            as ImageProvider,
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  title: Text(
-                    user.fullName,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(user.email),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UserDetailScreen(user: user),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await ref.watch(userAdminStateProvider.notifier).getListUser();
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, stack) => Center(child: Text('Error: $e')),
+        child: usersList.when(
+          data: (users) {
+            if (users.result.isEmpty) {
+              return const Center(child: Text('No users available.'));
+            }
+
+            return ListView.builder(
+              itemCount: users.result.length,
+              itemBuilder: (context, index) {
+                final user = users.result[index];
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 4,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    leading: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: user.profileImgUrl != null &&
+                              user.profileImgUrl!.isNotEmpty
+                          ? NetworkImage(user.profileImgUrl!)
+                          : AssetImage(AssetsPathUtil.user('profile.png'))
+                              as ImageProvider,
+                      backgroundColor: Colors.grey[200],
+                    ),
+                    title: Text(
+                      user.fullName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(user.email),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserDetailScreen(user: user),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, stack) => Center(child: Text('Error: $e')),
+        ),
       ),
     );
   }

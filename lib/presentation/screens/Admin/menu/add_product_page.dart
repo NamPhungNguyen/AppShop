@@ -203,7 +203,8 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
 
                         // Product Description
                         _buildTextField(
-                            descriptionController, 'Product Description'),
+                            descriptionController, 'Product Description',
+                            maxLines: 5),
 
                         const SizedBox(height: 10),
 
@@ -337,10 +338,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     );
   }
 
-  // Helper method for creating text fields
   Widget _buildTextField(TextEditingController controller, String label,
       {String hintText = '',
       TextInputType keyboardType = TextInputType.text,
+      int maxLines = 1,
       Function(String)? onChanged}) {
     return TextField(
       controller: controller,
@@ -351,8 +352,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         border: const OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
+        alignLabelWithHint: true,
       ),
       keyboardType: keyboardType,
+      maxLines: maxLines,
     );
   }
 
