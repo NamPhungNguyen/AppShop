@@ -142,10 +142,11 @@ class _ManageCouponScreenState extends ConsumerState<ManageCouponScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final newCoupon = await Navigator.push(
+          await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddCouponScreen()),
           );
+          await ref.watch(couponAdminStateProvider.notifier).getAllCoupon();
         },
         child: const Icon(Icons.add),
       ),

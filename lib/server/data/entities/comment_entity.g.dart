@@ -11,12 +11,13 @@ _$CommentEntityImpl _$$CommentEntityImplFromJson(Map<String, dynamic> json) =>
       commentId: (json['commentId'] as num).toInt(),
       content: json['content'] as String,
       rating: (json['rating'] as num).toInt(),
-      imageUrls:
-          (json['imageUrls'] as List<dynamic>).map((e) => e as String).toList(),
+      imageUrls: (json['imageUrls'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       productId: (json['productId'] as num).toInt(),
       userId: (json['userId'] as num).toInt(),
       fullName: json['fullName'] as String,
-      profileImgUrl: json['profileImgUrl'] as String,
+      profileImgUrl: json['profileImgUrl'] as String?,
       createdAt: json['createdAt'] as String,
     );
 

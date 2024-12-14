@@ -101,6 +101,7 @@ class _AddCouponScreenState extends ConsumerState<AddCouponScreen> {
               expiryDate,
               active,
               totalQuantity);
+
           // Navigate back to the manage coupon screen after updating
           Navigator.popAndPushNamed(context, '/manage_coupon');
         } else {

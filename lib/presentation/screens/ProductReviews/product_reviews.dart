@@ -51,8 +51,15 @@ class ProductReviewsView extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) =>
-                  Center(child: Text('Error: $error')),
+              error: (error, stackTrace) {
+                // Print the error and stack trace
+                print('Error: $error');
+                print('StackTrace: $stackTrace');
+
+                // Return a widget to display the error
+                return Center(child: Text('Error: $error'));
+              },
+
             ),
           ],
         ),

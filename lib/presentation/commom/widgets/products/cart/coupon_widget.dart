@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import '../../../../../main.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -15,8 +14,7 @@ class TCouponCode extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final couponState = ref.watch(couponStateProvider);
-    final selectedCouponCode =
-        ref.watch(selectedCouponCodeProvider); // Watch the coupon code state
+    final selectedCouponCode = ref.watch(selectedCouponCodeProvider);
 
     void _showCouponModal(BuildContext context) {
       showModalBottomSheet(
@@ -104,7 +102,9 @@ class TCouponCode extends ConsumerWidget {
           SizedBox(
             width: 80,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                await ref.read(couponStateProvider.notifier).fetchCoupons();
+
                 _showCouponModal(context);
               },
               style: ElevatedButton.styleFrom(

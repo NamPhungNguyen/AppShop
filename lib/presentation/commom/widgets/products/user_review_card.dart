@@ -42,8 +42,7 @@ class UserReviewCard extends ConsumerWidget {
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: Image.network(
-                        comment.profileImgUrl ??
-                            AssetsPathUtil.user("profile.png"),
+                        comment.profileImgUrl ?? AssetsPathUtil.user("profile.png"),
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -53,6 +52,7 @@ class UserReviewCard extends ConsumerWidget {
                           );
                         },
                       ),
+
                     ),
                   ),
                 ),

@@ -36,7 +36,6 @@ class OrderView extends ConsumerWidget {
             error: (error, stackTrace) => Center(child: Text('Error: $error')),
             data: (orders) {
               if (orders.isEmpty) {
-                // Show message when no orders are present
                 return Center(
                   child: Text(
                     'No orders available',

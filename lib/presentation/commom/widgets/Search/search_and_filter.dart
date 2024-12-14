@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:front_shop/presentation/screens/ProductDetail/product_detail_view.dart';
+import 'package:front_shop/utils/constants/app_colors.dart';
 
 import '../../../../main.dart';
 
@@ -114,7 +115,6 @@ class SearchAndFilterScreen extends ConsumerWidget {
                       ),
                     );
                   }).toList(),
-
                   onChanged: (newValue) {
                     if (newValue != null) {
                       ref.read(sortOrderProvider.notifier).state = newValue;
@@ -162,8 +162,13 @@ class SearchAndFilterScreen extends ConsumerWidget {
                     final product = products[index];
                     return ListTile(
                       leading: Image.network(product.imgProduct[0]),
-                      title: Text(product.name),
-                      subtitle: Text('${product.price.toStringAsFixed(0)} ₫'),
+                      title: Text(product.name, overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      subtitle: Text(
+                        '${product.price.toStringAsFixed(2)}₫',
+                        style: const TextStyle(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         Navigator.pushNamed(
                           context,

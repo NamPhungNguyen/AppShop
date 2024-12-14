@@ -53,10 +53,9 @@ class _ShippingAddressDefaultViewState
             );
           }
 
-          final shippingAddress = address.result.first; // Assuming you want to display the first address
+          final shippingAddress = address.result.first;
           return InkWell(
             onTap: () {
-              // Navigate to AddressView when tapped
               Navigator.pushNamed(context, AddressView.routeName);
             },
             child: Column(
@@ -66,21 +65,18 @@ class _ShippingAddressDefaultViewState
                   children: [
                     const Icon(Iconsax.location),
                     const SizedBox(width: AppSizes.spaceBtwItems / 6),
-                    Text(
-                      shippingAddress.fullName ?? "Unknown Name",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: AppSizes.md),
+                    Expanded(
+                      child: Text(
+                        "${shippingAddress.fullName ?? "Unknown Name"} (+84)${shippingAddress.phoneNumber ?? "Unknown"}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(fontSize: AppSizes.md, overflow: TextOverflow.ellipsis),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    const SizedBox(width: AppSizes.spaceBtwItems / 4),
-                    Text(
-                      "(+84)${shippingAddress.phoneNumber ?? "Unknown"}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: AppSizes.md),
-                    ),
+
                     const SizedBox(width: AppSizes.spaceBtwItems),
                     const Icon(
                       Icons.arrow_forward_ios_outlined,

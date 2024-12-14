@@ -173,6 +173,7 @@ class CheckoutView extends ConsumerWidget {
                       selectedCouponCode,
                       addressId,
                     );
+                await ref.read(orderStateProvider.notifier).fetchAllOrders();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

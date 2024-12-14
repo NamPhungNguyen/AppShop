@@ -78,7 +78,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     }
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (nameController.text.isEmpty ||
         descriptionController.text.isEmpty ||
         priceController.text.isEmpty ||
@@ -104,7 +104,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       return;
     }
 
-    _uploadImages().then((imageUrls) {
+    _uploadImages().then((imageUrls) async {
       if (imageUrls.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Failed to upload images."),
@@ -117,7 +117,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         isLoading = true; // Set loading true before making DB insert
       });
 
-      ref
+      await ref
           .read(productStateProvider.notifier)
           .createProduct(
             name: nameController.text,
@@ -203,8 +203,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
 
                         // Product Description
                         _buildTextField(
-                            descriptionController, 'Product Description',
-                            maxLines: 5),
+                            descriptionController, 'Product Description'),
 
                         const SizedBox(height: 10),
 
@@ -338,10 +337,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     );
   }
 
+  // Helper method for creating text fields
   Widget _buildTextField(TextEditingController controller, String label,
       {String hintText = '',
       TextInputType keyboardType = TextInputType.text,
-      int maxLines = 1,
       Function(String)? onChanged}) {
     return TextField(
       controller: controller,
@@ -352,10 +351,8 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         border: const OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
-        alignLabelWithHint: true,
       ),
       keyboardType: keyboardType,
-      maxLines: maxLines,
     );
   }
 

@@ -19,11 +19,11 @@ mixin _$Comment {
   int get commentId => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int get rating => throw _privateConstructorUsedError;
-  List<String> get imageUrls => throw _privateConstructorUsedError;
+  List<String>? get imageUrls => throw _privateConstructorUsedError;
   int get productId => throw _privateConstructorUsedError;
   int get userId => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
-  String get profileImgUrl => throw _privateConstructorUsedError;
+  String? get profileImgUrl => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
 
   /// Create a copy of Comment
@@ -41,11 +41,11 @@ abstract class $CommentCopyWith<$Res> {
       {int commentId,
       String content,
       int rating,
-      List<String> imageUrls,
+      List<String>? imageUrls,
       int productId,
       int userId,
       String fullName,
-      String profileImgUrl,
+      String? profileImgUrl,
       String createdAt});
 }
 
@@ -67,11 +67,11 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     Object? commentId = null,
     Object? content = null,
     Object? rating = null,
-    Object? imageUrls = null,
+    Object? imageUrls = freezed,
     Object? productId = null,
     Object? userId = null,
     Object? fullName = null,
-    Object? profileImgUrl = null,
+    Object? profileImgUrl = freezed,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -87,10 +87,10 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as int,
-      imageUrls: null == imageUrls
+      imageUrls: freezed == imageUrls
           ? _value.imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -103,10 +103,10 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImgUrl: null == profileImgUrl
+      profileImgUrl: freezed == profileImgUrl
           ? _value.profileImgUrl
           : profileImgUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -126,11 +126,11 @@ abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
       {int commentId,
       String content,
       int rating,
-      List<String> imageUrls,
+      List<String>? imageUrls,
       int productId,
       int userId,
       String fullName,
-      String profileImgUrl,
+      String? profileImgUrl,
       String createdAt});
 }
 
@@ -150,11 +150,11 @@ class __$$CommentImplCopyWithImpl<$Res>
     Object? commentId = null,
     Object? content = null,
     Object? rating = null,
-    Object? imageUrls = null,
+    Object? imageUrls = freezed,
     Object? productId = null,
     Object? userId = null,
     Object? fullName = null,
-    Object? profileImgUrl = null,
+    Object? profileImgUrl = freezed,
     Object? createdAt = null,
   }) {
     return _then(_$CommentImpl(
@@ -170,10 +170,10 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as int,
-      imageUrls: null == imageUrls
+      imageUrls: freezed == imageUrls
           ? _value._imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -186,10 +186,10 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImgUrl: null == profileImgUrl
+      profileImgUrl: freezed == profileImgUrl
           ? _value.profileImgUrl
           : profileImgUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -205,7 +205,7 @@ class _$CommentImpl implements _Comment {
       {required this.commentId,
       required this.content,
       required this.rating,
-      required final List<String> imageUrls,
+      required final List<String>? imageUrls,
       required this.productId,
       required this.userId,
       required this.fullName,
@@ -219,12 +219,14 @@ class _$CommentImpl implements _Comment {
   final String content;
   @override
   final int rating;
-  final List<String> _imageUrls;
+  final List<String>? _imageUrls;
   @override
-  List<String> get imageUrls {
+  List<String>? get imageUrls {
+    final value = _imageUrls;
+    if (value == null) return null;
     if (_imageUrls is EqualUnmodifiableListView) return _imageUrls;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_imageUrls);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -234,7 +236,7 @@ class _$CommentImpl implements _Comment {
   @override
   final String fullName;
   @override
-  final String profileImgUrl;
+  final String? profileImgUrl;
   @override
   final String createdAt;
 
@@ -292,11 +294,11 @@ abstract class _Comment implements Comment {
       {required final int commentId,
       required final String content,
       required final int rating,
-      required final List<String> imageUrls,
+      required final List<String>? imageUrls,
       required final int productId,
       required final int userId,
       required final String fullName,
-      required final String profileImgUrl,
+      required final String? profileImgUrl,
       required final String createdAt}) = _$CommentImpl;
 
   @override
@@ -306,7 +308,7 @@ abstract class _Comment implements Comment {
   @override
   int get rating;
   @override
-  List<String> get imageUrls;
+  List<String>? get imageUrls;
   @override
   int get productId;
   @override
@@ -314,7 +316,7 @@ abstract class _Comment implements Comment {
   @override
   String get fullName;
   @override
-  String get profileImgUrl;
+  String? get profileImgUrl;
   @override
   String get createdAt;
 

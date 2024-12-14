@@ -177,7 +177,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                   ),
                   const SizedBox(height: AppSizes.md),
                   InputFieldPrimary(
-                    labelText: 'First Name',
+                    labelText: 'Full Name',
                     controller: fullNameController,
                     icon: const Icon(Iconsax.personalcard),
                   ),

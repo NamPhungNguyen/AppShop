@@ -7,11 +7,11 @@ class CouponState extends StateNotifier<AsyncValue<List<Coupon>>> {
   double discountAmount = 0.0;
 
   CouponState(this._couponUsecase) : super(const AsyncValue.loading()) {
-    _fetchCoupons();
+    fetchCoupons();
   }
 
   // Fetch coupons
-  Future<void> _fetchCoupons() async {
+  Future<void> fetchCoupons() async {
     try {
       state = const AsyncValue.loading();
       final coupons = await _couponUsecase.getCoupons();

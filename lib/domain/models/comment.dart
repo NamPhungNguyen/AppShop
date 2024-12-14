@@ -8,11 +8,11 @@ class Comment with _$Comment {
     required int commentId,
     required String content,
     required int rating,
-    required List<String> imageUrls,
+    required List<String>? imageUrls,
     required int productId,
     required int userId,
     required String fullName,
-    required String profileImgUrl,
+    required String? profileImgUrl,
     required String createdAt,
   }) = _Comment;
 }
