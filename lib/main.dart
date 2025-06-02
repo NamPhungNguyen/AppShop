@@ -1,125 +1,198 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/models/category.dart';
+import 'package:front_shop/domain/models/comment.dart';
+import 'package:front_shop/domain/models/monthly_revenue.dart';
+import 'package:front_shop/domain/models/my_info.dart';
+import 'package:front_shop/domain/models/product.dart';
+import 'package:front_shop/domain/models/product_page.dart';
+import 'package:front_shop/domain/models/shipping_address.dart';
+import 'package:front_shop/domain/models/signup.dart';
+import 'package:front_shop/domain/models/user.dart';
+import 'package:front_shop/domain/models/validate.dart';
+import 'package:front_shop/domain/states/category_state.dart';
+import 'package:front_shop/domain/states/checkout_state.dart';
+import 'package:front_shop/domain/states/comment_state.dart';
+import 'package:front_shop/domain/states/favorite_state.dart';
+import 'package:front_shop/domain/states/home_state.dart';
+import 'package:front_shop/domain/states/location_state.dart';
+import 'package:front_shop/domain/states/order_pages_state.dart';
+import 'package:front_shop/domain/states/order_state.dart';
+import 'package:front_shop/domain/states/product_page_state.dart';
+import 'package:front_shop/domain/states/product_state.dart';
+import 'package:front_shop/domain/states/search_state.dart';
+import 'package:front_shop/domain/states/shipping_address_state.dart';
+import 'package:front_shop/domain/states/signup_state.dart';
+import 'package:front_shop/domain/states/token_state.dart';
+import 'package:front_shop/domain/states/user_state.dart';
+import 'package:front_shop/domain/states/validate_state.dart';
+import 'package:front_shop/presentation/screens/MainView/main_view.dart';
+import 'package:front_shop/presentation/screens/Splash/splash_view.dart';
+import 'package:front_shop/utils/theme/theme.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'domain/domain_modules.dart';
+import 'domain/models/cart_product.dart';
+import 'domain/models/coupon.dart';
+import 'domain/models/login.dart';
+import 'domain/models/order.dart';
+import 'domain/models/order_pages.dart';
+import 'domain/states/cart_state.dart';
+import 'domain/states/coupon_admin_state.dart';
+import 'domain/states/coupon_state.dart';
+import 'domain/states/login_state.dart';
+import 'domain/states/monthly_state.dart';
+import 'domain/states/shipping_address_default_state.dart';
+import 'domain/states/user_admin_state.dart';
+
+// TokenState provider
+final tokenStateProvider =
+    StateNotifierProvider<TokenState, AsyncValue<String?>>(
+  (ref) => TokenState(),
+);
+
+final signUpStateProvider =
+    StateNotifierProvider<SignUpState, AsyncValue<SignUp>>(
+  (ref) => SignUpState(ref),
+);
+
+final loginStateProvider = StateNotifierProvider<LoginState, AsyncValue<Login>>(
+  (ref) => LoginState(
+    AsyncValue.data(
+      Login(
+        code: 0,
+        message: '',
+        result: const LoginResult(token: '', authenticated: false),
+      ),
+    ),
+    ref,
+  ),
+);
+
+final locationStateProvider =
+    StateNotifierProvider<LocationState, AsyncValue<bool>>(
+  (ref) => LocationState(ref),
+);
+
+final monthlyRevenueStateProvider =
+    StateNotifierProvider<MonthlyState, AsyncValue<List<MonthlyRevenue>>>(
+  (ref) => MonthlyState(ref),
+);
+
+final userStateProvider = StateNotifierProvider<UserState, AsyncValue<MyInfo>>(
+  (ref) => UserState(ref),
+);
+
+final userAdminStateProvider =
+    StateNotifierProvider<UserAdminState, AsyncValue<UserResponse>>(
+  (ref) => UserAdminState(ref),
+);
+
+final validateStateProvider =
+    StateNotifierProvider<ValidateState, AsyncValue<Validate>>(
+  (ref) => ValidateState(ref),
+);
+
+final categoryStateProvider =
+    StateNotifierProvider<CategoryState, AsyncValue<Categories>>(
+  (ref) => CategoryState(ref),
+);
+
+final productStateProvider =
+    StateNotifierProvider<ProductState, AsyncValue<Products>>(
+  (ref) => ProductState(ref),
+);
+
+final homeStateProvider =
+    StateNotifierProvider<HomeState, AsyncValue<Map<String, dynamic>>>(
+  (ref) => HomeState(ref),
+);
+
+final favoriteStateProvider =
+    StateNotifierProvider<FavoriteState, AsyncValue<List<Product>>>(
+  (ref) => FavoriteState(ref),
+);
+
+final productSearchStateProvider =
+    StateNotifierProvider<SearchState, AsyncValue<List<Product>>>(
+  (ref) => SearchState(ref),
+);
+
+final cartStateProvider =
+    StateNotifierProvider<CartState, AsyncValue<CartProducts>>(
+  (ref) => CartState(ref),
+);
+
+final checkoutStateProvider =
+    StateNotifierProvider<CheckoutState, AsyncValue<CartCheckoutProducts>>(
+  (ref) => CheckoutState(ref),
+);
+
+final shippingAddressStateProvider =
+    StateNotifierProvider<ShippingAddressState, AsyncValue<ShippingAddresses>>(
+  (ref) => ShippingAddressState(ref),
+);
+
+final shippingAddressDefaultStateProvider = StateNotifierProvider<
+    ShippingAddressDefaultState, AsyncValue<ShippingAddressDefault>>(
+  (ref) => ShippingAddressDefaultState(ref),
+);
+
+final commentStateProvider =
+    StateNotifierProvider.family<CommentState, AsyncValue<Comments>, String>(
+  (ref, productId) => CommentState(ref, productId),
+);
+
+final productPageStateProvider =
+    StateNotifierProvider<ProductPageState, AsyncValue<ProductPage>>(
+  (ref) => ProductPageState(ref),
+);
+
+final orderPagesStateProvider =
+    StateNotifierProvider<OrderPagesState, AsyncValue<OrderPages>>(
+  (ref) => OrderPagesState(ref),
+);
+
+final couponStateProvider =
+    StateNotifierProvider<CouponState, AsyncValue<List<Coupon>>>((ref) {
+  return CouponState(ref.read(couponUsecaseProvider));
+});
+
+final couponAdminStateProvider =
+    StateNotifierProvider<CouponAdminState, AsyncValue<List<Coupon>>>((ref) {
+  return CouponAdminState(ref.read(couponUsecaseProvider));
+});
+
+final orderStateProvider =
+    StateNotifierProvider<OrderState, AsyncValue<List<Order>>>((ref) {
+  final orderUsecase =
+      ref.watch(orderUsecaseProvider); // Access the usecase from provider
+  return OrderState(orderUsecase);
+});
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp();
+    print("Firebase initialized successfully");
+  } catch (e) {
+    print("Error initializing Firebase: $e");
+  }
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
+      theme: AppTheme.lightTheme,
+      initialRoute: SplashView.routeName,
+      onGenerateRoute: MainView.generateRoute,
     );
   }
 }

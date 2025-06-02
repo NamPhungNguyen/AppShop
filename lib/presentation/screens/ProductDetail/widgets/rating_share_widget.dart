@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../../../../domain/models/product.dart';
+import '../../../../utils/constants/sizes.dart';
+
+class TRaitingAndShare extends StatelessWidget {
+  final Product product;
+
+  const TRaitingAndShare({Key? key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Rating
+        Row(
+          children: [
+            const Icon(Iconsax.star5, color: Colors.amber, size: 24),
+            const SizedBox(width: AppSizes.spaceBtwItems / 2),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${product.rating}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        // Share Button
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.share, size: AppSizes.iconMd),
+        ),
+      ],
+    );
+  }
+}

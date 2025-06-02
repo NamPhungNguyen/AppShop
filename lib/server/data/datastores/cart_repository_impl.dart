@@ -1,0 +1,50 @@
+import 'package:front_shop/server/client/client_service.dart';
+import 'package:front_shop/server/data/entities/cart_product_entity.dart';
+
+import '../repository/cart_repository.dart';
+
+class CartRepositoryImpl implements CartRepository {
+  final ClientService _clientService;
+
+  CartRepositoryImpl(this._clientService);
+
+  @override
+  Future<void> createCartForUser(String userId) async {
+    return await _clientService.createCartForUser(userId);
+  }
+
+  @override
+  Future<void> addProductToCart(
+      int productId, int quantity, String color, String size) async {
+    return await _clientService.addProductToCart(
+        productId, quantity, color, size);
+  }
+
+  @override
+  Future<CartProductsEntity> fetchCartUser() async {
+    return await _clientService.fetchCartUser();
+  }
+
+  @override
+  Future<void> deleteProductFromCart(String cartId) async {
+    return await _clientService.deleteProductFromCart(cartId);
+  }
+
+  @override
+  Future<void> updateItemQuantityFromCart(
+      String cartItemId, int quantity) async {
+    return await _clientService.updateItemQuantityFromCart(
+        cartItemId, quantity);
+  }
+
+  @override
+  Future<void> updateCheckoutStatus(
+      List<int> cartItemIds, bool isSelect) async {
+    return await _clientService.updateCheckoutStatus(cartItemIds, isSelect);
+  }
+
+  @override
+  Future<CartCheckoutProductsEntity> fetchProductCheckout() async {
+    return await _clientService.fetchProductCheckout();
+  }
+}

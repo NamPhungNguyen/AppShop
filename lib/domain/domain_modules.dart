@@ -1,0 +1,89 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:front_shop/domain/usecases/cart_usecase.dart';
+import 'package:front_shop/domain/usecases/cart_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/category_usecase.dart';
+import 'package:front_shop/domain/usecases/category_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/comment_usecase.dart';
+import 'package:front_shop/domain/usecases/comment_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/coupon_usecase.dart';
+import 'package:front_shop/domain/usecases/coupon_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/location_usecase.dart';
+import 'package:front_shop/domain/usecases/location_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/login_usecase.dart';
+import 'package:front_shop/domain/usecases/login_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/order_usecase.dart';
+import 'package:front_shop/domain/usecases/order_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/product_usecase.dart';
+import 'package:front_shop/domain/usecases/product_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/shipping_address_usecase.dart';
+import 'package:front_shop/domain/usecases/shipping_address_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/signup_usecase.dart';
+import 'package:front_shop/domain/usecases/signup_usecase_impl.dart';
+import 'package:front_shop/domain/usecases/user_usecase.dart';
+import 'package:front_shop/domain/usecases/user_usecase_impl.dart';
+import 'package:front_shop/server/data/providers/cart_repository_provider.dart';
+import 'package:front_shop/server/data/providers/category_repository_provider.dart';
+import 'package:front_shop/server/data/providers/comment_repository_provider.dart';
+import 'package:front_shop/server/data/providers/coupon_repository_provider.dart';
+import 'package:front_shop/server/data/providers/favorite_repository_provider.dart';
+import 'package:front_shop/server/data/providers/location_repository_provider.dart';
+import 'package:front_shop/server/data/providers/login_repository_provider.dart';
+import 'package:front_shop/server/data/providers/order_repository_provider.dart';
+import 'package:front_shop/server/data/providers/product_repository_provider.dart';
+import 'package:front_shop/server/data/providers/shipping_address_repository_provider.dart';
+import 'package:front_shop/server/data/providers/user_repository_provider.dart';
+
+import '../server/data/providers/signup_repository_provider.dart';
+
+final loginUsecaseProvider = Provider<LoginUsecase>(
+  (ref) => LoginUsecaseImpl(ref.watch(loginRepositoryProvider)),
+);
+
+final signupUsecaseProvider = Provider<SignUpUsecase>(
+  (ref) => SignUpUsecaseImpl(ref.watch(signupRepositoryProvider)),
+);
+
+final locationUsecaseProvider = Provider<LocationUsecase>(
+  (ref) => LocationUsecaseImpl(ref.watch(locationRepositoryProvider)),
+);
+
+final userUsecaseProvider = Provider<UserUsecase>(
+  (ref) => UserUsecaseImpl(ref.watch(userRepositoryProvider)),
+);
+
+final categoryUsecaseProvider = Provider<CategoryUsecase>(
+  (ref) => CategoryUsecaseImpl(ref.watch(categoryRepositoryProvider)),
+);
+
+final productUsecaseProvider = Provider<ProductUsecase>(
+  (ref) => ProductUsecaseImpl(ref.watch(productRepositoryProvider)),
+);
+
+final favoriteUsecaseProvider = Provider<ProductUsecase>(
+  (ref) => ProductUsecaseImpl(ref.watch(favoriteRepositoryProvider)),
+);
+
+final cartUsecaseProvider = Provider<CartUsecase>(
+  (ref) => CartUsecaseImpl(ref.watch(cartRepositoryProvider)),
+);
+
+final shippingAddressUsecaseProvider = Provider<ShippingAddressUsecase>(
+  (ref) =>
+      ShippingAddressUsecaseImpl(ref.watch(shippingAddressRepositoryProvider)),
+);
+
+final commentUsecaseProvider = Provider<CommentUsecase>(
+  (ref) => CommentUsecaseImpl(ref.watch(commentRepositoryProvider)),
+);
+
+final couponUsecaseProvider = Provider<CouponUsecase>((ref) {
+  return CouponUsecaseImpl(ref.read(couponRepositoryProvider));
+});
+
+final orderUsecaseProvider = Provider<OrderUsecase>((ref) {
+  final orderRepository = ref.read(orderRepositoryProvider); // Assuming you have an orderRepositoryProvider
+  return OrderUsecaseImpl(orderRepository);
+});
+
+
+

@@ -1,0 +1,78 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+class PreferenceUtil {
+  static const String _authToken = 'AuthToken';
+  static const String _tokenExpiry = 'TokenExpiry';
+  static const String _isFirstTime = 'isFirstTime';
+  static const String _isFirstAllowLocation = 'isFirstAllowLocation';
+
+  static Future<bool> setAuthToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final decodedToken = json.decode(
+        utf8.decode(base64.decode(base64.normalize(token.split('.')[1]))));
+    final exp = decodedToken['exp'];
+    final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+
+    await prefs.setString(_authToken, token);
+    return await prefs.setString(_tokenExpiry, expiryDate.toIso8601String());
+  }
+
+  static Future<String?> getAuthToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_authToken);
+  }
+
+  // Check if the token is expired
+  static Future<bool> isTokenExpired() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final expiryString = prefs.getString(_tokenExpiry);
+
+    if (expiryString == null) {
+      return true; // No expiry info, treat as expired
+    }
+
+    final expiryDate = DateTime.parse(expiryString);
+    return DateTime.now().isAfter(expiryDate);
+  }
+
+  // Remove the authentication token
+  static Future<bool> removeAuthToken() async {
+    final pref = await SharedPreferences.getInstance();
+
+    // Await both remove calls and combine their results
+    bool removedAuthToken = await pref.remove(_authToken);
+    bool removedTokenExpiry = await pref.remove(_tokenExpiry);
+
+    return removedAuthToken && removedTokenExpiry;
+  }
+
+  // Other preference methods remain unchanged
+  static Future<bool> setIsFirstTime(bool isFirstTime) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.setBool(_isFirstTime, isFirstTime);
+  }
+
+  static Future<bool> getIsFirstTime() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool(_isFirstTime) ?? true;
+  }
+
+  static Future<bool> getIsFirstAllowLocation() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool(_isFirstAllowLocation) ?? true;
+  }
+
+  static Future<bool> setIsFirstAllowLocation(bool isFirstAllowLocation) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.setBool(_isFirstAllowLocation, isFirstAllowLocation);
+  }
+
+  static Future<void> clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_authToken); // Remove the auth token
+    await prefs.remove(_tokenExpiry); // Remove the token expiry
+    await prefs.remove('userId'); // Remove the user ID
+  }
+}
